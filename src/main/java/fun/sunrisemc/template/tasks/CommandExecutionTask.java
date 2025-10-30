@@ -2,6 +2,8 @@ package fun.sunrisemc.template.tasks;
 
 import org.bukkit.Bukkit;
 import fun.sunrisemc.template.CommandSchedularPlugin;
+import fun.sunrisemc.template.scheduled_command.CommandConfiguration;
+import fun.sunrisemc.template.scheduled_command.CommandConfigurationManager;
 
 public class CommandExecutionTask {
 
@@ -9,12 +11,24 @@ public class CommandExecutionTask {
 
     private static int id = -1;
 
+    private static int tickCount = 0;
+
     public static void start() {
         if (id != -1) {
             return;
         }
         id = Bukkit.getScheduler().runTaskTimer(CommandSchedularPlugin.getInstance(), () -> {
-            run();
+            if (tickCount == Integer.MAX_VALUE) {
+                tickCount = 0;
+            }
+            tickCount++;
+
+            for (CommandConfiguration commandConfiguration : CommandConfigurationManager.getAll()) {
+                if (commandConfiguration.shouldRun(tickCount)) {
+                    commandConfiguration.execute();
+                }
+            }
+
         }, INTERVAL_TICKS, INTERVAL_TICKS).getTaskId();
     }
 
@@ -24,9 +38,5 @@ public class CommandExecutionTask {
         }
         Bukkit.getScheduler().cancelTask(id);
         id = -1;
-    }
-
-    private static void run() {
-        // Code here
     }
 }

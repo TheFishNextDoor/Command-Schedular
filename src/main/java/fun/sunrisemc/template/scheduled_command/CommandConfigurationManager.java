@@ -18,6 +18,10 @@ public class CommandConfigurationManager {
         return Optional.ofNullable(scheduledCommands.get(id));
     }
 
+    public static List<CommandConfiguration> getAll() {
+        return new ArrayList<>(scheduledCommands.values());
+    }
+
     public static List<String> getIds() {
         return new ArrayList<>(scheduledCommands.keySet());
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.template.CommandSchedularPlugin;
 
@@ -12,6 +13,10 @@ public class CommandConfiguration {
     private final String id;
 
     private ArrayList<CommandExecutable> commands = new ArrayList<>();
+
+    private boolean executeNextTick = false;
+
+    private Integer interval = null;
 
     CommandConfiguration(YamlConfiguration config, String id) {
         this.id = id;
@@ -33,6 +38,10 @@ public class CommandConfiguration {
 
             commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
         }
+
+        if (config.contains(id + ".triggers.interval")) {
+            this.interval = getIntClamped(config, id + ".triggers.interval", 1, Integer.MAX_VALUE);
+        }
     }
 
     public String getId() {
@@ -40,8 +49,29 @@ public class CommandConfiguration {
     }
 
     public void execute() {
+        this.executeNextTick = false;
         for (CommandExecutable command : commands) {
             command.execute();
         }
+    }
+
+    public void executeNextTick() {
+        this.executeNextTick = true;
+    }
+
+    public boolean shouldRun(int tickCount) {
+        return executeNextTick || checkInterval(tickCount);
+    }
+
+    private boolean checkInterval(int tickCount) {
+        if (interval == null) {
+            return false;
+        }
+        return tickCount % interval == 0;
+    }
+
+    private int getIntClamped(@NonNull YamlConfiguration config, @NonNull String path, int min, int max) {
+        int value = config.getInt(path);
+        return Math.clamp(value, min, max);
     }
 }
