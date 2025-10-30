@@ -1,6 +1,34 @@
-# This example will broadcast "Hello, world!" every 600 ticks (30 seconds).
-#example:
+# This example will say hello to all players every 30 seconds.
+#hello-players:
 #  commands:
-#    - 'broadcast: Hello, world!'
+#    - 'message: Hello, {player}!'
 #  triggers:
 #    interval-ticks: 600
+
+# This example will give all players $100 every 5 minutes.
+#five-minute-cash:
+#  commands:
+#    - 'console-for-each-player: eco give {player} 100'
+#  triggers:
+#    cron: 0 0 */5 * * * * # tick, second, minute, hour, day of month, month, day of week
+
+# This example will broadcast a message one minute after the server starts.
+#one-minute-message:
+#  commands:
+#    - 'broadcast: The server has been running for one minute!'
+#  triggers:
+#    ticks-from-server-start: 1200
+
+# This example will make all players run /spawn every hour on the hour.
+#hourly-spawn:
+#  commands:
+#    - 'for-each-player: spawn'
+#  triggers:
+#    cron: 0 0 0 * * * * # tick, second, minute, hour, day of month, month, day of week
+
+# This example will stop the server at midnight every day.
+#midnight-shutdown:
+#  commands:
+#    - 'console: stop'
+#  triggers:
+#    cron: 0 0 0 0 * * * # tick, second, minute, hour, day of month, month, day of week
