@@ -11,6 +11,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.cron.MCCron;
+import fun.sunrisemc.command_schedular.file.ConfigFile;
 
 public class CommandConfiguration {
 
@@ -81,7 +82,7 @@ public class CommandConfiguration {
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
-            this.intervalTicks = getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
+            this.intervalTicks = ConfigFile.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".triggers.cron")) {
@@ -155,10 +156,5 @@ public class CommandConfiguration {
             return false;
         }
         return ticksFromServerStart.contains(tickCount);
-    }
-
-    private int getIntClamped(@NonNull YamlConfiguration config, @NonNull String path, int min, int max) {
-        int value = config.getInt(path);
-        return Math.clamp(value, min, max);
     }
 }
