@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class CommandExecutable {
 
     private final CommandType type;
@@ -14,7 +16,7 @@ public class CommandExecutable {
 
     CommandExecutable(CommandType type, String command) {
         this.type = type;
-        this.command = command;
+        this.command = command.trim();
     }
 
     public CommandType getType() {
@@ -42,6 +44,18 @@ public class CommandExecutable {
             for (Player player : players) {
                 String parsedCommand = command.replace("{player}", player.getName());
                 player.performCommand(parsedCommand);
+            }
+        }
+        else if (type == CommandType.BROADCAST) {
+            String message = ChatColor.translateAlternateColorCodes('&', command);
+            server.broadcastMessage(message);
+        }
+        else if (type == CommandType.MESSAGE) {
+            Collection<? extends Player> players = server.getOnlinePlayers();
+            for (Player player : players) {
+                String message = command.replace("{player}", player.getName());
+                message = ChatColor.translateAlternateColorCodes('&', message);
+                player.sendMessage(message);
             }
         }
     }
