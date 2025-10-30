@@ -1,8 +1,6 @@
-example-command:
-  commands:
-    - 'console: say Hello, World!'
-    - 'console-for-each-player: say Hello, {player}!'
-    - 'for-each-player: say My name is {player}!'
-  triggers:
-    interval-ticks: 600
-    cron: '0 * * * *'
+# This example will broadcast "Hello, world!" every 600 ticks (30 seconds).
+#example:
+#  commands:
+#    - 'broadcast: Hello, world!'
+#  triggers:
+#    interval-ticks: 600
