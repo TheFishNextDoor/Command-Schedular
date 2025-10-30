@@ -17,6 +17,14 @@ public class CommandExecutable {
         this.command = command;
     }
 
+    public CommandType getType() {
+        return type;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
     public void execute() {
         Server server = Bukkit.getServer();
         if (type == CommandType.CONSOLE) {
