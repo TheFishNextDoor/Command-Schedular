@@ -1,6 +1,7 @@
 package fun.sunrisemc.template.scheduled_command;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,6 +10,15 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import fun.sunrisemc.template.CommandSchedularPlugin;
 
 public class CommandConfiguration {
+
+    private final List<String> SETTINGS = List.of(
+        "commands",
+        "triggers"
+    );
+
+    private final List<String> TRIGGERS = List.of(
+        "interval"
+    );
 
     private final String id;
 
@@ -20,6 +30,26 @@ public class CommandConfiguration {
 
     CommandConfiguration(YamlConfiguration config, String id) {
         this.id = id;
+
+        // Settings Validation
+
+        for (String setting : config.getConfigurationSection(id).getKeys(false)) {
+            if (!SETTINGS.contains(setting)) {
+                CommandSchedularPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
+                CommandSchedularPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
+            }
+        }
+
+        if (config.contains(id + ".triggers")) {
+            for (String trigger : config.getConfigurationSection(id + ".triggers").getKeys(false)) {
+                if (!TRIGGERS.contains(trigger)) {
+                    CommandSchedularPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
+                    CommandSchedularPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
+                }
+            }
+        }
+
+        // Load Commands
 
         for (String commandString : config.getStringList(id + ".commands")) {
             String[] commandStringSplit = commandString.split(":", 2);
@@ -38,6 +68,8 @@ public class CommandConfiguration {
 
             commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
         }
+
+        // Load Triggers
 
         if (config.contains(id + ".triggers.interval")) {
             this.interval = getIntClamped(config, id + ".triggers.interval", 1, Integer.MAX_VALUE);
