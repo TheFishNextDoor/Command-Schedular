@@ -37,7 +37,7 @@ public class CommandConfiguration {
 
     private HashSet<Integer> ticksFromServerStart = new HashSet<>();
 
-    CommandConfiguration(YamlConfiguration config, String id) {
+    CommandConfiguration(@NonNull YamlConfiguration config, @NonNull String id) {
         this.id = id;
 
         // Settings Validation

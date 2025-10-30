@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -14,7 +15,7 @@ public class CommandExecutable {
 
     private final String command;
 
-    CommandExecutable(CommandType type, String command) {
+    CommandExecutable(@NonNull CommandType type, @NonNull String command) {
         this.type = type;
         this.command = command.trim();
     }

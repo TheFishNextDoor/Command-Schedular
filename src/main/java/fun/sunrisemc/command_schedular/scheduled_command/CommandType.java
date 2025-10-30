@@ -2,6 +2,8 @@ package fun.sunrisemc.command_schedular.scheduled_command;
 
 import java.util.Optional;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 public enum CommandType {
 
     CONSOLE, // Executes the command as the console
@@ -10,7 +12,7 @@ public enum CommandType {
     BROADCAST, // Broadcasts a message to all players
     MESSAGE; // Sends a message to all players
 
-    public static Optional<CommandType> fromString(String type) {
+    public static Optional<CommandType> fromString(@NonNull String type) {
         type = type.trim().replace("-", "_").replace(" ", "_");
         for (CommandType commandType : values()) {
             if (type.equalsIgnoreCase(commandType.name())) {

@@ -3,6 +3,8 @@ package fun.sunrisemc.command_schedular.cron;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 
 public class CronField {
@@ -11,7 +13,7 @@ public class CronField {
 
     private boolean all;
 
-    public CronField(String expression, int min, int max) {
+    public CronField(@NonNull String expression, int min, int max) {
         if (expression.equals("*")) {
             all = true;
             return;

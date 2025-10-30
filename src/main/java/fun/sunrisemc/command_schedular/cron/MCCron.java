@@ -1,5 +1,7 @@
 package fun.sunrisemc.command_schedular.cron;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 
 public class MCCron {
@@ -12,7 +14,7 @@ public class MCCron {
     private CronField month = null;
     private CronField dayOfWeek = null;
 
-    public MCCron(String expression) {
+    public MCCron(@NonNull String expression) {
         String[] parts = expression.split(" ");
         if (parts.length != 7) {
             CommandSchedularPlugin.logWarning("Invalid cron expression: " + expression);

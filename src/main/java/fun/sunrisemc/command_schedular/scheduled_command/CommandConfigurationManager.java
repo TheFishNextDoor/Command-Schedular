@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.file.ConfigFile;
@@ -14,7 +15,7 @@ public class CommandConfigurationManager {
 
     private static HashMap<String, CommandConfiguration> scheduledCommands = new HashMap<>();
 
-    public static Optional<CommandConfiguration> get(String id) {
+    public static Optional<CommandConfiguration> get(@NonNull String id) {
         return Optional.ofNullable(scheduledCommands.get(id));
     }
 
