@@ -57,7 +57,7 @@ midnight-shutdown:
 ```
 
 ## Settings
-- **commands**: Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#Command Types).
+- **commands**: Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#command-types).
 - **triggers**: Control when the command configuration is executed.
 
 ## Command Types
