@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,7 +66,7 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            commandConfig.get().execute();
+            Bukkit.getScheduler().runTask(CommandSchedularPlugin.getInstance(), commandConfig.get()::execute);
             sender.sendMessage(ChatColor.YELLOW + "Command executed successfully");
             return true;
         }
