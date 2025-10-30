@@ -62,5 +62,5 @@ midnight-shutdown:
 
 ## Triggers
 - **interval-ticks**: The number of ticks between each execution of the command configuration.
-- **cron**: A cron to control specific points that the command configuration will execute down to the tick. Syntax <>
-- **ticks-from-server-start**: The number of ticks between each condition check. &lt;tick&gt; &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt;
+- **cron**: A cron to control specific points that the command configuration will execute down to the tick. Syntax &lt;tick&gt; &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt;.
+- **ticks-from-server-start**: The number of ticks between each condition check. 
