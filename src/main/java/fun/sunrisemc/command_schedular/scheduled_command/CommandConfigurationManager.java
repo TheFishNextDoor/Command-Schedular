@@ -27,6 +27,8 @@ public class CommandConfigurationManager {
     }
 
     public static void loadConfig() {
+        scheduledCommands.clear();
+
         YamlConfiguration config = ConfigFile.get("commands", false);
         for (String id : config.getKeys(false)) {
             CommandConfiguration scheduledCommand = new CommandConfiguration(config, id);
