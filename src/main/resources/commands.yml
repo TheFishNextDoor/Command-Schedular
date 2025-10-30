@@ -4,6 +4,5 @@ example-command:
     - 'console-for-each-player: say Hello, {player}!'
     - 'for-each-player: say My name is {player}!'
   triggers:
+    interval-ticks: 600
     cron: '0 * * * *'
-    interval: 600
-    ticks-since-server-start: 1200

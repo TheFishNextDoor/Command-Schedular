@@ -17,7 +17,7 @@ public class CommandConfiguration {
     );
 
     private final List<String> TRIGGERS = List.of(
-        "interval"
+        "interval-ticks"
     );
 
     private final String id;
@@ -26,7 +26,7 @@ public class CommandConfiguration {
 
     private boolean executeNextTick = false;
 
-    private Integer interval = null;
+    private Integer intervalTicks = null;
 
     CommandConfiguration(YamlConfiguration config, String id) {
         this.id = id;
@@ -71,8 +71,8 @@ public class CommandConfiguration {
 
         // Load Triggers
 
-        if (config.contains(id + ".triggers.interval")) {
-            this.interval = getIntClamped(config, id + ".triggers.interval", 1, Integer.MAX_VALUE);
+        if (config.contains(id + ".triggers.interval-ticks")) {
+            this.intervalTicks = getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
         }
     }
 
@@ -96,10 +96,10 @@ public class CommandConfiguration {
     }
 
     private boolean checkInterval(int tickCount) {
-        if (interval == null) {
+        if (intervalTicks == null) {
             return false;
         }
-        return tickCount % interval == 0;
+        return tickCount % intervalTicks == 0;
     }
 
     private int getIntClamped(@NonNull YamlConfiguration config, @NonNull String path, int min, int max) {
