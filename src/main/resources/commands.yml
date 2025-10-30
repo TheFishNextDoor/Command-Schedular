@@ -1,0 +1,9 @@
+example-command:
+  commands:
+    - 'console: say Hello, World!'
+    - 'console-for-each-player: say Hello, {player}!'
+    - 'for-each-player: say My name is {player}!'
+  triggers:
+    cron: '0 * * * *'
+    interval: 600
+    ticks-since-server-start: 1200
