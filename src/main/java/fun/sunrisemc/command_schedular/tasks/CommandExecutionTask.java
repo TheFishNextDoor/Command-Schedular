@@ -1,9 +1,10 @@
-package fun.sunrisemc.template.tasks;
+package fun.sunrisemc.command_schedular.tasks;
 
 import org.bukkit.Bukkit;
-import fun.sunrisemc.template.CommandSchedularPlugin;
-import fun.sunrisemc.template.scheduled_command.CommandConfiguration;
-import fun.sunrisemc.template.scheduled_command.CommandConfigurationManager;
+
+import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
+import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
 
 public class CommandExecutionTask {
 
@@ -38,5 +39,9 @@ public class CommandExecutionTask {
         }
         Bukkit.getScheduler().cancelTask(id);
         id = -1;
+    }
+
+    public static int getTickCount() {
+        return tickCount;
     }
 }

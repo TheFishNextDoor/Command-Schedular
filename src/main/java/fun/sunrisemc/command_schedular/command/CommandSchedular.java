@@ -1,5 +1,6 @@
-package fun.sunrisemc.template.command;
+package fun.sunrisemc.command_schedular.command;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import fun.sunrisemc.template.CommandSchedularPlugin;
-import fun.sunrisemc.template.permission.Permissions;
-import fun.sunrisemc.template.scheduled_command.CommandConfiguration;
-import fun.sunrisemc.template.scheduled_command.CommandConfigurationManager;
+import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.command_schedular.permission.Permissions;
+import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
+import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
+import fun.sunrisemc.command_schedular.tasks.CommandExecutionTask;
 
 public class CommandSchedular implements CommandExecutor, TabCompleter {
 
@@ -27,6 +29,9 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
             }
             if (sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
                 completions.add("execute");
+            }
+            if (sender.hasPermission(Permissions.TIME_PERMISSION)) {
+                completions.add("time");
             }
             return completions;
         }
@@ -67,6 +72,19 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
 
             commandConfig.get().executeNextTick();
             sender.sendMessage(ChatColor.YELLOW + "Command executed successfully");
+            return true;
+        }
+        else if (sender.hasPermission(Permissions.TIME_PERMISSION) && subCommand.equals("time")) {
+            int tick = CommandExecutionTask.getTickCount() % 20;
+            LocalDateTime dateTime = LocalDateTime.now();
+            sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Current Server Time");
+            sender.sendMessage(ChatColor.YELLOW + "Day of Week: " + ChatColor.WHITE + dateTime.getDayOfWeek().toString() + " (" + dateTime.getDayOfWeek().getValue() + ")");
+            sender.sendMessage(ChatColor.YELLOW + "Month: " + ChatColor.WHITE + dateTime.getMonth().toString() + " (" + dateTime.getMonthValue() + ")");
+            sender.sendMessage(ChatColor.YELLOW + "Day of Month: " + ChatColor.WHITE + dateTime.getDayOfMonth());
+            sender.sendMessage(ChatColor.YELLOW + "Hour: " + ChatColor.WHITE + dateTime.getHour());
+            sender.sendMessage(ChatColor.YELLOW + "Minute: " + ChatColor.WHITE + dateTime.getMinute());
+            sender.sendMessage(ChatColor.YELLOW + "Second: " + ChatColor.WHITE + dateTime.getSecond());
+            sender.sendMessage(ChatColor.YELLOW + "Tick: " + ChatColor.WHITE + tick);
             return true;
         }
 

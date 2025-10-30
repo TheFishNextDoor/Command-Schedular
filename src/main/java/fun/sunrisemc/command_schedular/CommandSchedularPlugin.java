@@ -1,4 +1,4 @@
-package fun.sunrisemc.template;
+package fun.sunrisemc.command_schedular;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -7,9 +7,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import fun.sunrisemc.template.command.CommandSchedular;
-import fun.sunrisemc.template.scheduled_command.CommandConfigurationManager;
-import fun.sunrisemc.template.tasks.CommandExecutionTask;
+import fun.sunrisemc.command_schedular.command.CommandSchedular;
+import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
+import fun.sunrisemc.command_schedular.tasks.CommandExecutionTask;
 
 public class CommandSchedularPlugin extends JavaPlugin {
 

@@ -1,4 +1,4 @@
-package fun.sunrisemc.template.file;
+package fun.sunrisemc.command_schedular.file;
 
 import java.io.File;
 import java.io.InputStream;
@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import fun.sunrisemc.template.CommandSchedularPlugin;
+import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 
 public class ConfigFile {
 

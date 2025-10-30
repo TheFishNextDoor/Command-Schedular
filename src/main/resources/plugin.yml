@@ -1,5 +1,5 @@
 name: CommandSchedular
-main: fun.sunrisemc.template.CommandSchedularPlugin
+main: fun.sunrisemc.command_schedular.CommandSchedularPlugin
 version: 1.0.0
 api-version: 1.18
 author: TheFishNextDoor
@@ -15,3 +15,5 @@ permissions:
     description: Allows use of /commandschedular reload
   commandschedular.execute:
     description: Allows use of /commandschedular execute
+  commandschedular.time:
+    description: Allows use of /commandschedular time

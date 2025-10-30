@@ -1,5 +1,6 @@
-package fun.sunrisemc.template.scheduled_command;
+package fun.sunrisemc.command_schedular.scheduled_command;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,7 +8,8 @@ import java.util.Optional;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import fun.sunrisemc.template.CommandSchedularPlugin;
+import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.command_schedular.cron.MCCron;
 
 public class CommandConfiguration {
 
@@ -17,7 +19,8 @@ public class CommandConfiguration {
     );
 
     private final List<String> TRIGGERS = List.of(
-        "interval-ticks"
+        "interval-ticks",
+        "cron"
     );
 
     private final String id;
@@ -27,6 +30,8 @@ public class CommandConfiguration {
     private boolean executeNextTick = false;
 
     private Integer intervalTicks = null;
+
+    private MCCron cron = null;
 
     CommandConfiguration(YamlConfiguration config, String id) {
         this.id = id;
@@ -74,6 +79,11 @@ public class CommandConfiguration {
         if (config.contains(id + ".triggers.interval-ticks")) {
             this.intervalTicks = getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
         }
+
+        if (config.contains(id + ".triggers.cron")) {
+            String cronExpression = config.getString(id + ".triggers.cron");
+            this.cron = new MCCron(cronExpression);
+        }
     }
 
     public String getId() {
@@ -92,7 +102,7 @@ public class CommandConfiguration {
     }
 
     public boolean shouldRun(int tickCount) {
-        return executeNextTick || checkInterval(tickCount);
+        return executeNextTick || checkInterval(tickCount) || checkCron(tickCount);
     }
 
     private boolean checkInterval(int tickCount) {
@@ -100,6 +110,24 @@ public class CommandConfiguration {
             return false;
         }
         return tickCount % intervalTicks == 0;
+    }
+
+    private boolean checkCron(int tickCount) {
+        if (cron == null) {
+            return false;
+        }
+
+        int tick = tickCount % 20;
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        int second = dateTime.getSecond();
+        int minute = dateTime.getMinute();
+        int hour = dateTime.getHour();
+        int dayOfMonth = dateTime.getDayOfMonth();
+        int month = dateTime.getMonthValue();
+        int dayOfWeek = dateTime.getDayOfWeek().getValue();
+
+        return cron.matches(tick, second, minute, hour, dayOfMonth, month, dayOfWeek);
     }
 
     private int getIntClamped(@NonNull YamlConfiguration config, @NonNull String path, int min, int max) {
