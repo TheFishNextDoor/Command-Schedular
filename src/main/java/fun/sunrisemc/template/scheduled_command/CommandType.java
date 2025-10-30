@@ -9,9 +9,9 @@ public enum CommandType {
     FOR_EACH_PLAYER; // Executes the command as each online player, replacing {player} with the player's name
 
     public static Optional<CommandType> fromString(String type) {
-        type = type.trim();
+        type = type.trim().replace("-", "_").replace(" ", "_");
         for (CommandType commandType : values()) {
-            if (commandType.name().equalsIgnoreCase(type)) {
+            if (type.equalsIgnoreCase(commandType.name())) {
                 return Optional.of(commandType);
             }
         }
@@ -22,7 +22,7 @@ public enum CommandType {
         CommandType[] types = values();
         String[] typeStrings = new String[types.length];
         for (int i = 0; i < types.length; i++) {
-            typeStrings[i] = types[i].name();
+            typeStrings[i] = types[i].name().replace("_", "-").toLowerCase();
         }
         return typeStrings;
     }
