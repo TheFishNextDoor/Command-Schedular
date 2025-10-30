@@ -9,7 +9,7 @@ commands:
     description: Main plugin command
     usage: /commandschedular [subcommand]
     permission: commandschedular
-    aliases: [cs]
+    aliases: [cs, cmdschedular, cmdsched, schedular, sched]
 permissions:
   commandschedular.reload:
     description: Allows use of /commandschedular reload
