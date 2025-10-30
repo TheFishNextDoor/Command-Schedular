@@ -41,7 +41,7 @@ public class CommandExecutionTask {
         id = -1;
     }
 
-    public static int getTickCount() {
+    public static int getTicksFromServerStart() {
         return tickCount;
     }
 }

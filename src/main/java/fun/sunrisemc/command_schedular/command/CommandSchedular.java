@@ -75,7 +75,8 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
             return true;
         }
         else if (sender.hasPermission(Permissions.TIME_PERMISSION) && subCommand.equals("time")) {
-            int tick = CommandExecutionTask.getTickCount() % 20;
+            int ticksFromServerStart = CommandExecutionTask.getTicksFromServerStart();
+            int tick = ticksFromServerStart % 20;
             LocalDateTime dateTime = LocalDateTime.now();
             sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Current Server Time");
             sender.sendMessage(ChatColor.YELLOW + "Day of Week: " + ChatColor.WHITE + dateTime.getDayOfWeek().toString() + " (" + dateTime.getDayOfWeek().getValue() + ")");
@@ -85,6 +86,7 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "Minute: " + ChatColor.WHITE + dateTime.getMinute());
             sender.sendMessage(ChatColor.YELLOW + "Second: " + ChatColor.WHITE + dateTime.getSecond());
             sender.sendMessage(ChatColor.YELLOW + "Tick: " + ChatColor.WHITE + tick);
+            sender.sendMessage(ChatColor.YELLOW + "Ticks from Server Start: " + ChatColor.WHITE + ticksFromServerStart);
             return true;
         }
 

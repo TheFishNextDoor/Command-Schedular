@@ -2,6 +2,7 @@ package fun.sunrisemc.command_schedular.scheduled_command;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,8 @@ public class CommandConfiguration {
 
     private final List<String> TRIGGERS = List.of(
         "interval-ticks",
-        "cron"
+        "cron",
+        "ticks-from-server-start"
     );
 
     private final String id;
@@ -32,6 +34,8 @@ public class CommandConfiguration {
     private Integer intervalTicks = null;
 
     private MCCron cron = null;
+
+    private HashSet<Integer> ticksFromServerStart = new HashSet<>();
 
     CommandConfiguration(YamlConfiguration config, String id) {
         this.id = id;
@@ -84,6 +88,22 @@ public class CommandConfiguration {
             String cronExpression = config.getString(id + ".triggers.cron");
             this.cron = new MCCron(cronExpression);
         }
+
+        if (config.contains(id + ".triggers.ticks-from-server-start")) {
+            String ticksFromServerStartString = config.getString(id + ".triggers.ticks-from-server-start");
+            String[] ticksFromServerStartSplit = ticksFromServerStartString.split(",");
+            for (String tickString : ticksFromServerStartSplit) {
+                int tick;
+                try {
+                    tick = Integer.parseInt(tickString.trim());
+                    ticksFromServerStart.add(tick);
+                } 
+                catch (NumberFormatException e) {
+                    CommandSchedularPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
+                    continue;
+                }
+            }
+        }
     }
 
     public String getId() {
@@ -102,7 +122,7 @@ public class CommandConfiguration {
     }
 
     public boolean shouldRun(int tickCount) {
-        return executeNextTick || checkInterval(tickCount) || checkCron(tickCount);
+        return executeNextTick || checkInterval(tickCount) || checkCron(tickCount) || checkTicksFromServerStart(tickCount);
     }
 
     private boolean checkInterval(int tickCount) {
@@ -128,6 +148,13 @@ public class CommandConfiguration {
         int dayOfWeek = dateTime.getDayOfWeek().getValue();
 
         return cron.matches(tick, second, minute, hour, dayOfMonth, month, dayOfWeek);
+    }
+
+    private boolean checkTicksFromServerStart(int tickCount) {
+        if (ticksFromServerStart.isEmpty()) {
+            return false;
+        }
+        return ticksFromServerStart.contains(tickCount);
     }
 
     private int getIntClamped(@NonNull YamlConfiguration config, @NonNull String path, int min, int max) {
