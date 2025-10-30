@@ -14,9 +14,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.permission.Permissions;
+import fun.sunrisemc.command_schedular.repeating_task.CommandExecutionTask;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
-import fun.sunrisemc.command_schedular.task.CommandExecutionTask;
 
 public class CommandSchedular implements CommandExecutor, TabCompleter {
 

@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.task;
+package fun.sunrisemc.command_schedular.repeating_task;
 
 import org.bukkit.Bukkit;
 
