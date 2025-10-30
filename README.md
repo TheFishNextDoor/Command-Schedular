@@ -1,8 +1,66 @@
 # Command Schedular Plugin
-Allows the scheduling of commands.
+Schedule commands to run at specific points.
 
 ## Setup
 - Add Command Schedular jar into your plugins folder
 - Restart your server
 - Edit commands.yml to your liking
 - Type /commandschedular reload
+
+## Commands
+- **/commandschedular help**: Show the help message
+- **/commandschedular reload**: Reload the plugin
+- **/commandschedular execute**: Execute a specific configured command immediately
+- **/commandschedular time**: Checks the current server time. Useful for configuring a [cron](#triggers).
+
+## Permissions
+- **commandschedular.reload:**: Allows the use of the reload command
+- **commandschedular.execute:**: Allows the use of the execute command
+- **commandschedular.time:**: Allows the use of the time command
+
+## Scheduled Commands
+```yaml
+# This example will say hello to all players every 30 seconds.
+hello-players:
+  commands:
+    - 'message: Hello, {player}!'
+  triggers:
+    interval-ticks: 600
+
+# This example will give all players $100 every 5 minutes.
+five-minute-cash:
+  commands:
+    - 'console-for-each-player: eco give {player} 100'
+  triggers:
+    cron: 0 0 */5 * * * * # tick, second, minute, hour, day of month, month, day of week
+
+# This example will broadcast a message one minute after the server starts.
+one-minute-message:
+  commands:
+    - 'broadcast: The server has been running for one minute!'
+  triggers:
+    ticks-from-server-start: 1200
+
+# This example will make all players run /spawn every hour on the hour.
+hourly-spawn:
+  commands:
+    - 'for-each-player: spawn'
+  triggers:
+    cron: 0 0 0 * * * * # tick, second, minute, hour, day of month, month, day of week
+
+# This example will stop the server at midnight every day.
+midnight-shutdown:
+  commands:
+    - 'console: stop'
+  triggers:
+    cron: 0 0 0 0 * * * # tick, second, minute, hour, day of month, month, day of week
+```
+
+## Settings
+- **commands**: Commands to run when the command configuration is executed.
+- **triggers**: Control when the command configuration is executed.
+
+## Triggers
+- **interval-ticks**: The number of ticks between each execution of the command configuration.
+- **cron**: A cron to control specific points that the command configuration will execute down to the tick. Syntax <>
+- **ticks-from-server-start**: The number of ticks between each condition check. &lt;tick&gt; &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt;
