@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.tasks;
+package fun.sunrisemc.command_schedular.task;
 
 import org.bukkit.Bukkit;
 

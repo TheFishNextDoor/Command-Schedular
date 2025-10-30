@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.command.CommandSchedular;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
-import fun.sunrisemc.command_schedular.tasks.CommandExecutionTask;
+import fun.sunrisemc.command_schedular.task.CommandExecutionTask;
 
 public class CommandSchedularPlugin extends JavaPlugin {
 
