@@ -16,6 +16,7 @@ public class MCCron {
         String[] parts = expression.split(" ");
         if (parts.length != 7) {
             CommandSchedularPlugin.logWarning("Invalid cron expression: " + expression);
+            CommandSchedularPlugin.logWarning("Cron expressions must have 7 parts (tick, second, minute, hour, day of month, month, day of week).");
             return;
         }
 
