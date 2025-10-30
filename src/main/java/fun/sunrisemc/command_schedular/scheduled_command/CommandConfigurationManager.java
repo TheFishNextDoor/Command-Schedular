@@ -36,6 +36,6 @@ public class CommandConfigurationManager {
             scheduledCommands.put(id, scheduledCommand);
         }
 
-        CommandSchedularPlugin.logInfo("Loaded " + scheduledCommands.size() + " commands configurations.");
+        CommandSchedularPlugin.logInfo("Loaded " + scheduledCommands.size() + " command configurations.");
     }
 }
