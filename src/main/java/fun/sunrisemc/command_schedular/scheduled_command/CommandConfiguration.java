@@ -17,7 +17,8 @@ public class CommandConfiguration {
 
     private final List<String> SETTINGS = List.of(
         "commands",
-        "triggers"
+        "triggers",
+        "only-run-one-random-command"
     );
 
     private final List<String> TRIGGERS = List.of(
@@ -28,7 +29,15 @@ public class CommandConfiguration {
 
     private final String id;
 
+    // Commands
+
     private ArrayList<CommandExecutable> commands = new ArrayList<>();
+
+    // Behavior
+
+    private boolean onlyRunOneRandomCommand = false;
+
+    // Triggers
 
     private Integer intervalTicks = null;
 
@@ -77,6 +86,12 @@ public class CommandConfiguration {
             commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
         }
 
+        // Load Behavior
+
+        if (config.contains(id + ".only-run-one-random-command")) {
+            onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
+        }
+
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
@@ -110,8 +125,18 @@ public class CommandConfiguration {
     }
 
     public void execute() {
-        for (CommandExecutable command : commands) {
-            command.execute();
+        if (onlyRunOneRandomCommand) {
+            if (commands.isEmpty()) {
+                return;
+            }
+
+            int randomIndex = (int) (Math.random() * commands.size());
+            commands.get(randomIndex).execute();
+        }
+        else {
+            for (CommandExecutable command : commands) {
+                command.execute();
+            }
         }
     }
 
