@@ -27,6 +27,16 @@ hello-players:
   triggers:
     interval-ticks: 600
 
+# This example will broadcast random help messages every 10 minutes.
+random-help-message:
+  commands:
+    - 'broadcast: Remember to read the rules!'
+    - 'broadcast: Need help? Ask a staff member!'
+    - 'broadcast: Check out our website for more info!'
+  only-run-one-random-command: true
+  triggers:
+    interval-ticks: 12000
+
 # This example will give all players $100 every 5 minutes.
 five-minute-cash:
   commands:
