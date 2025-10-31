@@ -8,15 +8,15 @@ Schedule commands to run at specific points.
 - Type /commandschedular reload
 
 ## Commands
-- **/commandschedular help**: Show the help message
-- **/commandschedular reload**: Reload the plugin
-- **/commandschedular execute**: Execute a specific configured command immediately
-- **/commandschedular time**: Checks the current server time. Useful for configuring a [cron](#triggers).
+- **/commandschedular help:** Show the help message
+- **/commandschedular reload:** Reload the plugin
+- **/commandschedular execute:** Execute a specific configured command immediately
+- **/commandschedular time:** Checks the current server time. Useful for configuring a [cron](#triggers).
 
 ## Permissions
-- **commandschedular.reload:**: Allows the use of the reload command
-- **commandschedular.execute:**: Allows the use of the execute command
-- **commandschedular.time:**: Allows the use of the time command
+- **commandschedular.reload:** Allows the use of the reload command
+- **commandschedular.execute:** Allows the use of the execute command
+- **commandschedular.time:** Allows the use of the time command
 
 ## Scheduled Commands
 ```yaml
@@ -57,17 +57,17 @@ midnight-shutdown:
 ```
 
 ## Settings
-- **commands**: Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#command-types).
-- **triggers**: Control when the command configuration is executed.
+- **commands:** Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#command-types).
+- **triggers:** Control when the command configuration is executed.
 
 ## Command Types
-- **console**: Executes the command as the console.
-- **console-for-each-player**: Executes the command as the console for each online player, replacing {player} with the player's name.
-- **for-each-player**: Executes the command as each online player, replacing {player} with the player's name.
-- **broadcast**: Broadcasts a message to all online players.
-- **message**: Sends a message to all online players, replacing {player} with the player's name.
+- **console:** Executes the command as the console.
+- **console-for-each-player:** Executes the command as the console for each online player, replacing {player} with the player's name.
+- **for-each-player:** Executes the command as each online player, replacing {player} with the player's name.
+- **broadcast:** Broadcasts a message to all online players.
+- **message:** Sends a message to all online players, replacing {player} with the player's name.
 
 ## Triggers
-- **interval-ticks**: The number of ticks between each execution of the command configuration.
-- **cron**: A cron to control specific points that the command configuration will execute down to the tick. Syntax: &lt;tick&gt; &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt;.
-- **ticks-from-server-start**: The number of ticks between each condition check. Can have multiple values comma separated.
+- **interval-ticks:** The number of ticks between each execution of the command configuration.
+- **cron:** A cron to control specific points that the command configuration will execute down to the tick. Syntax: &lt;tick&gt; &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt;.
+- **ticks-from-server-start:** The number of ticks between each condition check. Can have multiple values comma separated.
