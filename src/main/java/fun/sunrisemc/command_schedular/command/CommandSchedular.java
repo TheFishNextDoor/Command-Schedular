@@ -70,7 +70,7 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            commandConfig.get().executeNextTick();
+            commandConfig.get().execute();
             sender.sendMessage(ChatColor.YELLOW + "Command executed successfully");
             return true;
         }

@@ -30,8 +30,6 @@ public class CommandConfiguration {
 
     private ArrayList<CommandExecutable> commands = new ArrayList<>();
 
-    private boolean executeNextTick = false;
-
     private Integer intervalTicks = null;
 
     private MCCron cron = null;
@@ -112,18 +110,13 @@ public class CommandConfiguration {
     }
 
     public void execute() {
-        this.executeNextTick = false;
         for (CommandExecutable command : commands) {
             command.execute();
         }
     }
 
-    public void executeNextTick() {
-        this.executeNextTick = true;
-    }
-
     public boolean shouldRun(int tickCount) {
-        return executeNextTick || checkInterval(tickCount) || checkCron(tickCount) || checkTicksFromServerStart(tickCount);
+        return checkInterval(tickCount) || checkCron(tickCount) || checkTicksFromServerStart(tickCount);
     }
 
     private boolean checkInterval(int tickCount) {
