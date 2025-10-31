@@ -59,6 +59,7 @@ midnight-shutdown:
 ## Settings
 - **commands:** Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#command-types).
 - **triggers:** Control when the command configuration is executed.
+- **only-run-one-random-command:** Only runs one random command instead of all commands when executed.
 
 ## Command Types
 - **console:** Executes the command as the console.
