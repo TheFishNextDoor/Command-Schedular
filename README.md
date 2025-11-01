@@ -88,3 +88,19 @@ midnight-shutdown:
 - **min-players-who-meet-conditions:** Commands will only execute if this many players meet conditions.
 - **max-players-who-meet-conditions:** Commands will only execute if less than this many players meet conditions.
 - **all-players-meet-conditions:** Commands will only execute if all players meet conditions.
+
+## Player Conditions
+- **worlds:** Commands will only execute if the player is in one of these worlds.
+- **environments:** Commands will only execute if the player is in one of these environments.
+- **biomes:** Commands will only execute if the player is in one of these biomes.
+- **gamemodes:** Commands will only execute if the player is in one of these gamemodes.
+- **has-permissions:** Commands will only execute if the player has all of these permissions.
+- **missing-permissions:** Commands will not execute if the player has any of these permissions.
+- **min-x:** Commands will only execute if the player is above this x value.
+- **min-y:** Commands will only execute if the player is above this y value.
+- **min-z:** Commands will only execute if the player is above this z value.
+- **max-x:** Commands will only execute if the player is below this x value.
+- **max-y:** Commands will only execute if the player is below this y value.
+- **max-z:** Commands will only execute if the player is below this z value.
+- **must-be-in-water:** Commands will only execute if the player is in water.
+- **must-not-be-in-water:** Commands will only execute if the player is not in water.
