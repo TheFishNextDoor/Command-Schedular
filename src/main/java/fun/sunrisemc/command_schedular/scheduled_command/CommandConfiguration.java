@@ -24,7 +24,12 @@ public class CommandConfiguration {
     private final List<String> SETTINGS = List.of(
         "commands",
         "triggers",
-        "only-run-one-random-command"
+        "player-conditions",
+        "only-run-one-random-command",
+        "only-execute-if-players-online",
+        "only-execute-if-atleast-one-player-meets-conditions",
+        "only-execute-if-all-players-meet-conditions",
+        "only-execute-if-no-players-meet-conditions"
     );
 
     private final List<String> TRIGGERS = List.of(
@@ -55,6 +60,11 @@ public class CommandConfiguration {
 
     private boolean onlyRunOneRandomCommand = false;
 
+    private boolean onlyExecuteIfPlayersOnline = false;
+    private boolean onlyExecuteIfAtLeastOnePlayerMeetsConditions = false;
+    private boolean onlyExecuteIfAllPlayersMeetConditions = false;
+    private boolean onlyExecuteIfNoPlayersMeetConditions = false;
+
     // Triggers
 
     private Integer intervalTicks = null;
@@ -65,7 +75,7 @@ public class CommandConfiguration {
 
     // Conditions
 
-    private boolean conditionsEnabled = false;
+    private boolean playerConditionsEnabled = false;
 
     private HashSet<String> worlds = new HashSet<>();
     private HashSet<String> environments = new HashSet<>();
@@ -134,6 +144,22 @@ public class CommandConfiguration {
             onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
         }
 
+        if (config.contains(id + ".only-execute-if-players-online")) {
+            onlyExecuteIfPlayersOnline = config.getBoolean(id + ".only-execute-if-players-online");
+        }
+
+        if (config.contains(id + ".only-execute-if-atleast-one-player-meets-conditions")) {
+            onlyExecuteIfAtLeastOnePlayerMeetsConditions = config.getBoolean(id + ".only-execute-if-atleast-one-player-meets-conditions");
+        }
+
+        if (config.contains(id + ".only-execute-if-all-players-meet-conditions")) {
+            onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".only-execute-if-all-players-meet-conditions");
+        }
+
+        if (config.contains(id + ".only-execute-if-no-players-meet-conditions")) {
+            onlyExecuteIfNoPlayersMeetConditions = config.getBoolean(id + ".only-execute-if-no-players-meet-conditions");
+        }
+
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
@@ -163,38 +189,38 @@ public class CommandConfiguration {
 
         // Load Conditions
 
-        for (String worldName : config.getStringList(id + ".conditions.worlds")) {
+        for (String worldName : config.getStringList(id + ".player-conditions.worlds")) {
             this.worlds.add(worldName);
         }
 
-        for (String environmentName : config.getStringList(id + ".conditions.environments")) {
+        for (String environmentName : config.getStringList(id + ".player-conditions.environments")) {
             this.environments.add(environmentName);
         }
 
-        for (String biomeName : config.getStringList(id + ".conditions.biomes")) {
+        for (String biomeName : config.getStringList(id + ".player-conditions.biomes")) {
             this.biomes.add(normalizeBiomeName(biomeName));
         }
 
-        if (config.contains(id + ".conditions.min-x")) {
-            this.minX = config.getInt(id + ".conditions.min-x");
+        if (config.contains(id + ".player-conditions.min-x")) {
+            this.minX = config.getInt(id + ".player-conditions.min-x");
         }
-        if (config.contains(id + ".conditions.max-x")) {
-            this.maxX = config.getInt(id + ".conditions.max-x");
+        if (config.contains(id + ".player-conditions.max-x")) {
+            this.maxX = config.getInt(id + ".player-conditions.max-x");
         }
-        if (config.contains(id + ".conditions.min-y")) {
-            this.minY = config.getInt(id + ".conditions.min-y");
+        if (config.contains(id + ".player-conditions.min-y")) {
+            this.minY = config.getInt(id + ".player-conditions.min-y");
         }
-        if (config.contains(id + ".conditions.max-y")) {
-            this.maxY = config.getInt(id + ".conditions.max-y");
+        if (config.contains(id + ".player-conditions.max-y")) {
+            this.maxY = config.getInt(id + ".player-conditions.max-y");
         }
-        if (config.contains(id + ".conditions.min-z")) {
-            this.minZ = config.getInt(id + ".conditions.min-z");
+        if (config.contains(id + ".player-conditions.min-z")) {
+            this.minZ = config.getInt(id + ".player-conditions.min-z");
         }
-        if (config.contains(id + ".conditions.max-z")) {
-            this.maxZ = config.getInt(id + ".conditions.max-z");
+        if (config.contains(id + ".player-conditions.max-z")) {
+            this.maxZ = config.getInt(id + ".player-conditions.max-z");
         }
 
-        this.conditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
+        this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX != null || maxX != null || minY != null || maxY != null || minZ != null || maxZ != null;
     }
 
@@ -203,7 +229,20 @@ public class CommandConfiguration {
     }
 
     public void execute() {
-        Collection<? extends Player> playersWhoMeetConditions = conditionsEnabled ? getPlayersWhoMeetConditions() : Bukkit.getServer().getOnlinePlayers();
+        Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers();
+        if (onlyExecuteIfPlayersOnline && onlinePlayers.isEmpty()) {
+            return;
+        }
+        Collection<? extends Player> playersWhoMeetConditions = playerConditionsEnabled ? getPlayersWhoMeetConditions() : onlinePlayers;
+        if (onlyExecuteIfAtLeastOnePlayerMeetsConditions && playersWhoMeetConditions.isEmpty()) {
+            return;
+        }
+        if (onlyExecuteIfAllPlayersMeetConditions && playersWhoMeetConditions.size() != onlinePlayers.size()) {
+            return;
+        }
+        if (onlyExecuteIfNoPlayersMeetConditions && !playersWhoMeetConditions.isEmpty()) {
+            return;
+        }
 
         if (onlyRunOneRandomCommand) {
             if (commands.isEmpty()) {
@@ -258,7 +297,7 @@ public class CommandConfiguration {
         return cron.matches(second, minute, hour, dayOfMonth, month, dayOfWeek, year);
     }
 
-    // Condition Checks
+    // Player Condition Checks
 
     private Collection<Player> getPlayersWhoMeetConditions() {
         HashSet<Player> playersWhoMeetConditions = new HashSet<>();
