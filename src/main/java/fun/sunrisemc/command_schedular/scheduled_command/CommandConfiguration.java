@@ -46,6 +46,8 @@ public class CommandConfiguration {
         "environments",
         "biomes",
         "gamemodes",
+        "has-permissions",
+        "missing-permissions",
         "min-x",
         "min-y",
         "min-z",
@@ -91,6 +93,9 @@ public class CommandConfiguration {
     private HashSet<String> environments = new HashSet<>();
     private HashSet<String> biomes = new HashSet<>();
     private HashSet<String> gamemodes = new HashSet<>();
+
+    private ArrayList<String> hasPermissions = new ArrayList<>();
+    private ArrayList<String> missingPermissions = new ArrayList<>();
 
     private Integer minX = null;
     private Integer maxX = null;
@@ -228,6 +233,14 @@ public class CommandConfiguration {
 
         for (String gamemodeName : config.getStringList(id + ".player-conditions.gamemodes")) {
             this.gamemodes.add(normalizeName(gamemodeName));
+        }
+
+        for (String permission : config.getStringList(id + ".player-conditions.has-permissions")) {
+            this.hasPermissions.add(permission);
+        }
+
+        for (String permission : config.getStringList(id + ".player-conditions.missing-permissions")) {
+            this.missingPermissions.add(permission);
         }
 
         if (config.contains(id + ".player-conditions.min-x")) {
@@ -370,6 +383,18 @@ public class CommandConfiguration {
 
         if (!gamemodes.isEmpty() && !gamemodes.contains(normalizeName(player.getGameMode().name()))) {
             return false;
+        }
+
+        for (String permission : hasPermissions) {
+            if (!player.hasPermission(permission)) {
+                return false;
+            }
+        }
+
+        for (String permission : missingPermissions) {
+            if (player.hasPermission(permission)) {
+                return false;
+            }
         }
 
         if (minX != null && location.getBlockX() < minX) {
