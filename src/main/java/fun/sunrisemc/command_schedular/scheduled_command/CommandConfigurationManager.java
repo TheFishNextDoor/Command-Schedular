@@ -1,6 +1,7 @@
 package fun.sunrisemc.command_schedular.scheduled_command;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -13,29 +14,32 @@ import fun.sunrisemc.command_schedular.file.ConfigFile;
 
 public class CommandConfigurationManager {
 
-    private static HashMap<String, CommandConfiguration> scheduledCommands = new HashMap<>();
+    private static HashMap<String, CommandConfiguration> scheduledCommandsMap = new HashMap<>();
+    private static List<CommandConfiguration> scheduledCommandsList = new ArrayList<>();
 
     public static Optional<CommandConfiguration> get(@NonNull String id) {
-        return Optional.ofNullable(scheduledCommands.get(id));
+        return Optional.ofNullable(scheduledCommandsMap.get(id));
     }
 
     public static List<CommandConfiguration> getAll() {
-        return new ArrayList<>(scheduledCommands.values());
+        return scheduledCommandsList;
     }
 
     public static List<String> getIds() {
-        return new ArrayList<>(scheduledCommands.keySet());
+        return new ArrayList<>(scheduledCommandsMap.keySet());
     }
 
     public static void loadConfig() {
-        scheduledCommands.clear();
+        scheduledCommandsMap.clear();
 
         YamlConfiguration config = ConfigFile.get("commands", false);
         for (String id : config.getKeys(false)) {
             CommandConfiguration scheduledCommand = new CommandConfiguration(config, id);
-            scheduledCommands.put(id, scheduledCommand);
+            scheduledCommandsMap.put(id, scheduledCommand);
         }
 
-        CommandSchedularPlugin.logInfo("Loaded " + scheduledCommands.size() + " command configurations.");
+        scheduledCommandsList = Collections.unmodifiableList(new ArrayList<>(scheduledCommandsMap.values()));
+
+        CommandSchedularPlugin.logInfo("Loaded " + scheduledCommandsMap.size() + " command configurations.");
     }
 }
