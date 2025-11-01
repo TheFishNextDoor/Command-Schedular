@@ -38,7 +38,7 @@ public class CommandConfiguration {
         "ticks-from-server-start"
     );
 
-    private final List<String> CONDITIONS = List.of(
+    private final List<String> PLAYER_CONDITIONS = List.of(
         "worlds",
         "environments",
         "biomes",
@@ -111,9 +111,9 @@ public class CommandConfiguration {
 
         if (config.contains(id + ".conditions")) {
             for (String condition : config.getConfigurationSection(id + ".conditions").getKeys(false)) {
-                if (!CONDITIONS.contains(condition)) {
+                if (!PLAYER_CONDITIONS.contains(condition)) {
                     CommandSchedularPlugin.logWarning("Invalid condition for command configuration " + id + ": " + condition + ".");
-                    CommandSchedularPlugin.logWarning("Valid conditions are: " + String.join(", ", CONDITIONS) + ".");
+                    CommandSchedularPlugin.logWarning("Valid conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
                 }
             }
         }
