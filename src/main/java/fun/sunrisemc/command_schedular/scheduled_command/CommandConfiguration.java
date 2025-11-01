@@ -45,6 +45,7 @@ public class CommandConfiguration {
         "worlds",
         "environments",
         "biomes",
+        "gamemodes",
         "min-x",
         "min-y",
         "min-z",
@@ -89,6 +90,7 @@ public class CommandConfiguration {
     private HashSet<String> worlds = new HashSet<>();
     private HashSet<String> environments = new HashSet<>();
     private HashSet<String> biomes = new HashSet<>();
+    private HashSet<String> gamemodes = new HashSet<>();
 
     private Integer minX = null;
     private Integer maxX = null;
@@ -221,7 +223,11 @@ public class CommandConfiguration {
         }
 
         for (String biomeName : config.getStringList(id + ".player-conditions.biomes")) {
-            this.biomes.add(normalizeBiomeName(biomeName));
+            this.biomes.add(normalizeName(biomeName));
+        }
+
+        for (String gamemodeName : config.getStringList(id + ".player-conditions.gamemodes")) {
+            this.gamemodes.add(normalizeName(gamemodeName));
         }
 
         if (config.contains(id + ".player-conditions.min-x")) {
@@ -358,7 +364,11 @@ public class CommandConfiguration {
             return false;
         }
 
-        if (!biomes.isEmpty() && !biomes.contains(normalizeBiomeName(block.getBiome().name()))) {
+        if (!biomes.isEmpty() && !biomes.contains(normalizeName(block.getBiome().name()))) {
+            return false;
+        }
+
+        if (!gamemodes.isEmpty() && !gamemodes.contains(normalizeName(player.getGameMode().name()))) {
             return false;
         }
 
@@ -391,7 +401,7 @@ public class CommandConfiguration {
         return true;
     }
 
-    private String normalizeBiomeName(@NonNull String biomeName) {
+    private String normalizeName(@NonNull String biomeName) {
         return biomeName.trim().toUpperCase().replace(" ", "_").replace("-", "_");
     }
 }
