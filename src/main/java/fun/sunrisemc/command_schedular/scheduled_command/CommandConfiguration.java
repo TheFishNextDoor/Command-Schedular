@@ -14,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.cron.MCCron;
 import fun.sunrisemc.command_schedular.file.ConfigFile;
@@ -24,18 +23,22 @@ public class CommandConfiguration {
     private final List<String> SETTINGS = List.of(
         "commands",
         "triggers",
+        "execute-conditions",
         "player-conditions",
-        "only-run-one-random-command",
-        "only-execute-if-players-online",
-        "only-execute-if-atleast-one-player-meets-conditions",
-        "only-execute-if-all-players-meet-conditions",
-        "only-execute-if-no-players-meet-conditions"
+        "only-run-one-random-command"
     );
 
     private final List<String> TRIGGERS = List.of(
         "interval-ticks",
         "cron",
         "ticks-from-server-start"
+    );
+
+    private final List<String> EXECUTE_CONDITIONS = List.of(
+        "min-players-online",
+        "atleast-one-player-meets-conditions",
+        "all-players-meet-conditions",
+        "no-players-meet-conditions"
     );
 
     private final List<String> PLAYER_CONDITIONS = List.of(
@@ -60,11 +63,6 @@ public class CommandConfiguration {
 
     private boolean onlyRunOneRandomCommand = false;
 
-    private boolean onlyExecuteIfPlayersOnline = false;
-    private boolean onlyExecuteIfAtLeastOnePlayerMeetsConditions = false;
-    private boolean onlyExecuteIfAllPlayersMeetConditions = false;
-    private boolean onlyExecuteIfNoPlayersMeetConditions = false;
-
     // Triggers
 
     private Integer intervalTicks = null;
@@ -73,7 +71,16 @@ public class CommandConfiguration {
 
     private MCCron cron = null;
 
-    // Conditions
+    // Execute Conditions
+
+    private int minPlayersOnlineToExecute = 0;
+
+    private int minPlayersWhoMeetConditionsToExecute = 0;
+    private int maxPlayersWhoMeetConditionsToExecute = Integer.MAX_VALUE;
+
+    private boolean onlyExecuteIfAllPlayersMeetConditions = false;
+
+    // Player Conditions
 
     private boolean playerConditionsEnabled = false;
 
@@ -109,11 +116,20 @@ public class CommandConfiguration {
             }
         }
 
-        if (config.contains(id + ".conditions")) {
-            for (String condition : config.getConfigurationSection(id + ".conditions").getKeys(false)) {
+        if (config.contains(id + ".execute-conditions")) {
+            for (String executeCondition : config.getConfigurationSection(id + ".execute-conditions").getKeys(false)) {
+                if (!EXECUTE_CONDITIONS.contains(executeCondition)) {
+                    CommandSchedularPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
+                    CommandSchedularPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
+                }
+            }
+        }
+
+        if (config.contains(id + ".player-conditions")) {
+            for (String condition : config.getConfigurationSection(id + ".player-conditions").getKeys(false)) {
                 if (!PLAYER_CONDITIONS.contains(condition)) {
-                    CommandSchedularPlugin.logWarning("Invalid condition for command configuration " + id + ": " + condition + ".");
-                    CommandSchedularPlugin.logWarning("Valid conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
+                    CommandSchedularPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
+                    CommandSchedularPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
                 }
             }
         }
@@ -144,22 +160,6 @@ public class CommandConfiguration {
             onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
         }
 
-        if (config.contains(id + ".only-execute-if-players-online")) {
-            onlyExecuteIfPlayersOnline = config.getBoolean(id + ".only-execute-if-players-online");
-        }
-
-        if (config.contains(id + ".only-execute-if-atleast-one-player-meets-conditions")) {
-            onlyExecuteIfAtLeastOnePlayerMeetsConditions = config.getBoolean(id + ".only-execute-if-atleast-one-player-meets-conditions");
-        }
-
-        if (config.contains(id + ".only-execute-if-all-players-meet-conditions")) {
-            onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".only-execute-if-all-players-meet-conditions");
-        }
-
-        if (config.contains(id + ".only-execute-if-no-players-meet-conditions")) {
-            onlyExecuteIfNoPlayersMeetConditions = config.getBoolean(id + ".only-execute-if-no-players-meet-conditions");
-        }
-
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
@@ -187,7 +187,25 @@ public class CommandConfiguration {
             this.cron = new MCCron(cronExpression);
         }
 
-        // Load Conditions
+        // Load Execute Conditions
+
+        if (config.contains(id + ".execute-conditions.min-players-online")) {
+            minPlayersOnlineToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
+        }
+
+        if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
+            minPlayersWhoMeetConditionsToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+        }
+
+        if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
+            maxPlayersWhoMeetConditionsToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+        }
+
+        if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
+            onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions");
+        }
+
+        // Load Player Conditions
 
         for (String worldName : config.getStringList(id + ".player-conditions.worlds")) {
             this.worlds.add(worldName);
@@ -229,21 +247,24 @@ public class CommandConfiguration {
     }
 
     public void execute() {
+        // Execute Conditions Check
         Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers();
-        if (onlyExecuteIfPlayersOnline && onlinePlayers.isEmpty()) {
+        if (minPlayersOnlineToExecute >= onlinePlayers.size()) {
             return;
         }
+
         Collection<? extends Player> playersWhoMeetConditions = playerConditionsEnabled ? getPlayersWhoMeetConditions() : onlinePlayers;
-        if (onlyExecuteIfAtLeastOnePlayerMeetsConditions && playersWhoMeetConditions.isEmpty()) {
+        if (minPlayersWhoMeetConditionsToExecute >= playersWhoMeetConditions.size()) {
+            return;
+        }
+        if (maxPlayersWhoMeetConditionsToExecute <= playersWhoMeetConditions.size()) {
             return;
         }
         if (onlyExecuteIfAllPlayersMeetConditions && playersWhoMeetConditions.size() != onlinePlayers.size()) {
             return;
         }
-        if (onlyExecuteIfNoPlayersMeetConditions && !playersWhoMeetConditions.isEmpty()) {
-            return;
-        }
 
+        // Execute Commands
         if (onlyRunOneRandomCommand) {
             if (commands.isEmpty()) {
                 return;
