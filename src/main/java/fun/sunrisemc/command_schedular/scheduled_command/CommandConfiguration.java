@@ -2,11 +2,17 @@ package fun.sunrisemc.command_schedular.scheduled_command;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
@@ -27,6 +33,18 @@ public class CommandConfiguration {
         "ticks-from-server-start"
     );
 
+    private final List<String> CONDITIONS = List.of(
+        "worlds",
+        "environments",
+        "biomes",
+        "min-x",
+        "min-y",
+        "min-z",
+        "max-x",
+        "max-y",
+        "max-z"
+    );
+
     private final String id;
 
     // Commands
@@ -45,6 +63,21 @@ public class CommandConfiguration {
 
     private MCCron cron = null;
 
+    // Conditions
+
+    private boolean conditionsEnabled = false;
+
+    private HashSet<String> worlds = new HashSet<>();
+    private HashSet<String> environments = new HashSet<>();
+    private HashSet<String> biomes = new HashSet<>();
+
+    private Integer minX = null;
+    private Integer maxX = null;
+    private Integer minY = null;
+    private Integer maxY = null;
+    private Integer minZ = null;
+    private Integer maxZ = null;
+
     CommandConfiguration(@NonNull YamlConfiguration config, @NonNull String id) {
         this.id = id;
 
@@ -62,6 +95,15 @@ public class CommandConfiguration {
                 if (!TRIGGERS.contains(trigger)) {
                     CommandSchedularPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
                     CommandSchedularPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
+                }
+            }
+        }
+
+        if (config.contains(id + ".conditions")) {
+            for (String condition : config.getConfigurationSection(id + ".conditions").getKeys(false)) {
+                if (!CONDITIONS.contains(condition)) {
+                    CommandSchedularPlugin.logWarning("Invalid condition for command configuration " + id + ": " + condition + ".");
+                    CommandSchedularPlugin.logWarning("Valid conditions are: " + String.join(", ", CONDITIONS) + ".");
                 }
             }
         }
@@ -118,6 +160,42 @@ public class CommandConfiguration {
             String cronExpression = config.getString(id + ".triggers.cron");
             this.cron = new MCCron(cronExpression);
         }
+
+        // Load Conditions
+
+        for (String worldName : config.getStringList(id + ".conditions.worlds")) {
+            this.worlds.add(worldName);
+        }
+
+        for (String environmentName : config.getStringList(id + ".conditions.environments")) {
+            this.environments.add(environmentName);
+        }
+
+        for (String biomeName : config.getStringList(id + ".conditions.biomes")) {
+            this.biomes.add(normalizeBiomeName(biomeName));
+        }
+
+        if (config.contains(id + ".conditions.min-x")) {
+            this.minX = config.getInt(id + ".conditions.min-x");
+        }
+        if (config.contains(id + ".conditions.max-x")) {
+            this.maxX = config.getInt(id + ".conditions.max-x");
+        }
+        if (config.contains(id + ".conditions.min-y")) {
+            this.minY = config.getInt(id + ".conditions.min-y");
+        }
+        if (config.contains(id + ".conditions.max-y")) {
+            this.maxY = config.getInt(id + ".conditions.max-y");
+        }
+        if (config.contains(id + ".conditions.min-z")) {
+            this.minZ = config.getInt(id + ".conditions.min-z");
+        }
+        if (config.contains(id + ".conditions.max-z")) {
+            this.maxZ = config.getInt(id + ".conditions.max-z");
+        }
+
+        this.conditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
+            || minX != null || maxX != null || minY != null || maxY != null || minZ != null || maxZ != null;
     }
 
     public String getId() {
@@ -125,17 +203,19 @@ public class CommandConfiguration {
     }
 
     public void execute() {
+        Collection<? extends Player> playersWhoMeetConditions = conditionsEnabled ? getPlayersWhoMeetConditions() : Bukkit.getServer().getOnlinePlayers();
+
         if (onlyRunOneRandomCommand) {
             if (commands.isEmpty()) {
                 return;
             }
 
             int randomIndex = (int) (Math.random() * commands.size());
-            commands.get(randomIndex).execute();
+            commands.get(randomIndex).execute(playersWhoMeetConditions);
         }
         else {
             for (CommandExecutable command : commands) {
-                command.execute();
+                command.execute(playersWhoMeetConditions);
             }
         }
     }
@@ -162,7 +242,7 @@ public class CommandConfiguration {
 
     // Cron Check
 
-    public boolean shouldRunFromCron(LocalDateTime dateTime) {
+    public boolean shouldRunFromCron(@NonNull LocalDateTime dateTime) {
         if (cron == null) {
             return false;
         }
@@ -176,5 +256,62 @@ public class CommandConfiguration {
         int year = dateTime.getYear();
 
         return cron.matches(second, minute, hour, dayOfMonth, month, dayOfWeek, year);
+    }
+
+    // Condition Checks
+
+    private Collection<Player> getPlayersWhoMeetConditions() {
+        HashSet<Player> playersWhoMeetConditions = new HashSet<>();
+        Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers();
+        for (Player player : onlinePlayers) {
+            if (conditionsMet(player)) {
+                playersWhoMeetConditions.add(player);
+            }
+        }
+
+        return playersWhoMeetConditions;
+    }
+
+    private boolean conditionsMet(@NonNull Player player) {
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        Block block = location.getBlock();
+
+        if (!worlds.isEmpty() && !worlds.contains(world.getName())) {
+            return false;
+        }
+
+        if (!environments.isEmpty() && !environments.contains(world.getEnvironment().name())) {
+            return false;
+        }
+
+        if (!biomes.isEmpty() && !biomes.contains(normalizeBiomeName(block.getBiome().name()))) {
+            return false;
+        }
+
+        if (minX != null && location.getBlockX() < minX) {
+            return false;
+        }
+        if (minY != null && location.getBlockY() < minY) {
+            return false;
+        }
+        if (minZ != null && location.getBlockZ() < minZ) {
+            return false;
+        }
+        if (maxX != null && location.getBlockX() > maxX) {
+            return false;
+        }
+        if (maxY != null && location.getBlockY() > maxY) {
+            return false;
+        }
+        if (maxZ != null && location.getBlockZ() > maxZ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private String normalizeBiomeName(@NonNull String biomeName) {
+        return biomeName.trim().toUpperCase().replace(" ", "_").replace("-", "_");
     }
 }

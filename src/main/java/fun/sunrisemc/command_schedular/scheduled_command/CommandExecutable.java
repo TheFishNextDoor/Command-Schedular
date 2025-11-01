@@ -28,21 +28,19 @@ public class CommandExecutable {
         return command;
     }
 
-    public void execute() {
+    public void execute(Collection<? extends Player> playersWhoMeetConditions) {
         Server server = Bukkit.getServer();
         if (type == CommandType.CONSOLE) {
             server.dispatchCommand(Bukkit.getConsoleSender(), command);
         } 
         else if (type == CommandType.CONSOLE_FOR_EACH_PLAYER) {
-            Collection<? extends Player> players = server.getOnlinePlayers();
-            for (Player player : players) {
+            for (Player player : playersWhoMeetConditions) {
                 String parsedCommand = command.replace("{player}", player.getName());
                 server.dispatchCommand(Bukkit.getConsoleSender(), parsedCommand);
             }
         }
         else if (type == CommandType.FOR_EACH_PLAYER) {
-            Collection<? extends Player> players = server.getOnlinePlayers();
-            for (Player player : players) {
+            for (Player player : playersWhoMeetConditions) {
                 String parsedCommand = command.replace("{player}", player.getName());
                 player.performCommand(parsedCommand);
             }
@@ -52,8 +50,7 @@ public class CommandExecutable {
             server.broadcastMessage(message);
         }
         else if (type == CommandType.MESSAGE) {
-            Collection<? extends Player> players = server.getOnlinePlayers();
-            for (Player player : players) {
+            for (Player player : playersWhoMeetConditions) {
                 String message = command.replace("{player}", player.getName());
                 message = ChatColor.translateAlternateColorCodes('&', message);
                 player.sendMessage(message);
