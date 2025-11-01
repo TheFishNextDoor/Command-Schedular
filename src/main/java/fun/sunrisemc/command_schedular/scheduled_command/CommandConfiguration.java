@@ -50,7 +50,9 @@ public class CommandConfiguration {
         "min-z",
         "max-x",
         "max-y",
-        "max-z"
+        "max-z",
+        "must-be-in-water",
+        "must-not-be-in-water"
     );
 
     private final String id;
