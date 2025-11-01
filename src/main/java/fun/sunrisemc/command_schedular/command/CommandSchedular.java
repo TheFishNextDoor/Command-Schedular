@@ -15,7 +15,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.permission.Permissions;
-import fun.sunrisemc.command_schedular.repeating_task.CommandExecutionTask;
+import fun.sunrisemc.command_schedular.repeating_task.TickCommandExecutionTask;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
 
@@ -71,7 +71,7 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            // Run synchronously to avoid concurrency issues
+            // Run on main thread
             Bukkit.getScheduler().runTask(CommandSchedularPlugin.getInstance(), () -> {
                 commandConfig.get().execute();
             });
@@ -79,7 +79,7 @@ public class CommandSchedular implements CommandExecutor, TabCompleter {
             return true;
         }
         else if (sender.hasPermission(Permissions.TIME_PERMISSION) && subCommand.equals("time")) {
-            int ticksFromServerStart = CommandExecutionTask.getTicksFromServerStart();
+            int ticksFromServerStart = TickCommandExecutionTask.getTicksFromServerStart();
             int tick = ticksFromServerStart % 20;
             LocalDateTime dateTime = LocalDateTime.now();
             sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Current Server Time");

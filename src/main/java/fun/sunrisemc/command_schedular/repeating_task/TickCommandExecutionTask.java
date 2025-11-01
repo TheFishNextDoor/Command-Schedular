@@ -6,7 +6,7 @@ import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
 
-public class CommandExecutionTask {
+public class TickCommandExecutionTask {
 
     private static final int INTERVAL_TICKS = 1; // 1 Tick
 
@@ -25,7 +25,7 @@ public class CommandExecutionTask {
             tickCount++;
 
             for (CommandConfiguration commandConfiguration : CommandConfigurationManager.getAll()) {
-                if (commandConfiguration.shouldRun(tickCount)) {
+                if (commandConfiguration.shouldRunFromTick(tickCount)) {
                     commandConfiguration.execute();
                 }
             }

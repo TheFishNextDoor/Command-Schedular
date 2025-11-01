@@ -8,7 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import fun.sunrisemc.command_schedular.command.CommandSchedular;
-import fun.sunrisemc.command_schedular.repeating_task.CommandExecutionTask;
+import fun.sunrisemc.command_schedular.repeating_task.CronCommandExecutionTask;
+import fun.sunrisemc.command_schedular.repeating_task.TickCommandExecutionTask;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
 
 public class CommandSchedularPlugin extends JavaPlugin {
@@ -23,14 +24,16 @@ public class CommandSchedularPlugin extends JavaPlugin {
 
         registerCommand("commandschedular", new CommandSchedular());
 
-        CommandExecutionTask.start();
+        TickCommandExecutionTask.start();
+        CronCommandExecutionTask.start();
 
         logInfo("Plugin enabled.");
     }
 
     @Override
     public void onDisable() {
-        CommandExecutionTask.stop();
+        TickCommandExecutionTask.stop();
+        CronCommandExecutionTask.stop();
         logInfo("Plugin disabled.");
     }
 

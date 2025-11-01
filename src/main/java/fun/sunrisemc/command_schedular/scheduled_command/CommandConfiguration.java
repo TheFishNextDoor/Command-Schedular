@@ -41,9 +41,9 @@ public class CommandConfiguration {
 
     private Integer intervalTicks = null;
 
-    private MCCron cron = null;
-
     private HashSet<Integer> ticksFromServerStart = new HashSet<>();
+
+    private MCCron cron = null;
 
     CommandConfiguration(@NonNull YamlConfiguration config, @NonNull String id) {
         this.id = id;
@@ -98,11 +98,6 @@ public class CommandConfiguration {
             this.intervalTicks = ConfigFile.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
         }
 
-        if (config.contains(id + ".triggers.cron")) {
-            String cronExpression = config.getString(id + ".triggers.cron");
-            this.cron = new MCCron(cronExpression);
-        }
-
         if (config.contains(id + ".triggers.ticks-from-server-start")) {
             String ticksFromServerStartString = config.getString(id + ".triggers.ticks-from-server-start");
             String[] ticksFromServerStartSplit = ticksFromServerStartString.split(",");
@@ -117,6 +112,11 @@ public class CommandConfiguration {
                     continue;
                 }
             }
+        }
+
+        if (config.contains(id + ".triggers.cron")) {
+            String cronExpression = config.getString(id + ".triggers.cron");
+            this.cron = new MCCron(cronExpression);
         }
     }
 
@@ -140,8 +140,10 @@ public class CommandConfiguration {
         }
     }
 
-    public boolean shouldRun(int tickCount) {
-        return checkInterval(tickCount) || checkCron(tickCount) || checkTicksFromServerStart(tickCount);
+    // Tick Check
+
+    public boolean shouldRunFromTick(int tickCount) {
+        return checkInterval(tickCount) || checkTicksFromServerStart(tickCount);
     }
 
     private boolean checkInterval(int tickCount) {
@@ -151,28 +153,28 @@ public class CommandConfiguration {
         return tickCount % intervalTicks == 0;
     }
 
-    private boolean checkCron(int tickCount) {
+    private boolean checkTicksFromServerStart(int tickCount) {
+        if (ticksFromServerStart.isEmpty()) {
+            return false;
+        }
+        return ticksFromServerStart.contains(tickCount);
+    }
+
+    // Cron Check
+
+    public boolean shouldRunFromCron(LocalDateTime dateTime) {
         if (cron == null) {
             return false;
         }
 
-        int tick = tickCount % 20;
-
-        LocalDateTime dateTime = LocalDateTime.now();
         int second = dateTime.getSecond();
         int minute = dateTime.getMinute();
         int hour = dateTime.getHour();
         int dayOfMonth = dateTime.getDayOfMonth();
         int month = dateTime.getMonthValue();
         int dayOfWeek = dateTime.getDayOfWeek().getValue();
+        int year = dateTime.getYear();
 
-        return cron.matches(tick, second, minute, hour, dayOfMonth, month, dayOfWeek);
-    }
-
-    private boolean checkTicksFromServerStart(int tickCount) {
-        if (ticksFromServerStart.isEmpty()) {
-            return false;
-        }
-        return ticksFromServerStart.contains(tickCount);
+        return cron.matches(second, minute, hour, dayOfMonth, month, dayOfWeek, year);
     }
 }
