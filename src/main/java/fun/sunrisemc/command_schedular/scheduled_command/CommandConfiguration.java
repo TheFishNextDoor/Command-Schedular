@@ -36,9 +36,9 @@ public class CommandConfiguration {
 
     private final List<String> EXECUTE_CONDITIONS = List.of(
         "min-players-online",
-        "atleast-one-player-meets-conditions",
-        "all-players-meet-conditions",
-        "no-players-meet-conditions"
+        "min-players-who-meet-conditions",
+        "max-players-who-meet-conditions",
+        "all-players-meet-conditions"
     );
 
     private final List<String> PLAYER_CONDITIONS = List.of(
