@@ -95,6 +95,9 @@ public class CommandConfiguration {
     private Integer minZ = null;
     private Integer maxZ = null;
 
+    private boolean mustBeInWater = false;
+    private boolean mustNotBeInWater = false;
+
     CommandConfiguration(@NonNull YamlConfiguration config, @NonNull String id) {
         this.id = id;
 
@@ -238,8 +241,16 @@ public class CommandConfiguration {
             this.maxZ = config.getInt(id + ".player-conditions.max-z");
         }
 
+        if (config.contains(id + ".player-conditions.must-be-in-water")) {
+            this.mustBeInWater = config.getBoolean(id + ".player-conditions.must-be-in-water");
+        }
+        if (config.contains(id + ".player-conditions.must-not-be-in-water")) {
+            this.mustNotBeInWater = config.getBoolean(id + ".player-conditions.must-not-be-in-water");
+        }
+
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
-            || minX != null || maxX != null || minY != null || maxY != null || minZ != null || maxZ != null;
+            || minX != null || maxX != null || minY != null || maxY != null || minZ != null || maxZ != null
+            || mustBeInWater || mustNotBeInWater;
     }
 
     public String getId() {
@@ -365,6 +376,13 @@ public class CommandConfiguration {
             return false;
         }
         if (maxZ != null && location.getBlockZ() > maxZ) {
+            return false;
+        }
+
+        if (mustBeInWater && !player.isInWater()) {
+            return false;
+        }
+        if (mustNotBeInWater && player.isInWater()) {
             return false;
         }
 
