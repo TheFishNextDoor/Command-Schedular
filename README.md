@@ -85,4 +85,6 @@ midnight-shutdown:
 
 ## Execute Conditions
 - **min-players-online:** Commands will only execute if this many players are online.
-- **atleast-one-player-meets-conditions:** 
+- **min-players-who-meet-conditions:** Commands will only execute if this many players meet conditions.
+- **max-players-who-meet-conditions:** Commands will only execute if less than this many players meet conditions.
+- **all-players-meet-conditions:** Commands will only execute if all players meet conditions.
