@@ -2,21 +2,21 @@
 Schedule commands to run at specific points.
 
 ## Setup
-- Add Command Schedular jar into your plugins folder
-- Restart your server
-- Edit commands.yml to your liking
-- Type /commandschedular reload
+- Add Command Schedular jar into your plugins folder.
+- Restart your server.
+- Edit commands.yml to your liking.
+- Type /commandschedular reload.
 
 ## Commands
-- **/commandschedular help:** Show the help message
-- **/commandschedular reload:** Reload the plugin
-- **/commandschedular execute:** Execute a specific configured command immediately
+- **/commandschedular help:** Show the help message.
+- **/commandschedular reload:** Reload the plugin.
+- **/commandschedular execute:** Execute a specific configured command immediately.
 - **/commandschedular time:** Checks the current server time. Useful for configuring a [cron](#triggers).
 
 ## Permissions
-- **commandschedular.reload:** Allows the use of the reload command
-- **commandschedular.execute:** Allows the use of the execute command
-- **commandschedular.time:** Allows the use of the time command
+- **commandschedular.reload:** Allows the use of the reload command.
+- **commandschedular.execute:** Allows the use of the execute command.
+- **commandschedular.time:** Allows the use of the time command.
 
 ## Scheduled Commands
 ```yaml
