@@ -1,4 +1,4 @@
-# Command Schedular Plugin
+# Command Schedular
 Schedule commands to run at specific points.
 
 ## Setup
