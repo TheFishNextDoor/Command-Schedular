@@ -2,10 +2,10 @@
 Schedule commands to run at specific points.
 
 ## Setup
-- Add Command Schedular jar into your plugins folder.
-- Restart your server.
-- Edit commands.yml to your liking.
-- Type /commandschedular reload.
+1. Add Command Schedular jar into your plugins folder.
+2. Restart your server.
+3. Edit commands.yml to your liking.
+4. Type /commandschedular reload.
 
 ## Commands
 - **/commandschedular help:** Show the help message.
