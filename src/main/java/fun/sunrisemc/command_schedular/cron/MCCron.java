@@ -1,20 +1,22 @@
 package fun.sunrisemc.command_schedular.cron;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 
 public class MCCron {
 
-    private CronField second = null;
-    private CronField minute = null;
-    private CronField hour = null;
-    private CronField dayOfMonth = null;
-    private CronField month = null;
-    private CronField dayOfWeek = null;
-    private CronField year = null;
+    private @Nullable CronField second = null;
+    private @Nullable CronField minute = null;
+    private @Nullable CronField hour = null;
+    private @Nullable CronField dayOfMonth = null;
+    private @Nullable CronField month = null;
+    private @Nullable CronField dayOfWeek = null;
+    private @Nullable CronField year = null;
 
-    public MCCron(@NonNull String expression) {
+    public MCCron(@NotNull String expression) {
         String[] parts = expression.split(" ");
         if (parts.length != 7) {
             CommandSchedularPlugin.logWarning("Invalid cron expression: " + expression);
@@ -32,7 +34,7 @@ public class MCCron {
     }
 
     public boolean matches(int secondValue, int minuteValue, int hourValue, int dayOfMonthValue, int monthValue, int dayOfWeekValue, int yearValue) {
-        if (second == null) {
+        if (second == null || minute == null || hour == null || dayOfMonth == null || month == null || dayOfWeek == null || year == null) {
             return false;
         }
         return second.matches(secondValue) &&
