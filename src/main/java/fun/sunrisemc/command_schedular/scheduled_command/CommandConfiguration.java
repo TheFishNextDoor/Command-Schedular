@@ -13,10 +13,12 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
 import org.checkerframework.checker.nullness.qual.NonNull;
+
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
 import fun.sunrisemc.command_schedular.cron.MCCron;
-import fun.sunrisemc.command_schedular.file.ConfigFile;
+import fun.sunrisemc.command_schedular.utils.ConfigUtils;
 
 public class CommandConfiguration {
 
@@ -175,7 +177,7 @@ public class CommandConfiguration {
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
-            this.intervalTicks = ConfigFile.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
+            this.intervalTicks = ConfigUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".triggers.ticks-from-server-start")) {
@@ -202,15 +204,15 @@ public class CommandConfiguration {
         // Load Execute Conditions
 
         if (config.contains(id + ".execute-conditions.min-players-online")) {
-            minPlayersOnlineToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
+            minPlayersOnlineToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
-            minPlayersWhoMeetConditionsToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            minPlayersWhoMeetConditionsToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
-            maxPlayersWhoMeetConditionsToExecute = ConfigFile.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            maxPlayersWhoMeetConditionsToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
