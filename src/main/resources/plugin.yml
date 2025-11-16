@@ -3,17 +3,17 @@ main: fun.sunrisemc.command_schedular.CommandSchedularPlugin
 version: 1.2.1
 api-version: 1.18
 author: TheFishNextDoor
-description: Allows the scheduling of commands.
+description: Schedule commands to run at specific points.
 commands:
   commandschedular:
-    description: Main plugin command
+    description: Main plugin command.
     usage: /commandschedular [subcommand]
     permission: commandschedular
     aliases: [cs, cmdschedular, cmdsched, schedular, sched]
 permissions:
   commandschedular.reload:
-    description: Allows use of /commandschedular reload
+    description: Allows use of /commandschedular reload.
   commandschedular.execute:
-    description: Allows use of /commandschedular execute
+    description: Allows use of /commandschedular execute.
   commandschedular.time:
-    description: Allows use of /commandschedular time
+    description: Allows use of /commandschedular time.
