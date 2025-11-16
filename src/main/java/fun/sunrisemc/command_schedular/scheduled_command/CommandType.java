@@ -2,7 +2,7 @@ package fun.sunrisemc.command_schedular.scheduled_command;
 
 import java.util.Optional;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public enum CommandType {
 
@@ -12,7 +12,7 @@ public enum CommandType {
     BROADCAST, // Broadcasts a message to all online players
     MESSAGE; // Sends a message to all online players, replacing {player} with the player's name
 
-    public static Optional<CommandType> fromString(@NonNull String type) {
+    public static Optional<CommandType> fromString(@NotNull String type) {
         type = type.trim().replace("-", "_").replace(" ", "_");
         for (CommandType commandType : values()) {
             if (type.equalsIgnoreCase(commandType.name())) {
