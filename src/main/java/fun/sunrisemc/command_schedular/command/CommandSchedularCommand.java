@@ -21,7 +21,7 @@ import fun.sunrisemc.command_schedular.repeating_task.TickCommandExecutionTask;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
 
-public class CommandSchedular implements CommandExecutor, TabCompleter {
+public class CommandSchedularCommand implements CommandExecutor, TabCompleter {
 
     @Override
     @Nullable

@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fun.sunrisemc.command_schedular.command.CommandSchedular;
+import fun.sunrisemc.command_schedular.command.CommandSchedularCommand;
 import fun.sunrisemc.command_schedular.repeating_task.CronCommandExecutionTask;
 import fun.sunrisemc.command_schedular.repeating_task.TickCommandExecutionTask;
 import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
@@ -23,7 +23,7 @@ public class CommandSchedularPlugin extends JavaPlugin {
 
         loadConfigs();
 
-        registerCommand("commandschedular", new CommandSchedular());
+        registerCommand("commandschedular", new CommandSchedularCommand());
 
         TickCommandExecutionTask.start();
         CronCommandExecutionTask.start();
