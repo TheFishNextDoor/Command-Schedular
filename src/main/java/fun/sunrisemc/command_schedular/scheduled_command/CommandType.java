@@ -22,6 +22,7 @@ public enum CommandType {
         return Optional.empty();
     }
 
+    @NotNull
     public static String[] getNames() {
         CommandType[] types = values();
         String[] typeStrings = new String[types.length];

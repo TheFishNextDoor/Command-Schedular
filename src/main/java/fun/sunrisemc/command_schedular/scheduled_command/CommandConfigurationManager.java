@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
@@ -18,7 +18,7 @@ public class CommandConfigurationManager {
     private static @NotNull HashMap<String, CommandConfiguration> scheduledCommandsMap = new HashMap<>();
     private static @NotNull List<CommandConfiguration> scheduledCommandsList = new ArrayList<>();
 
-    public static Optional<CommandConfiguration> get(@NonNull String id) {
+    public static Optional<CommandConfiguration> get(@NotNull String id) {
         return Optional.ofNullable(scheduledCommandsMap.get(id));
     }
 

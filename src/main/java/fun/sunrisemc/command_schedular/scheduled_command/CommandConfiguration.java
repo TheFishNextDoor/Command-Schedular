@@ -92,13 +92,13 @@ public class CommandConfiguration {
 
     private boolean playerConditionsEnabled = false;
 
-    private @NotNull HashSet<@NotNull String> worlds = new HashSet<>();
-    private @NotNull HashSet<@NotNull String> environments = new HashSet<>();
-    private @NotNull HashSet<@NotNull String> biomes = new HashSet<>();
-    private @NotNull HashSet<@NotNull String> gamemodes = new HashSet<>();
+    private @NotNull HashSet<String> worlds = new HashSet<>();
+    private @NotNull HashSet<String> environments = new HashSet<>();
+    private @NotNull HashSet<String> biomes = new HashSet<>();
+    private @NotNull HashSet<String> gamemodes = new HashSet<>();
 
-    private @NotNull ArrayList<@NotNull String> hasPermissions = new ArrayList<>();
-    private @NotNull ArrayList<@NotNull String> missingPermissions = new ArrayList<>();
+    private @NotNull ArrayList<String> hasPermissions = new ArrayList<>();
+    private @NotNull ArrayList<String> missingPermissions = new ArrayList<>();
 
     private Optional<Integer> minX = Optional.empty();
     private Optional<Integer> maxX = Optional.empty();
