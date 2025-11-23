@@ -1,10 +1,10 @@
-package fun.sunrisemc.command_schedular.cron;
+package fun.sunrisemc.commandschedular.cron;
 
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
 
 public class MCCron {
 

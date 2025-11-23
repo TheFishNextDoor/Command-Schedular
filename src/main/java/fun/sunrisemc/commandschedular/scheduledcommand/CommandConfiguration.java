@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.scheduled_command;
+package fun.sunrisemc.commandschedular.scheduledcommand;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
-import fun.sunrisemc.command_schedular.cron.MCCron;
-import fun.sunrisemc.command_schedular.utils.ConfigUtils;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.cron.MCCron;
+import fun.sunrisemc.commandschedular.utils.ConfigUtils;
 
 public class CommandConfiguration {
 

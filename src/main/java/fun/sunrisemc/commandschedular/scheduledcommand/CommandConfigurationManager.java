@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.scheduled_command;
+package fun.sunrisemc.commandschedular.scheduledcommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
-import fun.sunrisemc.command_schedular.file.ConfigFile;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.file.ConfigFile;
 
 public class CommandConfigurationManager {
 

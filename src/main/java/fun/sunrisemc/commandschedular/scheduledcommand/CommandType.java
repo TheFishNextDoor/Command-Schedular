@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.scheduled_command;
+package fun.sunrisemc.commandschedular.scheduledcommand;
 
 import java.util.Optional;
 

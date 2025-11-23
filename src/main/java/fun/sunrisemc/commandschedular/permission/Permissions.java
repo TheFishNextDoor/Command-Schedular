@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.permission;
+package fun.sunrisemc.commandschedular.permission;
 
 import org.jetbrains.annotations.NotNull;
 

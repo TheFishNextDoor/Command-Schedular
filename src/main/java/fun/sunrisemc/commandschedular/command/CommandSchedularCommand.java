@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.command;
+package fun.sunrisemc.commandschedular.command;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
-import fun.sunrisemc.command_schedular.permission.Permissions;
-import fun.sunrisemc.command_schedular.repeating_task.TickCommandExecutionTask;
-import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
-import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.permission.Permissions;
+import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfiguration;
+import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandschedular.scheduler.TickCommandExecutionTask;
 
 public class CommandSchedularCommand implements CommandExecutor, TabCompleter {
 

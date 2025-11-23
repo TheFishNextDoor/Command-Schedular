@@ -1,11 +1,11 @@
-package fun.sunrisemc.command_schedular.cron;
+package fun.sunrisemc.commandschedular.cron;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
 
 public class CronField {
 

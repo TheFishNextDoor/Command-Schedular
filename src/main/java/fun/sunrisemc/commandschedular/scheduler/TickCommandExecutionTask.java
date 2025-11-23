@@ -1,10 +1,10 @@
-package fun.sunrisemc.command_schedular.repeating_task;
+package fun.sunrisemc.commandschedular.scheduler;
 
 import org.bukkit.Bukkit;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
-import fun.sunrisemc.command_schedular.scheduled_command.CommandConfiguration;
-import fun.sunrisemc.command_schedular.scheduled_command.CommandConfigurationManager;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfiguration;
+import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
 
 public class TickCommandExecutionTask {
 

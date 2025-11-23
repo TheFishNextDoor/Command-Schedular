@@ -1,4 +1,4 @@
-package fun.sunrisemc.command_schedular.file;
+package fun.sunrisemc.commandschedular.file;
 
 import java.io.File;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.command_schedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
 
 public class ConfigFile {
 
