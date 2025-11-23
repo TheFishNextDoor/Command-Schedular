@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
 import fun.sunrisemc.commandschedular.cron.MCCron;
-import fun.sunrisemc.commandschedular.utils.ConfigUtils;
+import fun.sunrisemc.commandschedular.utils.YAMLUtils;
 
 public class CommandConfiguration {
 
@@ -190,11 +190,11 @@ public class CommandConfiguration {
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
-            this.intervalTicks = Optional.of(ConfigUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE));
+            this.intervalTicks = Optional.of(YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE));
         }
 
         if (config.contains(id + ".triggers.ticks-from-server-start")) {
-            Optional<String> ticksFromServerStartString = ConfigUtils.getString(config, id + ".triggers.ticks-from-server-start");
+            Optional<String> ticksFromServerStartString = YAMLUtils.getString(config, id + ".triggers.ticks-from-server-start");
             if (ticksFromServerStartString.isPresent()) {
                 String[] ticksFromServerStartSplit = ticksFromServerStartString.get().split(",");
                 for (String tickString : ticksFromServerStartSplit) {
@@ -212,7 +212,7 @@ public class CommandConfiguration {
         }
 
         if (config.contains(id + ".triggers.cron")) {
-            Optional<String> cronExpression = ConfigUtils.getString(config, id + ".triggers.cron");
+            Optional<String> cronExpression = YAMLUtils.getString(config, id + ".triggers.cron");
             if (cronExpression.isPresent()) {
                 this.cron = Optional.of(new MCCron(cronExpression.get()));
             }
@@ -222,15 +222,15 @@ public class CommandConfiguration {
         // Load Execute Conditions
 
         if (config.contains(id + ".execute-conditions.min-players-online")) {
-            minPlayersOnlineToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
+            minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
-            minPlayersWhoMeetConditionsToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
-            maxPlayersWhoMeetConditionsToExecute = ConfigUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
         }
 
         if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {

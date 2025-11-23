@@ -1,18 +1,24 @@
 package fun.sunrisemc.commandschedular.utils;
 
+import java.util.HashSet;
 import java.util.Optional;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ConfigUtils {
+public class YAMLUtils {
+
+    // Getting
 
     public static int getIntClamped(@NotNull YamlConfiguration config, @NotNull String path, int min, int max) {
         if (!config.contains(path)) {
             return min;
         }
+
         int value = config.getInt(path);
+
         return Math.clamp(value, min, max);
     }
 
@@ -20,7 +26,9 @@ public class ConfigUtils {
         if (!config.contains(path)) {
             return min;
         }
+
         double value = config.getDouble(path);
+
         return Math.clamp(value, min, max);
     }
 
@@ -28,7 +36,9 @@ public class ConfigUtils {
         if (!config.contains(path)) {
             return min;
         }
+
         long value = config.getLong(path);
+
         return Math.clamp(value, min, max);
     }
 
@@ -36,7 +46,10 @@ public class ConfigUtils {
         if (!config.contains(path)) {
             return Optional.empty();
         }
-        return Optional.ofNullable(config.getString(path));
+
+        String value = config.getString(path);
+
+        return Optional.ofNullable(value);
     }
 
     @NotNull
@@ -45,7 +58,46 @@ public class ConfigUtils {
             return defaultValue;
         }
 
-        String str = config.getString(path, defaultValue);
-        return str != null ? str : defaultValue;
+        String value = config.getString(path);
+
+        return value != null ? value : defaultValue;
+    }
+
+    @NotNull
+    public static HashSet<String> getKeys(@NotNull YamlConfiguration config, @NotNull String path) {
+        if (!config.contains(path)) {
+            return new HashSet<>();
+        }
+
+        ConfigurationSection section = config.getConfigurationSection(path);
+        if (section == null) {
+            return new HashSet<>();
+        }
+
+        return new HashSet<>(section.getKeys(false));
+    }
+
+    // Modifying
+
+    public static boolean renameKey(YamlConfiguration config, String oldKey, String newKey) {
+        if (!config.contains(oldKey) || !config.contains(newKey)) {
+            return false;
+        }
+
+        Object value = config.get(oldKey);
+        config.set(newKey, value);
+        config.set(oldKey, null);
+        return true;
+    }
+
+    public static boolean moveKey(YamlConfiguration config, String oldKey, String newKey) {
+        if (!config.contains(oldKey) || config.contains(newKey)) {
+            return false;
+        }
+
+        Object value = config.get(oldKey);
+        config.set(newKey, value);
+        config.set(oldKey, null);
+        return true;
     }
 }
