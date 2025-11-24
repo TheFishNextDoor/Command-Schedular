@@ -56,8 +56,7 @@ public class CommandConfiguration {
         "max-x",
         "max-y",
         "max-z",
-        "must-be-in-water",
-        "must-not-be-in-water"
+        "in-water"
     );
 
     private final @NotNull String id;
