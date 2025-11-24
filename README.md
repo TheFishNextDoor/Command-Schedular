@@ -1,22 +1,23 @@
-# Command Schedular
+# Command Scheduler
+
 Schedule commands to run at specific points.
 
 ## Setup
-1. Add Command Schedular jar into your plugins folder.
+1. Add Command Scheduler jar into your plugins folder.
 2. Restart your server.
 3. Edit commands.yml to your liking.
-4. Type /commandschedular reload.
+4. Type /commandscheduler reload.
 
 ## Commands
-- **/commandschedular help:** Show the help message.
-- **/commandschedular reload:** Reload the plugin.
-- **/commandschedular execute:** Execute a specific configured command immediately.
-- **/commandschedular time:** Checks the current server time. Useful for configuring a [cron](#triggers).
+- **/commandscheduler help:** Show the help message.
+- **/commandscheduler reload:** Reload the plugin.
+- **/commandscheduler execute:** Execute a specific configured command immediately.
+- **/commandscheduler time:** Check the current server time. Useful for configuring a [cron](#triggers).
 
 ## Permissions
-- **commandschedular.reload:** Allows the use of the reload command.
-- **commandschedular.execute:** Allows the use of the execute command.
-- **commandschedular.time:** Allows the use of the time command.
+- **commandscheduler.reload:** Allows the use of the reload command.
+- **commandscheduler.execute:** Allows the use of the execute command.
+- **commandscheduler.time:** Allows the use of the time command.
 
 ## Scheduled Commands
 ```yaml
@@ -80,20 +81,20 @@ midnight-shutdown:
 
 ## Triggers
 - **interval-ticks:** The number of ticks between each execution of the command configuration.
-- **cron:** A cron to control specific points that the command configuration will execute down to the tick. Syntax: &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt; &lt;year&gt;.
-- **ticks-from-server-start:** The number of ticks between each condition check. Can have multiple values comma separated.
+- **cron:** A cron expression to control specific points that the command configuration will execute down to the tick. Syntax: &lt;second&gt; &lt;minute&gt; &lt;hour&gt; &lt;dayOfMonth&gt; &lt;month&gt; &lt;dayOfWeek&gt; &lt;year&gt;.
+- **ticks-from-server-start:** The number of ticks from server start when the command should execute. Can have multiple values comma separated.
 
 ## Execute Conditions
 - **min-players-online:** Commands will only execute if this many players are online.
 - **min-players-who-meet-conditions:** Commands will only execute if this many players meet conditions.
-- **max-players-who-meet-conditions:** Commands will only execute if less than this many players meet conditions.
+- **max-players-who-meet-conditions:** Commands will only execute if fewer than this many players meet conditions.
 - **all-players-meet-conditions:** Commands will only execute if all players meet conditions.
 
 ## Player Conditions
 - **worlds:** Commands will only execute if the player is in one of these worlds.
 - **environments:** Commands will only execute if the player is in one of these environments.
 - **biomes:** Commands will only execute if the player is in one of these biomes.
-- **gamemodes:** Commands will only execute if the player is in one of these gamemodes.
+- **gamemodes:** Commands will only execute if the player is in one of these game modes.
 - **has-permissions:** Commands will only execute if the player has all of these permissions.
 - **missing-permissions:** Commands will not execute if the player has any of these permissions.
 - **min-x:** Commands will only execute if the player is above this x value.
@@ -102,5 +103,4 @@ midnight-shutdown:
 - **max-x:** Commands will only execute if the player is below this x value.
 - **max-y:** Commands will only execute if the player is below this y value.
 - **max-z:** Commands will only execute if the player is below this z value.
-- **must-be-in-water:** Commands will only execute if the player is in water.
-- **must-not-be-in-water:** Commands will only execute if the player is not in water.
+- **in-water:** If true, commands will only execute if the player is in water. If false, commands will only execute if the player is not in water. If this setting is not present, commands will execute regardless.

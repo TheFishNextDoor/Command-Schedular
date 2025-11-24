@@ -1,10 +1,10 @@
-package fun.sunrisemc.commandschedular.cron;
+package fun.sunrisemc.commandscheduler.cron;
 
 import javax.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
 public class MCCron {
 
@@ -19,8 +19,8 @@ public class MCCron {
     public MCCron(@NotNull String expression) {
         String[] parts = expression.split(" ");
         if (parts.length != 7) {
-            CommandSchedularPlugin.logWarning("Invalid cron expression: " + expression);
-            CommandSchedularPlugin.logWarning("Cron expressions must have 7 parts (second, minute, hour, day of month, month, day of week, year).");
+            CommandSchedulerPlugin.logWarning("Invalid cron expression: " + expression);
+            CommandSchedulerPlugin.logWarning("Cron expressions must have 7 parts (second, minute, hour, day of month, month, day of week, year).");
             return;
         }
 

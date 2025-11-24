@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.utils;
+package fun.sunrisemc.commandscheduler.utils;
 
 import java.util.HashSet;
 import java.util.Optional;

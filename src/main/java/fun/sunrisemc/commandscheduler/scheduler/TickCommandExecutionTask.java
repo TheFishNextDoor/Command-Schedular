@@ -1,10 +1,10 @@
-package fun.sunrisemc.commandschedular.scheduler;
+package fun.sunrisemc.commandscheduler.scheduler;
 
 import org.bukkit.Bukkit;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfiguration;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
 
 public class TickCommandExecutionTask {
 
@@ -18,7 +18,7 @@ public class TickCommandExecutionTask {
         if (id != -1) {
             return;
         }
-        id = Bukkit.getScheduler().runTaskTimer(CommandSchedularPlugin.getInstance(), () -> {
+        id = Bukkit.getScheduler().runTaskTimer(CommandSchedulerPlugin.getInstance(), () -> {
             if (tickCount == Integer.MAX_VALUE) {
                 tickCount = 0;
             }

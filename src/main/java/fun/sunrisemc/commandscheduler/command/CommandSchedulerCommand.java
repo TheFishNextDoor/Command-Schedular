@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.command;
+package fun.sunrisemc.commandscheduler.command;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
-import fun.sunrisemc.commandschedular.permission.Permissions;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfiguration;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
-import fun.sunrisemc.commandschedular.scheduler.TickCommandExecutionTask;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.permission.Permissions;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
 
-public class CommandSchedularCommand implements CommandExecutor, TabCompleter {
+public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
     @Override
     @Nullable
@@ -57,7 +57,7 @@ public class CommandSchedularCommand implements CommandExecutor, TabCompleter {
 
         String subCommand = args[0].toLowerCase();
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION) && subCommand.equals("reload")) {
-            CommandSchedularPlugin.loadConfigs();
+            CommandSchedulerPlugin.loadConfigs();
             sender.sendMessage(ChatColor.YELLOW + "Configuration reloaded.");
             return true;
         }
@@ -75,7 +75,7 @@ public class CommandSchedularCommand implements CommandExecutor, TabCompleter {
             }
 
             // Run on main thread
-            Bukkit.getScheduler().runTask(CommandSchedularPlugin.getInstance(), () -> {
+            Bukkit.getScheduler().runTask(CommandSchedulerPlugin.getInstance(), () -> {
                 commandConfig.get().execute();
             });
             sender.sendMessage(ChatColor.YELLOW + "Command executed successfully");

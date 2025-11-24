@@ -1,11 +1,11 @@
-package fun.sunrisemc.commandschedular.cron;
+package fun.sunrisemc.commandscheduler.cron;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
 public class CronField {
 
@@ -30,7 +30,7 @@ public class CronField {
                 try {
                     step = Integer.parseInt(stepParts[1]);
                 } catch (NumberFormatException e) {
-                    CommandSchedularPlugin.logWarning("Invalid cron expression: " + part);
+                    CommandSchedulerPlugin.logWarning("Invalid cron expression: " + part);
                     continue;
                 }
 
@@ -38,7 +38,7 @@ public class CronField {
                 try {
                     start = base.equals("*") ? min : Integer.parseInt(base);
                 } catch (NumberFormatException e) {
-                    CommandSchedularPlugin.logWarning("Invalid cron expression: " + part);
+                    CommandSchedulerPlugin.logWarning("Invalid cron expression: " + part);
                     continue;
                 }
 
@@ -49,7 +49,7 @@ public class CronField {
             else if (part.contains("-")) {
                 String[] rangeParts = part.split("-");
                 if (rangeParts.length != 2) {
-                    CommandSchedularPlugin.logWarning("Invalid cron expression: " + part);
+                    CommandSchedulerPlugin.logWarning("Invalid cron expression: " + part);
                     continue;
                 }
 
@@ -59,7 +59,7 @@ public class CronField {
                     rangeStart = Integer.parseInt(rangeParts[0]);
                     rangeEnd = Integer.parseInt(rangeParts[1]);
                 } catch (NumberFormatException e) {
-                    CommandSchedularPlugin.logWarning("Invalid cron expression: " + part);
+                    CommandSchedulerPlugin.logWarning("Invalid cron expression: " + part);
                     continue;
                 }
 

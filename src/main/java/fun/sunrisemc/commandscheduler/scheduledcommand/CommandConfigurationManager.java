@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.scheduledcommand;
+package fun.sunrisemc.commandscheduler.scheduledcommand;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
-import fun.sunrisemc.commandschedular.file.ConfigFile;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.file.ConfigFile;
 
 public class CommandConfigurationManager {
 
@@ -43,6 +43,6 @@ public class CommandConfigurationManager {
 
         scheduledCommandsList = Collections.unmodifiableList(new ArrayList<>(scheduledCommandsMap.values()));
 
-        CommandSchedularPlugin.logInfo("Loaded " + scheduledCommandsMap.size() + " command configurations.");
+        CommandSchedulerPlugin.logInfo("Loaded " + scheduledCommandsMap.size() + " command configurations.");
     }
 }

@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.scheduledcommand;
+package fun.sunrisemc.commandscheduler.scheduledcommand;
 
 import java.util.Collection;
 

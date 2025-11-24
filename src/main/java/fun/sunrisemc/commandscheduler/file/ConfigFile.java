@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.file;
+package fun.sunrisemc.commandscheduler.file;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
 public class ConfigFile {
 
@@ -22,10 +22,10 @@ public class ConfigFile {
         // Create the file if it does not exist
         if (!configFile.exists()) {
             try {
-                CommandSchedularPlugin.getInstance().saveResource(name + ".yml", false);
+                CommandSchedulerPlugin.getInstance().saveResource(name + ".yml", false);
             } 
             catch (Exception e) {
-                CommandSchedularPlugin.logWarning("Failed to create configuration file for " + name + ".yml.");
+                CommandSchedulerPlugin.logWarning("Failed to create configuration file for " + name + ".yml.");
                 e.printStackTrace();
                 return new YamlConfiguration();
             }
@@ -39,12 +39,12 @@ public class ConfigFile {
             // Get default configuration
             YamlConfiguration defaultConfig = new YamlConfiguration();
             try {
-                InputStream resourceStream = CommandSchedularPlugin.getInstance().getResource(name + ".yml");
+                InputStream resourceStream = CommandSchedulerPlugin.getInstance().getResource(name + ".yml");
                 InputStreamReader reader = new InputStreamReader(resourceStream, StandardCharsets.UTF_8);
                 defaultConfig.load(reader);
             } 
             catch (Exception e) {
-                CommandSchedularPlugin.logSevere("Failed to get default configuration for " + name + ".yml.");
+                CommandSchedulerPlugin.logSevere("Failed to get default configuration for " + name + ".yml.");
                 return config;
             }
 
@@ -58,7 +58,7 @@ public class ConfigFile {
             }
 
             if (changed) {
-                CommandSchedularPlugin.logInfo("Added missing default values to " + name + ".yml.");
+                CommandSchedulerPlugin.logInfo("Added missing default values to " + name + ".yml.");
                 save(name, config);
             }
         }
@@ -76,7 +76,7 @@ public class ConfigFile {
             return true;
         } 
         catch (Exception e) {
-            CommandSchedularPlugin.logSevere("Failed to save configuration file for " + name + ".yml.");
+            CommandSchedulerPlugin.logSevere("Failed to save configuration file for " + name + ".yml.");
             return false;
         }
     }
@@ -98,7 +98,7 @@ public class ConfigFile {
             return configFile.delete();
         }
         catch (Exception e) {
-            CommandSchedularPlugin.logSevere("Failed to delete configuration file for " + name + ".yml.");
+            CommandSchedulerPlugin.logSevere("Failed to delete configuration file for " + name + ".yml.");
             return false;
         }
     }
@@ -106,7 +106,7 @@ public class ConfigFile {
     @NotNull
     public static File getFolder() {
         // Get plugin folder
-        File pluginFolder = CommandSchedularPlugin.getInstance().getDataFolder();
+        File pluginFolder = CommandSchedulerPlugin.getInstance().getDataFolder();
 
         // Create folder if it does not exist
         if (!pluginFolder.exists()) {

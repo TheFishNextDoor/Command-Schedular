@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular.scheduledcommand;
+package fun.sunrisemc.commandscheduler.scheduledcommand;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
-import fun.sunrisemc.commandschedular.cron.MCCron;
-import fun.sunrisemc.commandschedular.utils.YAMLUtils;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.cron.MCCron;
+import fun.sunrisemc.commandscheduler.utils.YAMLUtils;
 
 public class CommandConfiguration {
 
@@ -106,8 +106,7 @@ public class CommandConfiguration {
     private Optional<Integer> minZ = Optional.empty();
     private Optional<Integer> maxZ = Optional.empty();
 
-    private boolean mustBeInWater = false;
-    private boolean mustNotBeInWater = false;
+    private Optional<Boolean> inWater = Optional.empty();
 
     CommandConfiguration(@NotNull YamlConfiguration config, @NotNull String id) {
         this.id = id;
@@ -116,29 +115,29 @@ public class CommandConfiguration {
 
         for (String setting : YAMLUtils.getKeys(config, id)) {
             if (!SETTINGS.contains(setting)) {
-                CommandSchedularPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
-                CommandSchedularPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
+                CommandSchedulerPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
+                CommandSchedulerPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
             }
         }
 
         for (String trigger : YAMLUtils.getKeys(config, id + ".triggers")) {
             if (!TRIGGERS.contains(trigger)) {
-                CommandSchedularPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
-                CommandSchedularPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
+                CommandSchedulerPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
+                CommandSchedulerPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
             }
         }
 
         for (String executeCondition : YAMLUtils.getKeys(config, id + ".execute-conditions")) {
             if (!EXECUTE_CONDITIONS.contains(executeCondition)) {
-                CommandSchedularPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
-                CommandSchedularPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
+                CommandSchedulerPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
+                CommandSchedulerPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
             }
         }
 
         for (String condition : YAMLUtils.getKeys(config, id + ".player-conditions")) {
             if (!PLAYER_CONDITIONS.contains(condition)) {
-                CommandSchedularPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
-                CommandSchedularPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
+                CommandSchedulerPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
+                CommandSchedulerPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
             }
         }
 
@@ -147,15 +146,15 @@ public class CommandConfiguration {
         for (String commandString : config.getStringList(id + ".commands")) {
             String[] commandStringSplit = commandString.split(":", 2);
             if (commandStringSplit.length != 2) {
-                CommandSchedularPlugin.logWarning("Command configuration " + id + " has an invalid command syntax for command: " + commandString);
-                CommandSchedularPlugin.logWarning("Correct syntax is <commandType>:<command>");
+                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command syntax for command: " + commandString);
+                CommandSchedulerPlugin.logWarning("Correct syntax is <commandType>:<command>");
                 continue;
             }
 
             Optional<CommandType> commandType = CommandType.fromString(commandStringSplit[0]);
             if (commandType.isEmpty()) {
-                CommandSchedularPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                CommandSchedularPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getNames()));
+                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
+                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getNames()));
                 continue;
             }
 
@@ -185,7 +184,7 @@ public class CommandConfiguration {
                         ticksFromServerStart.add(tick);
                     } 
                     catch (NumberFormatException e) {
-                        CommandSchedularPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
+                        CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
                         continue;
                     }
                 }
@@ -263,16 +262,13 @@ public class CommandConfiguration {
             this.maxZ = Optional.of(config.getInt(id + ".player-conditions.max-z"));
         }
 
-        if (config.contains(id + ".player-conditions.must-be-in-water")) {
-            this.mustBeInWater = config.getBoolean(id + ".player-conditions.must-be-in-water");
-        }
-        if (config.contains(id + ".player-conditions.must-not-be-in-water")) {
-            this.mustNotBeInWater = config.getBoolean(id + ".player-conditions.must-not-be-in-water");
+        if (config.contains(id + ".player-conditions.in-water")) {
+            this.inWater = Optional.of(config.getBoolean(id + ".player-conditions.in-water"));
         }
 
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX.isPresent() || maxX.isPresent() || minY.isPresent() || maxY.isPresent() || minZ.isPresent() || maxZ.isPresent()
-            || mustBeInWater || mustNotBeInWater;
+            || inWater.isPresent();
     }
 
     @NotNull
@@ -426,11 +422,13 @@ public class CommandConfiguration {
             return false;
         }
 
-        if (mustBeInWater && !player.isInWater()) {
-            return false;
-        }
-        if (mustNotBeInWater && player.isInWater()) {
-            return false;
+        if (inWater.isPresent()) {
+            if (inWater.get() && !player.isInWater()) {
+                return false;
+            }
+            if (!inWater.get() && player.isInWater()) {
+                return false;
+            }
         }
 
         return true;

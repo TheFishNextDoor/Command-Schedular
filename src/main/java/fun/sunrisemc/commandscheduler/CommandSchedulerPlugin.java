@@ -1,4 +1,4 @@
-package fun.sunrisemc.commandschedular;
+package fun.sunrisemc.commandscheduler;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -8,14 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import fun.sunrisemc.commandschedular.command.CommandSchedularCommand;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
-import fun.sunrisemc.commandschedular.scheduler.CronCommandExecutionTask;
-import fun.sunrisemc.commandschedular.scheduler.TickCommandExecutionTask;
+import fun.sunrisemc.commandscheduler.command.CommandSchedulerCommand;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandscheduler.scheduler.CronCommandExecutionTask;
+import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
 
-public class CommandSchedularPlugin extends JavaPlugin {
+public class CommandSchedulerPlugin extends JavaPlugin {
 
-    private static @Nullable CommandSchedularPlugin instance;
+    private static @Nullable CommandSchedulerPlugin instance;
 
     @Override
     public void onEnable() {
@@ -23,7 +23,7 @@ public class CommandSchedularPlugin extends JavaPlugin {
 
         loadConfigs();
 
-        registerCommand("commandschedular", new CommandSchedularCommand());
+        registerCommand("commandscheduler", new CommandSchedulerCommand());
 
         TickCommandExecutionTask.start();
         CronCommandExecutionTask.start();
@@ -43,7 +43,7 @@ public class CommandSchedularPlugin extends JavaPlugin {
     }
 
     @NotNull
-    public static CommandSchedularPlugin getInstance() {
+    public static CommandSchedulerPlugin getInstance() {
         if (instance != null) {
             return instance;
         }

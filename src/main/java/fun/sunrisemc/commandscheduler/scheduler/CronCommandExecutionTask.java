@@ -1,12 +1,12 @@
-package fun.sunrisemc.commandschedular.scheduler;
+package fun.sunrisemc.commandscheduler.scheduler;
 
 import java.time.LocalDateTime;
 
 import org.bukkit.Bukkit;
 
-import fun.sunrisemc.commandschedular.CommandSchedularPlugin;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfiguration;
-import fun.sunrisemc.commandschedular.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
 
 public class CronCommandExecutionTask {
 
@@ -18,12 +18,12 @@ public class CronCommandExecutionTask {
         if (id != -1) {
             return;
         }
-        id = Bukkit.getScheduler().runTaskTimerAsynchronously(CommandSchedularPlugin.getInstance(), () -> {
+        id = Bukkit.getScheduler().runTaskTimerAsynchronously(CommandSchedulerPlugin.getInstance(), () -> {
             LocalDateTime now = LocalDateTime.now();
             for (CommandConfiguration commandConfiguration : CommandConfigurationManager.getAll()) {
                 if (commandConfiguration.shouldRunFromCron(now)) {
                     // Run on main thread
-                    Bukkit.getScheduler().runTask(CommandSchedularPlugin.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(CommandSchedulerPlugin.getInstance(), () -> {
                         commandConfiguration.execute();
                     });
                 }
