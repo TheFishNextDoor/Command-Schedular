@@ -78,7 +78,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             Bukkit.getScheduler().runTask(CommandSchedulerPlugin.getInstance(), () -> {
                 commandConfig.get().execute();
             });
-            sender.sendMessage(ChatColor.YELLOW + "Command executed successfully");
+            sender.sendMessage(ChatColor.YELLOW + "Command executed successfully.");
             return true;
         }
         else if (sender.hasPermission(Permissions.TIME_PERMISSION) && subCommand.equals("time")) {
