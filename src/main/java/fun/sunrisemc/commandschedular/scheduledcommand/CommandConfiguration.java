@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -115,49 +114,31 @@ public class CommandConfiguration {
 
         // Settings Validation
 
-        ConfigurationSection settingsSection = config.getConfigurationSection(id);
-        if (settingsSection != null) {
-            for (String setting : settingsSection.getKeys(false)) {
-                if (!SETTINGS.contains(setting)) {
-                    CommandSchedularPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
-                    CommandSchedularPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
-                }
+        for (String setting : YAMLUtils.getKeys(config, id)) {
+            if (!SETTINGS.contains(setting)) {
+                CommandSchedularPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
+                CommandSchedularPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
             }
         }
 
-        if (config.contains(id + ".triggers")) {
-            ConfigurationSection triggersSection = config.getConfigurationSection(id + ".triggers");
-            if (triggersSection != null) {
-                for (String trigger : triggersSection.getKeys(false)) {
-                    if (!TRIGGERS.contains(trigger)) {
-                        CommandSchedularPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
-                        CommandSchedularPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
-                    }
-                }
+        for (String trigger : YAMLUtils.getKeys(config, id + ".triggers")) {
+            if (!TRIGGERS.contains(trigger)) {
+                CommandSchedularPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
+                CommandSchedularPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
             }
         }
 
-        if (config.contains(id + ".execute-conditions")) {
-            ConfigurationSection executeConditionsSection = config.getConfigurationSection(id + ".execute-conditions");
-            if (executeConditionsSection != null) {
-                for (String executeCondition : executeConditionsSection.getKeys(false)) {
-                    if (!EXECUTE_CONDITIONS.contains(executeCondition)) {
-                        CommandSchedularPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
-                        CommandSchedularPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
-                    }
-                }
+        for (String executeCondition : YAMLUtils.getKeys(config, id + ".execute-conditions")) {
+            if (!EXECUTE_CONDITIONS.contains(executeCondition)) {
+                CommandSchedularPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
+                CommandSchedularPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
             }
         }
 
-        if (config.contains(id + ".player-conditions")) {
-            ConfigurationSection playerConditionsSection = config.getConfigurationSection(id + ".player-conditions");
-            if (playerConditionsSection != null) {
-                for (String condition : playerConditionsSection.getKeys(false)) {
-                    if (!PLAYER_CONDITIONS.contains(condition)) {
-                        CommandSchedularPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
-                        CommandSchedularPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
-                    }
-                }
+        for (String condition : YAMLUtils.getKeys(config, id + ".player-conditions")) {
+            if (!PLAYER_CONDITIONS.contains(condition)) {
+                CommandSchedularPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
+                CommandSchedularPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
             }
         }
 
