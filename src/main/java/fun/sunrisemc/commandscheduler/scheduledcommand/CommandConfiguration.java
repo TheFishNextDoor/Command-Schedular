@@ -221,7 +221,7 @@ public class CommandConfiguration {
         // Load Player Conditions
 
         for (String worldName : config.getStringList(id + ".player-conditions.worlds")) {
-            this.worlds.add(worldName);
+            this.worlds.add(StringUtils.normalize(worldName));
         }
 
         for (String environmentName : config.getStringList(id + ".conditions.environments")) {
@@ -380,7 +380,7 @@ public class CommandConfiguration {
             return false;
         }
 
-        if (!worlds.isEmpty() && !worlds.contains(world.getName())) {
+        if (!worlds.isEmpty() && !worlds.contains(StringUtils.normalize(world.getName()))) {
             return false;
         }
 
