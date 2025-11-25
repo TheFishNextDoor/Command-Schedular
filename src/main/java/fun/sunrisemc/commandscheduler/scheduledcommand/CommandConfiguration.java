@@ -60,7 +60,18 @@ public class CommandConfiguration {
         "max-x",
         "max-y",
         "max-z",
-        "in-water"
+        "in-water",
+        "sneaking",
+        "blocking",
+        "climbing",
+        "gliding",
+        "glowing",
+        "riptiding",
+        "in-vehicle",
+        "sprinting",
+        "flying",
+        "on-fire",
+        "frozen"
     );
 
     private final @NotNull String id;
@@ -110,6 +121,28 @@ public class CommandConfiguration {
     private Optional<Integer> maxZ = Optional.empty();
 
     private Optional<Boolean> inWater = Optional.empty();
+
+    private Optional<Boolean> sneaking = Optional.empty();
+
+    private Optional<Boolean> blocking = Optional.empty();
+
+    private Optional<Boolean> climbing = Optional.empty();
+
+    private Optional<Boolean> gliding = Optional.empty();
+
+    private Optional<Boolean> glowing = Optional.empty();
+
+    private Optional<Boolean> riptiding = Optional.empty();
+
+    private Optional<Boolean> inVehicle = Optional.empty();
+
+    private Optional<Boolean> sprinting = Optional.empty();
+
+    private Optional<Boolean> flying = Optional.empty();
+
+    private Optional<Boolean> onFire = Optional.empty();
+
+    private Optional<Boolean> frozen = Optional.empty();
 
     protected CommandConfiguration(@NotNull YamlConfiguration config, @NotNull String id) {
         this.id = id;
@@ -271,9 +304,33 @@ public class CommandConfiguration {
 
         this.inWater = YAMLUtils.getBoolean(config, id + ".player-conditions.in-water");
 
+        this.sneaking = YAMLUtils.getBoolean(config, id + ".conditions.sneaking");
+
+        this.blocking = YAMLUtils.getBoolean(config, id + ".conditions.blocking");
+
+        this.climbing = YAMLUtils.getBoolean(config, id + ".conditions.climbing");
+
+        this.gliding = YAMLUtils.getBoolean(config, id + ".conditions.gliding");
+
+        this.glowing = YAMLUtils.getBoolean(config, id + ".conditions.glowing");
+
+        this.riptiding = YAMLUtils.getBoolean(config, id + ".conditions.riptiding");
+
+        this.inVehicle = YAMLUtils.getBoolean(config, id + ".conditions.in-vehicle");
+
+        this.sprinting = YAMLUtils.getBoolean(config, id + ".conditions.sprinting");
+
+        this.flying = YAMLUtils.getBoolean(config, id + ".conditions.flying");
+
+        this.onFire = YAMLUtils.getBoolean(config, id + ".conditions.on-fire");
+
+        this.frozen = YAMLUtils.getBoolean(config, id + ".conditions.frozen");
+
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX.isPresent() || maxX.isPresent() || minY.isPresent() || maxY.isPresent() || minZ.isPresent() || maxZ.isPresent()
-            || inWater.isPresent();
+            || inWater.isPresent() || sneaking.isPresent() || blocking.isPresent() || climbing.isPresent() || gliding.isPresent()
+            || glowing.isPresent() || riptiding.isPresent() || inVehicle.isPresent() || sprinting.isPresent() || flying.isPresent()
+            || onFire.isPresent() || frozen.isPresent();
     }
 
     @NotNull
@@ -432,6 +489,105 @@ public class CommandConfiguration {
                 return false;
             }
             if (!inWater.get() && player.isInWater()) {
+                return false;
+            }
+        }
+
+        if (sneaking.isPresent()) {
+            if (sneaking.get() && !player.isSneaking()) {
+                return false;
+            }
+            if (!sneaking.get() && player.isSneaking()) {
+                return false;
+            }
+        }
+
+        if (blocking.isPresent()) {
+            if (blocking.get() && !player.isBlocking()) {
+                return false;
+            }
+            if (!blocking.get() && player.isBlocking()) {
+                return false;
+            }
+        }
+
+        if (climbing.isPresent()) {
+            if (climbing.get() && !player.isClimbing()) {
+                return false;
+            }
+            if (!climbing.get() && player.isClimbing()) {
+                return false;
+            }
+        }
+
+        if (gliding.isPresent()) {
+            if (gliding.get() && !player.isGliding()) {
+                return false;
+            }
+            if (!gliding.get() && player.isGliding()) {
+                return false;
+            }
+        }
+
+        if (glowing.isPresent()) {
+            if (glowing.get() && !player.isGlowing()) {
+                return false;
+            }
+            if (!glowing.get() && player.isGlowing()) {
+                return false;
+            }
+        }
+
+        if (riptiding.isPresent()) {
+            if (riptiding.get() && !player.isRiptiding()) {
+                return false;
+            }
+            if (!riptiding.get() && player.isRiptiding()) {
+                return false;
+            }
+        }
+
+        if (inVehicle.isPresent()) {
+            if (inVehicle.get() && !player.isInsideVehicle()) {
+                return false;
+            }
+            if (!inVehicle.get() && player.isInsideVehicle()) {
+                return false;
+            }
+        }
+
+        if (sprinting.isPresent()) {
+            if (sprinting.get() && !player.isSprinting()) {
+                return false;
+            }
+            if (!sprinting.get() && player.isSprinting()) {
+                return false;
+            }
+        }
+
+        if (flying.isPresent()) {
+            if (flying.get() && !player.isFlying()) {
+                return false;
+            }
+            if (!flying.get() && player.isFlying()) {
+                return false;
+            }
+        }
+
+        if (onFire.isPresent()) {
+            if (onFire.get() && !player.isVisualFire()) {
+                return false;
+            }
+            if (!onFire.get() && player.isVisualFire()) {
+                return false;
+            }
+        }
+
+        if (frozen.isPresent()) {
+            if (frozen.get() && !player.isFrozen()) {
+                return false;
+            }
+            if (!frozen.get() && player.isFrozen()) {
                 return false;
             }
         }

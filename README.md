@@ -104,3 +104,14 @@ midnight-shutdown:
 - **max-y:** Commands will only execute if the player is below this y value.
 - **max-z:** Commands will only execute if the player is below this z value.
 - **in-water:** If true, commands will only execute if the player is in water. If false, commands will only execute if the player is not in water. If this setting is not present, commands will execute regardless.
+- **sneaking:** If true, commands will only execute if the player is sneaking. If false, commands will only execute if the player is not sneaking. If this setting is not provided, then commands will execute regardless.
+- **blocking:** If true, commands will only execute if the player is blocking. If false, commands will only execute if the player is not blocking. If this setting is not provided, then commands will execute regardless.
+- **climbing:** If true, commands will only execute if the player is climbing. If false, commands will only execute if the player is not climbing. If this setting is not provided, then commands will execute regardless.
+- **gliding:** If true, commands will only execute if the player is gliding. If false, commands will only execute if the player is not gliding. If this setting is not provided, then commands will execute regardless.
+- **glowing:** If true, commands will only execute if the player is glowing. If false, commands will only execute if the player is not glowing. If this setting is not provided, then commands will execute regardless.
+- **riptiding:** If true, commands will only execute if the player is riptiding. If false, commands will only execute if the player is not riptiding. If this setting is not provided, then commands will execute regardless.
+- **in-vehicle:** If true, commands will only execute if the player is in a vehicle. If false, commands will only execute if the player is not in a vehicle. If this setting is not provided, then commands will execute regardless.
+- **sprinting:** If true, commands will only execute if the player is sprinting. If false, commands will only execute if the player is not sprinting. If this setting is not provided, then commands will execute regardless.
+- **flying:** If true, commands will only execute if the player is flying. If false, commands will only execute if the player is not flying. If this setting is not provided, then commands will execute regardless.
+- **on-fire:** If true, commands will only execute if the player is on fire. If false, commands will only execute if the player is not on fire. If this setting is not provided, then commands will execute regardless.
+- **frozen:** If true, commands will only execute if the player is frozen. If false, commands will only execute if the player is not frozen. If this setting is not provided, then commands will execute regardless.
