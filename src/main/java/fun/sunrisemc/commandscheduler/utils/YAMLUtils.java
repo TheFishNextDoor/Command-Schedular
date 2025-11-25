@@ -22,14 +22,6 @@ public class YAMLUtils {
         return Optional.of(value);
     }
 
-    public static boolean getBooleanOrDefault(@NotNull YamlConfiguration config, @NotNull String path, boolean defaultValue) {
-        if (!config.contains(path)) {
-            return defaultValue;
-        }
-
-        return config.getBoolean(path);
-    }
-
     public static Optional<Integer> getInt(@NotNull YamlConfiguration config, @NotNull String path) {
         if (!config.contains(path)) {
             return Optional.empty();
@@ -98,17 +90,6 @@ public class YAMLUtils {
         String value = config.getString(path);
 
         return Optional.ofNullable(value);
-    }
-
-    @NotNull
-    public static String getStringOrDefault(@NotNull YamlConfiguration config, @NotNull String path, @NotNull String defaultValue) {
-        if (!config.contains(path)) {
-            return defaultValue;
-        }
-
-        String value = config.getString(path);
-
-        return value != null ? value : defaultValue;
     }
 
     @NotNull
