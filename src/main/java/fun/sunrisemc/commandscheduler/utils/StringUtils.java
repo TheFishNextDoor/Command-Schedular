@@ -2,6 +2,10 @@ package fun.sunrisemc.commandscheduler.utils;
 
 import java.util.Optional;
 
+import org.bukkit.GameMode;
+import org.bukkit.World.Environment;
+import org.bukkit.block.Biome;
+
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandType;
@@ -46,6 +50,39 @@ public class StringUtils {
             String normalizedNameB = normalize(commandType.name());
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(commandType);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Environment> parseEnvironment(@NotNull String environmentName) {
+        String normalizedNameA = normalize(environmentName);
+        for (Environment environment : Environment.values()) {
+            String normalizedNameB = normalize(environment.name());
+            if (normalizedNameA.equals(normalizedNameB)) {
+                return Optional.of(environment);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<Biome> parseBiome(@NotNull String biomeName) {
+        String normalizedNameA = normalize(biomeName);
+        for (Biome biome : Biome.values()) {
+            String normalizedNameB = normalize(biome.name());
+            if (normalizedNameA.equals(normalizedNameB)) {
+                return Optional.of(biome);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<GameMode> parseGameMode(@NotNull String gameModeName) {
+        String normalizedNameA = normalize(gameModeName);
+        for (GameMode gameMode : GameMode.values()) {
+            String normalizedNameB = normalize(gameMode.name());
+            if (normalizedNameA.equals(normalizedNameB)) {
+                return Optional.of(gameMode);
             }
         }
         return Optional.empty();

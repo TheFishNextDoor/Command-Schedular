@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -92,9 +95,9 @@ public class CommandConfiguration {
     private boolean playerConditionsEnabled = false;
 
     private @NotNull HashSet<String> worlds = new HashSet<>();
-    private @NotNull HashSet<String> environments = new HashSet<>();
-    private @NotNull HashSet<String> biomes = new HashSet<>();
-    private @NotNull HashSet<String> gamemodes = new HashSet<>();
+    private @NotNull HashSet<Environment> environments = new HashSet<>();
+    private @NotNull HashSet<Biome> biomes = new HashSet<>();
+    private @NotNull HashSet<GameMode> gamemodes = new HashSet<>();
 
     private @NotNull ArrayList<String> hasPermissions = new ArrayList<>();
     private @NotNull ArrayList<String> missingPermissions = new ArrayList<>();
@@ -221,16 +224,34 @@ public class CommandConfiguration {
             this.worlds.add(worldName);
         }
 
-        for (String environmentName : config.getStringList(id + ".player-conditions.environments")) {
-            this.environments.add(environmentName);
+        for (String environmentName : config.getStringList(id + ".conditions.environments")) {
+            Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
+            if (environment.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
+                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", getEnvironmentNames()) + ".");
+                continue;
+            }
+            this.environments.add(environment.get());
         }
 
-        for (String biomeName : config.getStringList(id + ".player-conditions.biomes")) {
-            this.biomes.add(normalizeName(biomeName));
+        for (String biomeName : config.getStringList(id + ".conditions.biomes")) {
+            Optional<Biome> biome = StringUtils.parseBiome(biomeName);
+            if (biome.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
+                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", getBiomeNames()) + ".");
+                continue;
+            }
+            this.biomes.add(biome.get());
         }
 
-        for (String gamemodeName : config.getStringList(id + ".player-conditions.gamemodes")) {
-            this.gamemodes.add(normalizeName(gamemodeName));
+        for (String gamemode : config.getStringList(id + ".conditions.gamemodes")) {
+            Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
+            if (gameMode.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
+                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", getGameModeNames()) + ".");
+                continue;
+            }
+            this.gamemodes.add(gameMode.get());
         }
 
         for (String permission : config.getStringList(id + ".player-conditions.has-permissions")) {
@@ -363,15 +384,15 @@ public class CommandConfiguration {
             return false;
         }
 
-        if (!environments.isEmpty() && !environments.contains(world.getEnvironment().name())) {
+        if (!environments.isEmpty() && !environments.contains(world.getEnvironment())) {
             return false;
         }
 
-        if (!biomes.isEmpty() && !biomes.contains(normalizeName(block.getBiome().name()))) {
+        if (!biomes.isEmpty() && !biomes.contains(block.getBiome())) {
             return false;
         }
 
-        if (!gamemodes.isEmpty() && !gamemodes.contains(normalizeName(player.getGameMode().name()))) {
+        if (!gamemodes.isEmpty() && !gamemodes.contains(player.getGameMode())) {
             return false;
         }
 
@@ -419,14 +440,40 @@ public class CommandConfiguration {
     }
 
     @NotNull
-    private String normalizeName(@NotNull String biomeName) {
-        return biomeName.trim().toUpperCase().replace(" ", "_").replace("-", "_");
-    }
-
     private static ArrayList<String> getCommandTypeNames() {
         ArrayList<String> names = new ArrayList<>();
         for (CommandType commandType : CommandType.values()) {
             String formattedName = StringUtils.formatName(commandType.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    @NotNull
+    private ArrayList<String> getEnvironmentNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (Environment environment : Environment.values()) {
+            String formattedName = StringUtils.formatName(environment.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    @NotNull
+    private ArrayList<String> getBiomeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (Biome biome : Biome.values()) {
+            String formattedName = StringUtils.formatName(biome.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    @NotNull
+    private ArrayList<String> getGameModeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (GameMode gameMode : GameMode.values()) {
+            String formattedName = StringUtils.formatName(gameMode.name());
             names.add(formattedName);
         }
         return names;
