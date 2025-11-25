@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandType;
+
 public class StringUtils {
 
     // Parsing
@@ -36,6 +38,17 @@ public class StringUtils {
         catch (NumberFormatException e) {
             return Optional.empty();
         }
+    }
+
+    public static Optional<CommandType> parseCommandType(@NotNull String commandTypeName) {
+        String normalizedNameA = normalize(commandTypeName);
+        for (CommandType commandType : CommandType.values()) {
+            String normalizedNameB = normalize(commandType.name());
+            if (normalizedNameA.equals(normalizedNameB)) {
+                return Optional.of(commandType);
+            }
+        }
+        return Optional.empty();
     }
 
     // Formatting

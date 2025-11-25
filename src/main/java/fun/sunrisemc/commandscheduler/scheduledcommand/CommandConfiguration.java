@@ -151,10 +151,10 @@ public class CommandConfiguration {
                 continue;
             }
 
-            Optional<CommandType> commandType = CommandType.fromString(commandStringSplit[0]);
+            Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
             if (commandType.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getNames()));
+                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", getCommandTypeNames()));
                 continue;
             }
 
@@ -421,5 +421,14 @@ public class CommandConfiguration {
     @NotNull
     private String normalizeName(@NotNull String biomeName) {
         return biomeName.trim().toUpperCase().replace(" ", "_").replace("-", "_");
+    }
+
+    private static ArrayList<String> getCommandTypeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (CommandType commandType : CommandType.values()) {
+            String formattedName = StringUtils.formatName(commandType.name());
+            names.add(formattedName);
+        }
+        return names;
     }
 }
