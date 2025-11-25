@@ -70,6 +70,8 @@ midnight-shutdown:
 ## Settings
 - **commands:** Commands to run when the command configuration is executed. Syntax: &lt;commandType&gt;:&lt;command&gt;. See [Command Types](#command-types).
 - **triggers:** Control when the command configuration is executed.
+- **execute-conditions:** Conditions checked when the command configuration is triggered. If conditions are not met, the commands will not execute.
+- **player-conditions:** Conditions checked for individual players when commands are executed. If conditions are not met for a player, commands will not run for that player when using console-for-each-player and for-each-player command types.
 - **only-run-one-random-command:** Only runs one random command instead of all commands when executed.
 
 ## Command Types
