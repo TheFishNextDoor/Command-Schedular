@@ -169,7 +169,7 @@ public class CommandConfiguration {
         // Load Triggers
 
         if (config.contains(id + ".triggers.interval-ticks")) {
-            this.intervalTicks = Optional.of(YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE));
+            this.intervalTicks = Optional.of(YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE, 1));
         }
 
         if (config.contains(id + ".triggers.ticks-from-server-start")) {
@@ -201,15 +201,15 @@ public class CommandConfiguration {
         // Load Execute Conditions
 
         if (config.contains(id + ".execute-conditions.min-players-online")) {
-            minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE);
+            minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
-            minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
-            maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE);
+            maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
