@@ -26,6 +26,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
     @Override
     @Nullable
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
+        // /commandscheduler <subcommand>
         if (args.length == 1) {
             ArrayList<String> completions = new ArrayList<>();
             if (sender.hasPermission(Permissions.RELOAD_PERMISSION)) {
@@ -41,6 +42,8 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
         }
         else if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
+
+            // /commandscheduler execute <commandId>
             if (subcommand.equals("execute") && sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
                 return CommandConfigurationManager.getIds();
             }
@@ -51,16 +54,19 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (args.length == 0) {
-            helpMessage(sender);
+            sendHelpMessage(sender);
             return true;
         }
 
         String subCommand = args[0].toLowerCase();
+
+        // Reload
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION) && subCommand.equals("reload")) {
             CommandSchedulerPlugin.loadConfigs();
             sender.sendMessage(ChatColor.YELLOW + "Configuration reloaded.");
             return true;
         }
+        // Execute
         else if (sender.hasPermission(Permissions.EXECUTE_PERMISSION) && subCommand.equals("execute")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.RED + "Please specify a command ID to execute.");
@@ -81,6 +87,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "Command executed successfully.");
             return true;
         }
+        // Time
         else if (sender.hasPermission(Permissions.TIME_PERMISSION) && subCommand.equals("time")) {
             int ticksFromServerStart = TickCommandExecutionTask.getTicksFromServerStart();
             int tick = ticksFromServerStart % 20;
@@ -96,12 +103,13 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "Ticks from Server Start: " + ChatColor.WHITE + ticksFromServerStart);
             return true;
         }
-
-        helpMessage(sender);
-        return true;
+        else {
+            sendHelpMessage(sender);
+            return true;
+        }
     }
 
-    private void helpMessage(@NotNull CommandSender sender) {
+    private void sendHelpMessage(@NotNull CommandSender sender) {
         sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Command Scheduler Help");
         sender.sendMessage(ChatColor.YELLOW + "/commandscheduler help " + ChatColor.WHITE + "Show this help message");
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION)) {

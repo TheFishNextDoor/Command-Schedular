@@ -606,7 +606,7 @@ public class CommandConfiguration {
     }
 
     @NotNull
-    private ArrayList<String> getEnvironmentNames() {
+    private static ArrayList<String> getEnvironmentNames() {
         ArrayList<String> names = new ArrayList<>();
         for (Environment environment : Environment.values()) {
             String formattedName = StringUtils.formatName(environment.name());
@@ -616,7 +616,7 @@ public class CommandConfiguration {
     }
 
     @NotNull
-    private ArrayList<String> getBiomeNames() {
+    private static ArrayList<String> getBiomeNames() {
         ArrayList<String> names = new ArrayList<>();
         for (Biome biome : Biome.values()) {
             String formattedName = StringUtils.formatName(biome.name());
@@ -626,7 +626,7 @@ public class CommandConfiguration {
     }
 
     @NotNull
-    private ArrayList<String> getGameModeNames() {
+    private static ArrayList<String> getGameModeNames() {
         ArrayList<String> names = new ArrayList<>();
         for (GameMode gameMode : GameMode.values()) {
             String formattedName = StringUtils.formatName(gameMode.name());
