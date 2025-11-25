@@ -161,13 +161,13 @@ public class CommandConfiguration {
                 continue;
             }
 
-            commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
+            this.commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
         }
 
         // Load Behavior
 
         if (config.contains(id + ".only-run-one-random-command")) {
-            onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
+            this.onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
         }
 
         // Load Triggers
@@ -203,19 +203,19 @@ public class CommandConfiguration {
         // Load Execute Conditions
 
         if (config.contains(id + ".execute-conditions.min-players-online")) {
-            minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE, 0);
+            this.minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
-            minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
+            this.minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
-            maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
+            this.maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
         }
 
         if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
-            onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions");
+            this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions");
         }
 
         // Load Player Conditions
