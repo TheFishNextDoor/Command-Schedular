@@ -43,7 +43,7 @@ five-minute-cash:
   commands:
     - 'console-for-each-player: eco give {player} 100'
   triggers:
-    cron: 0 0 */5 * * * * # tick, second, minute, hour, day of month, month, day of week
+    cron: 0 0 */5 * * * * # second, minute, hour, day of month, month, day of week, year
 
 # This example will broadcast a message one minute after the server starts.
 one-minute-message:
@@ -57,14 +57,14 @@ hourly-spawn:
   commands:
     - 'for-each-player: spawn'
   triggers:
-    cron: 0 0 0 * * * * # tick, second, minute, hour, day of month, month, day of week
+    cron: 0 0 0 * * * * # second, minute, hour, day of month, month, day of week, year
 
 # This example will stop the server at midnight every day.
 midnight-shutdown:
   commands:
     - 'console: stop'
   triggers:
-    cron: 0 0 0 0 * * * # tick, second, minute, hour, day of month, month, day of week
+    cron: 0 0 0 0 * * * # second, minute, hour, day of month, month, day of week, year
 ```
 
 ## Settings
