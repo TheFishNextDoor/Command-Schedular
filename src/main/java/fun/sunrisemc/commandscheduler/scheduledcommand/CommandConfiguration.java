@@ -242,24 +242,12 @@ public class CommandConfiguration {
             this.missingPermissions.add(permission);
         }
 
-        if (config.contains(id + ".player-conditions.min-x")) {
-            this.minX = Optional.of(config.getInt(id + ".player-conditions.min-x"));
-        }
-        if (config.contains(id + ".player-conditions.max-x")) {
-            this.maxX = Optional.of(config.getInt(id + ".player-conditions.max-x"));
-        }
-        if (config.contains(id + ".player-conditions.min-y")) {
-            this.minY = Optional.of(config.getInt(id + ".player-conditions.min-y"));
-        }
-        if (config.contains(id + ".player-conditions.max-y")) {
-            this.maxY = Optional.of(config.getInt(id + ".player-conditions.max-y"));
-        }
-        if (config.contains(id + ".player-conditions.min-z")) {
-            this.minZ = Optional.of(config.getInt(id + ".player-conditions.min-z"));
-        }
-        if (config.contains(id + ".player-conditions.max-z")) {
-            this.maxZ = Optional.of(config.getInt(id + ".player-conditions.max-z"));
-        }
+        this.minX = YAMLUtils.getInt(config, id + ".player-conditions.min-x");
+        this.maxX = YAMLUtils.getInt(config, id + ".player-conditions.max-x");
+        this.minY = YAMLUtils.getInt(config, id + ".player-conditions.min-y");
+        this.maxY = YAMLUtils.getInt(config, id + ".player-conditions.max-y");
+        this.minZ = YAMLUtils.getInt(config, id + ".player-conditions.min-z");
+        this.maxZ = YAMLUtils.getInt(config, id + ".player-conditions.max-z");
 
         if (config.contains(id + ".player-conditions.in-water")) {
             this.inWater = Optional.of(config.getBoolean(id + ".player-conditions.in-water"));
