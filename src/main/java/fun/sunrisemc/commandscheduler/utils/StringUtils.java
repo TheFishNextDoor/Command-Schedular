@@ -37,4 +37,29 @@ public class StringUtils {
             return Optional.empty();
         }
     }
+
+    // Formatting
+
+    @NotNull
+    public static String formatName(@NotNull String name) {
+        return name.toLowerCase()
+                   .replace("minecraft:", "")
+                   .replace(" ", "-")
+                   .replace("_", "-")
+                   .replace(":", "-")
+                   .trim();
+    }
+
+    // Normalization
+
+    @NotNull
+    public static String normalize(@NotNull String str) {
+        return str.toLowerCase()
+                  .replace("minecraft:", "")
+                  .replace(" ", "")
+                  .replace("_", "")
+                  .replace("-", "")
+                  .replace(":", "")
+                  .trim();
+    }   
 }
