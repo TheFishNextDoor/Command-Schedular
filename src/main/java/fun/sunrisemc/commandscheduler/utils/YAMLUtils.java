@@ -40,14 +40,14 @@ public class YAMLUtils {
         return Optional.of(value);
     }
 
-    public static int getIntClamped(@NotNull YamlConfiguration config, @NotNull String path, int min, int max, int defaultValue) {
+    public static Optional<Integer> getIntClamped(@NotNull YamlConfiguration config, @NotNull String path, int min, int max) {
         if (!config.contains(path)) {
-            return defaultValue;
+            return Optional.empty();
         }
 
         int value = config.getInt(path);
 
-        return Math.clamp(value, min, max);
+        return Optional.of(Math.clamp(value, min, max));
     }
 
     public static Optional<Double> getDouble(@NotNull YamlConfiguration config, @NotNull String path) {
@@ -60,14 +60,14 @@ public class YAMLUtils {
         return Optional.of(value);
     }
 
-    public static double getDoubleClamped(@NotNull YamlConfiguration config, @NotNull String path, double min, double max, double defaultValue) {
+    public static Optional<Double> getDoubleClamped(@NotNull YamlConfiguration config, @NotNull String path, double min, double max) {
         if (!config.contains(path)) {
-            return defaultValue;
+            return Optional.empty();
         }
 
         double value = config.getDouble(path);
 
-        return Math.clamp(value, min, max);
+        return Optional.of(Math.clamp(value, min, max));
     }
 
     public static Optional<Long> getLong(@NotNull YamlConfiguration config, @NotNull String path) {
@@ -80,14 +80,14 @@ public class YAMLUtils {
         return Optional.of(value);
     }
 
-    public static long getLongClamped(@NotNull YamlConfiguration config, @NotNull String path, long min, long max, long defaultValue) {
+    public static Optional<Long> getLongClamped(@NotNull YamlConfiguration config, @NotNull String path, long min, long max) {
         if (!config.contains(path)) {
-            return defaultValue;
+            return Optional.empty();
         }
 
         long value = config.getLong(path);
 
-        return Math.clamp(value, min, max);
+        return Optional.of(Math.clamp(value, min, max));
     }
 
     public static Optional<String> getString(@NotNull YamlConfiguration config, @NotNull String path) {

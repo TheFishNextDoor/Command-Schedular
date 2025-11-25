@@ -205,9 +205,7 @@ public class CommandConfiguration {
 
         // Load Triggers
 
-        if (config.contains(id + ".triggers.interval-ticks")) {
-            this.intervalTicks = Optional.of(YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE, 1));
-        }
+        YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
 
         if (config.contains(id + ".triggers.ticks-from-server-start")) {
             Optional<String> ticksFromServerStartString = YAMLUtils.getString(config, id + ".triggers.ticks-from-server-start");
@@ -235,17 +233,11 @@ public class CommandConfiguration {
 
         // Load Execute Conditions
 
-        if (config.contains(id + ".execute-conditions.min-players-online")) {
-            this.minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE, 0);
-        }
+        this.minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(minPlayersOnlineToExecute);
 
-        if (config.contains(id + ".execute-conditions.min-players-who-meet-conditions")) {
-            this.minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
-        }
+        this.minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(minPlayersWhoMeetConditionsToExecute);
 
-        if (config.contains(id + ".execute-conditions.max-players-who-meet-conditions")) {
-            this.maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE, 0);
-        }
+        this.maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(maxPlayersWhoMeetConditionsToExecute);
 
         if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
             this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions");
