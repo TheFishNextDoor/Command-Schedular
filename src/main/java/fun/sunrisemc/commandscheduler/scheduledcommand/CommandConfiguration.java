@@ -108,7 +108,7 @@ public class CommandConfiguration {
 
     private Optional<Boolean> inWater = Optional.empty();
 
-    CommandConfiguration(@NotNull YamlConfiguration config, @NotNull String id) {
+    protected CommandConfiguration(@NotNull YamlConfiguration config, @NotNull String id) {
         this.id = id;
 
         // Settings Validation

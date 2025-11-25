@@ -15,7 +15,7 @@ public class CommandExecutable {
 
     private final @NotNull String command;
 
-    CommandExecutable(@NotNull CommandType type, @NotNull String command) {
+    protected CommandExecutable(@NotNull CommandType type, @NotNull String command) {
         this.type = type;
         this.command = command.trim();
     }
