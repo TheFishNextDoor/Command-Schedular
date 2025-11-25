@@ -249,9 +249,7 @@ public class CommandConfiguration {
         this.minZ = YAMLUtils.getInt(config, id + ".player-conditions.min-z");
         this.maxZ = YAMLUtils.getInt(config, id + ".player-conditions.max-z");
 
-        if (config.contains(id + ".player-conditions.in-water")) {
-            this.inWater = Optional.of(config.getBoolean(id + ".player-conditions.in-water"));
-        }
+        this.inWater = YAMLUtils.getBoolean(config, id + ".player-conditions.in-water");
 
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX.isPresent() || maxX.isPresent() || minY.isPresent() || maxY.isPresent() || minZ.isPresent() || maxZ.isPresent()
