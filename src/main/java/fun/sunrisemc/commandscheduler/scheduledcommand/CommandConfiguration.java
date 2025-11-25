@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.cron.MCCron;
+import fun.sunrisemc.commandscheduler.utils.StringUtils;
 import fun.sunrisemc.commandscheduler.utils.YAMLUtils;
 
 public class CommandConfiguration {
@@ -177,15 +178,13 @@ public class CommandConfiguration {
             if (ticksFromServerStartString.isPresent()) {
                 String[] ticksFromServerStartSplit = ticksFromServerStartString.get().split(",");
                 for (String tickString : ticksFromServerStartSplit) {
-                    int tick;
-                    try {
-                        tick = Integer.parseInt(tickString.trim());
-                        ticksFromServerStart.add(tick);
-                    } 
-                    catch (NumberFormatException e) {
+                    Optional<Integer> tick = StringUtils.parseInteger(tickString);
+                    if (tick.isEmpty()) {
                         CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
                         continue;
                     }
+                    
+                    this.ticksFromServerStart.add(tick.get());
                 }
             }
         }
