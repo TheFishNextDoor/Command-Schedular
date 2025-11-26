@@ -1,8 +1,7 @@
 package fun.sunrisemc.commandscheduler.cron;
 
-import javax.annotation.Nullable;
-
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
@@ -34,15 +33,12 @@ public class MCCron {
     }
 
     public boolean matches(int secondValue, int minuteValue, int hourValue, int dayOfMonthValue, int monthValue, int dayOfWeekValue, int yearValue) {
-        if (second == null || minute == null || hour == null || dayOfMonth == null || month == null || dayOfWeek == null || year == null) {
-            return false;
-        }
-        return second.matches(secondValue) &&
-               minute.matches(minuteValue) &&
-               hour.matches(hourValue) &&
-               dayOfMonth.matches(dayOfMonthValue) &&
-               month.matches(monthValue) &&
-               dayOfWeek.matches(dayOfWeekValue) &&
-               year.matches(yearValue);
+        return second != null && second.matches(secondValue) &&
+               minute != null && minute.matches(minuteValue) &&
+               hour != null && hour.matches(hourValue) &&
+               dayOfMonth != null && dayOfMonth.matches(dayOfMonthValue) &&
+               month != null && month.matches(monthValue) &&
+               dayOfWeek != null && dayOfWeek.matches(dayOfWeekValue) &&
+               year != null && year.matches(yearValue);
     }
 }
