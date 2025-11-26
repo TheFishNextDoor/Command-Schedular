@@ -578,6 +578,8 @@ public class CommandConfiguration {
         return true;
     }
 
+    // Names
+
     @NotNull
     private static ArrayList<String> getCommandTypeNames() {
         ArrayList<String> names = new ArrayList<>();
