@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.cron.MCCron;
+import fun.sunrisemc.commandscheduler.utils.Names;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
 import fun.sunrisemc.commandscheduler.utils.YAMLUtils;
 
@@ -190,7 +191,7 @@ public class CommandConfiguration {
             Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
             if (commandType.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", getCommandTypeNames()));
+                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", Names.getCommandTypeNames()));
                 continue;
             }
 
@@ -244,7 +245,7 @@ public class CommandConfiguration {
             Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
             if (environment.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", getEnvironmentNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", Names.getEnvironmentNames()) + ".");
                 continue;
             }
             this.environments.add(environment.get());
@@ -254,7 +255,7 @@ public class CommandConfiguration {
             Optional<Biome> biome = StringUtils.parseBiome(biomeName);
             if (biome.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", getBiomeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", Names.getBiomeNames()) + ".");
                 continue;
             }
             this.biomes.add(biome.get());
@@ -264,7 +265,7 @@ public class CommandConfiguration {
             Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
             if (gameMode.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", getGameModeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", Names.getGameModeNames()) + ".");
                 continue;
             }
             this.gamemodes.add(gameMode.get());
@@ -576,47 +577,5 @@ public class CommandConfiguration {
         }
 
         return true;
-    }
-
-    // Names
-
-    @NotNull
-    private static ArrayList<String> getCommandTypeNames() {
-        ArrayList<String> names = new ArrayList<>();
-        for (CommandType commandType : CommandType.values()) {
-            String formattedName = StringUtils.formatName(commandType.name());
-            names.add(formattedName);
-        }
-        return names;
-    }
-
-    @NotNull
-    private static ArrayList<String> getEnvironmentNames() {
-        ArrayList<String> names = new ArrayList<>();
-        for (Environment environment : Environment.values()) {
-            String formattedName = StringUtils.formatName(environment.name());
-            names.add(formattedName);
-        }
-        return names;
-    }
-
-    @NotNull
-    private static ArrayList<String> getBiomeNames() {
-        ArrayList<String> names = new ArrayList<>();
-        for (Biome biome : Biome.values()) {
-            String formattedName = StringUtils.formatName(biome.name());
-            names.add(formattedName);
-        }
-        return names;
-    }
-
-    @NotNull
-    private static ArrayList<String> getGameModeNames() {
-        ArrayList<String> names = new ArrayList<>();
-        for (GameMode gameMode : GameMode.values()) {
-            String formattedName = StringUtils.formatName(gameMode.name());
-            names.add(formattedName);
-        }
-        return names;
     }
 }
