@@ -1,6 +1,6 @@
 name: CommandScheduler
 main: fun.sunrisemc.commandscheduler.CommandSchedulerPlugin
-version: 1.2.2
+version: ${project.version}
 api-version: 1.18
 author: TheFishNextDoor
 description: Schedule commands to run at specific points.
