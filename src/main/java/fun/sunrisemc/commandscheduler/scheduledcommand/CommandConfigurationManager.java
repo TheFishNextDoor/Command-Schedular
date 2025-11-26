@@ -33,6 +33,8 @@ public class CommandConfigurationManager {
     }
 
     public static void loadConfig() {
+        CommandSchedulerPlugin.logInfo("Loading command configurations...");
+
         scheduledCommandsMap.clear();
 
         YamlConfiguration config = ConfigFile.get("commands", false);
