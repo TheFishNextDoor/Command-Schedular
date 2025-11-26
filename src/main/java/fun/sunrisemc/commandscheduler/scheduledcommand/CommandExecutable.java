@@ -3,9 +3,10 @@ package fun.sunrisemc.commandscheduler.scheduledcommand;
 import java.util.Collection;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+
+import net.md_5.bungee.api.ChatColor;
 
 import org.jetbrains.annotations.NotNull;
 
