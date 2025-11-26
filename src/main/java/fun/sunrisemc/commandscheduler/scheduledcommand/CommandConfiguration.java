@@ -199,36 +199,29 @@ public class CommandConfiguration {
 
         // Load Behavior
 
-        if (config.contains(id + ".only-run-one-random-command")) {
-            this.onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command");
-        }
+        this.onlyRunOneRandomCommand = YAMLUtils.getBoolean(config, id + ".only-run-one-random-command").orElse(this.onlyRunOneRandomCommand);
 
         // Load Triggers
 
-        YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
+        this.intervalTicks = YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
 
-        if (config.contains(id + ".triggers.ticks-from-server-start")) {
-            Optional<String> ticksFromServerStartString = YAMLUtils.getString(config, id + ".triggers.ticks-from-server-start");
-            if (ticksFromServerStartString.isPresent()) {
-                String[] ticksFromServerStartSplit = ticksFromServerStartString.get().split(",");
-                for (String tickString : ticksFromServerStartSplit) {
-                    Optional<Integer> tick = StringUtils.parseInteger(tickString);
-                    if (tick.isEmpty()) {
-                        CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
-                        continue;
-                    }
-                    
-                    this.ticksFromServerStart.add(tick.get());
+        Optional<String> ticksFromServerStartString = YAMLUtils.getString(config, id + ".triggers.ticks-from-server-start");
+        if (ticksFromServerStartString.isPresent()) {
+            String[] ticksFromServerStartSplit = ticksFromServerStartString.get().split(",");
+            for (String tickString : ticksFromServerStartSplit) {
+                Optional<Integer> tick = StringUtils.parseInteger(tickString);
+                if (tick.isEmpty()) {
+                    CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid ticks from server start: " + tickString);
+                    continue;
                 }
+                
+                this.ticksFromServerStart.add(tick.get());
             }
         }
 
-        if (config.contains(id + ".triggers.cron")) {
-            Optional<String> cronExpression = YAMLUtils.getString(config, id + ".triggers.cron");
-            if (cronExpression.isPresent()) {
-                this.cron = Optional.of(new MCCron(cronExpression.get()));
-            }
-            
+        Optional<String> cronExpression = YAMLUtils.getString(config, id + ".triggers.cron");
+        if (cronExpression.isPresent()) {
+            this.cron = Optional.of(new MCCron(cronExpression.get()));
         }
 
         // Load Execute Conditions
@@ -239,9 +232,7 @@ public class CommandConfiguration {
 
         this.maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(maxPlayersWhoMeetConditionsToExecute);
 
-        if (config.contains(id + ".execute-conditions.all-players-meet-conditions")) {
-            this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions");
-        }
+        this.onlyExecuteIfAllPlayersMeetConditions = YAMLUtils.getBoolean(config, id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
 
         // Load Player Conditions
 
