@@ -62,7 +62,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
         // Reload
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION) && subCommand.equals("reload")) {
-            CommandSchedulerPlugin.loadConfigs();
+            CommandSchedulerPlugin.reload();
             sender.sendMessage(ChatColor.YELLOW + "Configuration reloaded.");
             return true;
         }

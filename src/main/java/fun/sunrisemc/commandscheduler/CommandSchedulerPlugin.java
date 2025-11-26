@@ -15,13 +15,17 @@ import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
 
 public class CommandSchedulerPlugin extends JavaPlugin {
 
+    // Plugin Instance
+
     private static @Nullable CommandSchedulerPlugin instance;
+
+    // Java Plugin
 
     @Override
     public void onEnable() {
         instance = this;
 
-        loadConfigs();
+        CommandConfigurationManager.loadConfig();
 
         registerCommand("commandscheduler", new CommandSchedulerCommand());
 
@@ -38,9 +42,7 @@ public class CommandSchedulerPlugin extends JavaPlugin {
         logInfo("Plugin disabled.");
     }
 
-    public static void loadConfigs() {
-        CommandConfigurationManager.loadConfig();
-    }
+    // Plugin Instance
 
     @NotNull
     public static CommandSchedulerPlugin getInstance() {
@@ -51,6 +53,14 @@ public class CommandSchedulerPlugin extends JavaPlugin {
             throw new IllegalStateException("Plugin instance is not initialized.");
         }
     }
+
+    // Reloading
+
+    public static void reload() {
+        CommandConfigurationManager.loadConfig();
+    }
+
+    // Logging
 
     public static void logInfo(@NotNull String message) {
         getInstance().getLogger().info(message);
@@ -63,6 +73,8 @@ public class CommandSchedulerPlugin extends JavaPlugin {
     public static void logSevere(@NotNull String message) {
         getInstance().getLogger().severe(message);
     }
+
+    // Command Registration
 
     private boolean registerCommand(@NotNull String commandName, @NotNull CommandExecutor commandExecutor) {
         PluginCommand command = getCommand(commandName);
