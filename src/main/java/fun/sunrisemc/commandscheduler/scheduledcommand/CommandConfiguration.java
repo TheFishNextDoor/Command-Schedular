@@ -325,15 +325,15 @@ public class CommandConfiguration {
     public void execute() {
         // Execute Conditions Check
         Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers();
-        if (minPlayersOnlineToExecute >= onlinePlayers.size()) {
+        if (minPlayersOnlineToExecute > onlinePlayers.size()) {
             return;
         }
 
         Collection<? extends Player> playersWhoMeetConditions = playerConditionsEnabled ? getPlayersWhoMeetConditions() : onlinePlayers;
-        if (minPlayersWhoMeetConditionsToExecute >= playersWhoMeetConditions.size()) {
+        if (minPlayersWhoMeetConditionsToExecute > playersWhoMeetConditions.size()) {
             return;
         }
-        if (maxPlayersWhoMeetConditionsToExecute <= playersWhoMeetConditions.size()) {
+        if (maxPlayersWhoMeetConditionsToExecute < playersWhoMeetConditions.size()) {
             return;
         }
         if (onlyExecuteIfAllPlayersMeetConditions && playersWhoMeetConditions.size() != onlinePlayers.size()) {
