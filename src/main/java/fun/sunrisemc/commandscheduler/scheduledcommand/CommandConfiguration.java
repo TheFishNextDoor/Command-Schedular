@@ -32,7 +32,8 @@ public class CommandConfiguration {
         "triggers",
         "execute-conditions",
         "player-conditions",
-        "only-run-one-random-command"
+        "only-run-one-random-command",
+        "execute-on"
     );
 
     private final @NotNull List<String> TRIGGERS = List.of(
@@ -84,6 +85,8 @@ public class CommandConfiguration {
     // Behavior
 
     private boolean onlyRunOneRandomCommand = false;
+
+    private ExecuteOn executeOn = ExecuteOn.PASS;
 
     // Triggers
 
