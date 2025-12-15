@@ -209,6 +209,11 @@ public class CommandConfiguration {
 
         this.onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command").orElse(this.onlyRunOneRandomCommand);
 
+        Optional<String> executeOnString = config.getString(id + ".execute-on");
+        if (executeOnString.isPresent()) {
+            this.executeOn = StringUtils.parseExecuteOn(executeOnString.get()).orElse(executeOn);
+        }
+
         // Load Triggers
 
         this.intervalTicks = config.getIntClamped(id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);

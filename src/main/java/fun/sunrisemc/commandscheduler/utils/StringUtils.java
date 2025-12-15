@@ -9,6 +9,7 @@ import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandType;
+import fun.sunrisemc.commandscheduler.scheduledcommand.ExecuteOn;
 
 public class StringUtils {
 
@@ -50,6 +51,17 @@ public class StringUtils {
             String normalizedNameB = normalize(commandType.name());
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(commandType);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<ExecuteOn> parseExecuteOn(@NotNull String executeOnName) {
+        String normalizedNameA = normalize(executeOnName);
+        for (ExecuteOn executeOn : ExecuteOn.values()) {
+            String normalizedNameB = normalize(executeOn.name());
+            if (normalizedNameA.equals(normalizedNameB)) {
+                return Optional.of(executeOn);
             }
         }
         return Optional.empty();
