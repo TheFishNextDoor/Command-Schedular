@@ -14,16 +14,15 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.cron.MCCron;
+import fun.sunrisemc.commandscheduler.file.ConfigFile;
 import fun.sunrisemc.commandscheduler.utils.Names;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
-import fun.sunrisemc.commandscheduler.utils.YAMLUtils;
 
 public class CommandConfiguration {
 
@@ -148,33 +147,33 @@ public class CommandConfiguration {
 
     private Optional<Boolean> frozen = Optional.empty();
 
-    protected CommandConfiguration(@NotNull YamlConfiguration config, @NotNull String id) {
+    protected CommandConfiguration(@NotNull ConfigFile config, @NotNull String id) {
         this.id = id;
 
         // Settings Validation
 
-        for (String setting : YAMLUtils.getKeys(config, id)) {
+        for (String setting : config.getKeys(id)) {
             if (!SETTINGS.contains(setting)) {
                 CommandSchedulerPlugin.logWarning("Invalid setting for command configuration " + id + ": " + setting + ".");
                 CommandSchedulerPlugin.logWarning("Valid settings are: " + String.join(", ", SETTINGS) + ".");
             }
         }
 
-        for (String trigger : YAMLUtils.getKeys(config, id + ".triggers")) {
+        for (String trigger : config.getKeys(id + ".triggers")) {
             if (!TRIGGERS.contains(trigger)) {
                 CommandSchedulerPlugin.logWarning("Invalid trigger for command configuration " + id + ": " + trigger + ".");
                 CommandSchedulerPlugin.logWarning("Valid triggers are: " + String.join(", ", TRIGGERS) + ".");
             }
         }
 
-        for (String executeCondition : YAMLUtils.getKeys(config, id + ".execute-conditions")) {
+        for (String executeCondition : config.getKeys(id + ".execute-conditions")) {
             if (!EXECUTE_CONDITIONS.contains(executeCondition)) {
                 CommandSchedulerPlugin.logWarning("Invalid execute condition for command configuration " + id + ": " + executeCondition + ".");
                 CommandSchedulerPlugin.logWarning("Valid execute conditions are: " + String.join(", ", EXECUTE_CONDITIONS) + ".");
             }
         }
 
-        for (String condition : YAMLUtils.getKeys(config, id + ".player-conditions")) {
+        for (String condition : config.getKeys(id + ".player-conditions")) {
             if (!PLAYER_CONDITIONS.contains(condition)) {
                 CommandSchedulerPlugin.logWarning("Invalid player condition for command configuration " + id + ": " + condition + ".");
                 CommandSchedulerPlugin.logWarning("Valid player conditions are: " + String.join(", ", PLAYER_CONDITIONS) + ".");
@@ -183,33 +182,36 @@ public class CommandConfiguration {
 
         // Load Commands
 
-        for (String commandString : config.getStringList(id + ".commands")) {
-            String[] commandStringSplit = commandString.split(":", 2);
-            if (commandStringSplit.length != 2) {
-                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command syntax for command: " + commandString);
-                CommandSchedulerPlugin.logWarning("Correct syntax is <commandType>:<command>");
-                continue;
-            }
+        Optional<List<String>> commandsInput = config.getStringList(id + ".commands");
+        if (commandsInput.isPresent()) {
+            for (String commandString : commandsInput.get()) {
+                String[] commandStringSplit = commandString.split(":", 2);
+                if (commandStringSplit.length != 2) {
+                    CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command syntax for command: " + commandString);
+                    CommandSchedulerPlugin.logWarning("Correct syntax is <commandType>:<command>");
+                    continue;
+                }
 
-            Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
-            if (commandType.isEmpty()) {
-                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", Names.getCommandTypeNames()));
-                continue;
-            }
+                Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
+                if (commandType.isEmpty()) {
+                    CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
+                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", Names.getCommandTypeNames()));
+                    continue;
+                }
 
-            this.commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
+                this.commands.add(new CommandExecutable(commandType.get(), commandStringSplit[1]));
+            }
         }
 
         // Load Behavior
 
-        this.onlyRunOneRandomCommand = YAMLUtils.getBoolean(config, id + ".only-run-one-random-command").orElse(this.onlyRunOneRandomCommand);
+        this.onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command").orElse(this.onlyRunOneRandomCommand);
 
         // Load Triggers
 
-        this.intervalTicks = YAMLUtils.getIntClamped(config, id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
+        this.intervalTicks = config.getIntClamped(id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
 
-        Optional<String> ticksFromServerStartString = YAMLUtils.getString(config, id + ".triggers.ticks-from-server-start");
+        Optional<String> ticksFromServerStartString = config.getString(id + ".triggers.ticks-from-server-start");
         if (ticksFromServerStartString.isPresent()) {
             String[] ticksFromServerStartSplit = ticksFromServerStartString.get().split(",");
             for (String tickString : ticksFromServerStartSplit) {
@@ -223,28 +225,28 @@ public class CommandConfiguration {
             }
         }
 
-        Optional<String> cronExpression = YAMLUtils.getString(config, id + ".triggers.cron");
+        Optional<String> cronExpression = config.getString(id + ".triggers.cron");
         if (cronExpression.isPresent()) {
             this.cron = Optional.of(new MCCron(cronExpression.get()));
         }
 
         // Load Execute Conditions
 
-        this.minPlayersOnlineToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(minPlayersOnlineToExecute);
+        this.minPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(minPlayersOnlineToExecute);
 
-        this.minPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(minPlayersWhoMeetConditionsToExecute);
+        this.minPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(minPlayersWhoMeetConditionsToExecute);
 
-        this.maxPlayersWhoMeetConditionsToExecute = YAMLUtils.getIntClamped(config, id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(maxPlayersWhoMeetConditionsToExecute);
+        this.maxPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(maxPlayersWhoMeetConditionsToExecute);
 
-        this.onlyExecuteIfAllPlayersMeetConditions = YAMLUtils.getBoolean(config, id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
+        this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
 
         // Load Player Conditions
 
-        for (String worldName : config.getStringList(id + ".player-conditions.worlds")) {
+        for (String worldName : config.getStringList(id + ".player-conditions.worlds").orElse(new ArrayList<>())) {
             this.worlds.add(StringUtils.normalize(worldName));
         }
 
-        for (String environmentName : config.getStringList(id + ".conditions.environments")) {
+        for (String environmentName : config.getStringList(id + ".conditions.environments").orElse(new ArrayList<>())) {
             Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
             if (environment.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
@@ -254,7 +256,7 @@ public class CommandConfiguration {
             this.environments.add(environment.get());
         }
 
-        for (String biomeName : config.getStringList(id + ".conditions.biomes")) {
+        for (String biomeName : config.getStringList(id + ".conditions.biomes").orElse(new ArrayList<>())) {
             Optional<Biome> biome = StringUtils.parseBiome(biomeName);
             if (biome.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
@@ -264,7 +266,7 @@ public class CommandConfiguration {
             this.biomes.add(biome.get());
         }
 
-        for (String gamemode : config.getStringList(id + ".conditions.gamemodes")) {
+        for (String gamemode : config.getStringList(id + ".conditions.gamemodes").orElse(new ArrayList<>())) {
             Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
             if (gameMode.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
@@ -274,45 +276,44 @@ public class CommandConfiguration {
             this.gamemodes.add(gameMode.get());
         }
 
-        for (String permission : config.getStringList(id + ".player-conditions.has-permissions")) {
+        for (String permission : config.getStringList(id + ".player-conditions.has-permissions").orElse(new ArrayList<>())) {
             this.hasPermissions.add(permission);
         }
 
-        for (String permission : config.getStringList(id + ".player-conditions.missing-permissions")) {
+        for (String permission : config.getStringList(id + ".player-conditions.missing-permissions").orElse(new ArrayList<>())) {
             this.missingPermissions.add(permission);
         }
 
-        this.minX = YAMLUtils.getInt(config, id + ".player-conditions.min-x");
-        this.maxX = YAMLUtils.getInt(config, id + ".player-conditions.max-x");
-        this.minY = YAMLUtils.getInt(config, id + ".player-conditions.min-y");
-        this.maxY = YAMLUtils.getInt(config, id + ".player-conditions.max-y");
-        this.minZ = YAMLUtils.getInt(config, id + ".player-conditions.min-z");
-        this.maxZ = YAMLUtils.getInt(config, id + ".player-conditions.max-z");
+        this.minX = config.getInt(id + ".player-conditions.min-x");
+        this.maxX = config.getInt(id + ".player-conditions.max-x");
+        this.minY = config.getInt(id + ".player-conditions.min-y");
+        this.maxY = config.getInt(id + ".player-conditions.max-y");
+        this.minZ = config.getInt(id + ".player-conditions.min-z");
+        this.maxZ = config.getInt(id + ".player-conditions.max-z");
 
-        this.inWater = YAMLUtils.getBoolean(config, id + ".player-conditions.in-water");
+        this.inWater = config.getBoolean(id + ".player-conditions.in-water");
 
-        this.sneaking = YAMLUtils.getBoolean(config, id + ".conditions.sneaking");
+        this.sneaking = config.getBoolean(id + ".conditions.sneaking");
+        
+        this.blocking = config.getBoolean(id + ".conditions.blocking");
 
-        this.blocking = YAMLUtils.getBoolean(config, id + ".conditions.blocking");
+        this.climbing = config.getBoolean(id + ".conditions.climbing");
 
-        this.climbing = YAMLUtils.getBoolean(config, id + ".conditions.climbing");
+        this.gliding = config.getBoolean(id + ".conditions.gliding");
 
-        this.gliding = YAMLUtils.getBoolean(config, id + ".conditions.gliding");
+        this.glowing = config.getBoolean(id + ".conditions.glowing");
 
-        this.glowing = YAMLUtils.getBoolean(config, id + ".conditions.glowing");
+        this.riptiding = config.getBoolean(id + ".conditions.riptiding");
 
-        this.riptiding = YAMLUtils.getBoolean(config, id + ".conditions.riptiding");
+        this.inVehicle = config.getBoolean(id + ".conditions.in-vehicle");
 
-        this.inVehicle = YAMLUtils.getBoolean(config, id + ".conditions.in-vehicle");
+        this.sprinting = config.getBoolean(id + ".conditions.sprinting");
 
-        this.sprinting = YAMLUtils.getBoolean(config, id + ".conditions.sprinting");
+        this.flying = config.getBoolean(id + ".conditions.flying");
 
-        this.flying = YAMLUtils.getBoolean(config, id + ".conditions.flying");
+        this.onFire = config.getBoolean(id + ".conditions.on-fire");
 
-        this.onFire = YAMLUtils.getBoolean(config, id + ".conditions.on-fire");
-
-        this.frozen = YAMLUtils.getBoolean(config, id + ".conditions.frozen");
-
+        this.frozen = config.getBoolean(id + ".conditions.frozen");
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX.isPresent() || maxX.isPresent() || minY.isPresent() || maxY.isPresent() || minZ.isPresent() || maxZ.isPresent()
             || inWater.isPresent() || sneaking.isPresent() || blocking.isPresent() || climbing.isPresent() || gliding.isPresent()

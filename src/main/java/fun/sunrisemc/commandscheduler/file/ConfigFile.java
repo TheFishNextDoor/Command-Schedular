@@ -12,27 +12,83 @@ import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
-public class ConfigFile {
+/**
+ * File Package Version 1.0.0
+ */
+public class ConfigFile extends YAMLWrapper {
+
+    // Instance //
+
+    protected final @NotNull String name;
+
+    public ConfigFile(@NotNull String name, @NotNull YamlConfiguration config) {
+        super(config);
+        this.name = name;
+    }
 
     @NotNull
-    public static YamlConfiguration get(@NotNull String name, boolean copyMissingDefaults) {
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean save() {
         // Get the file
-        File configFile = new File(getFolder(), name + ".yml");
+        File file = new File(getFolder(), this.name + ".yml");
+
+        // Save the configuration
+        try {
+            this.config.save(file);
+            return true;
+        } 
+        catch (Exception e) {
+            CommandSchedulerPlugin.logSevere("Failed to save configuration file for " + this.name + ".yml.");
+            return false;
+        }
+    }
+
+    public boolean delete() {
+        // Get the player data folder
+        File playerDataFolder = getFolder();
+        
+        // Get the file
+        File file = new File(playerDataFolder, this.name + ".yml");
+
+        // Check if the file exists
+        if (!file.exists()) {
+            return true;
+        }
+
+        // Attempt to delete the file
+        try {
+            return file.delete();
+        }
+        catch (Exception e) {
+            CommandSchedulerPlugin.logSevere("Failed to delete configuration file for " + this.name + ".yml.");
+            return false;
+        }
+    }
+
+    // Static Methods //
+
+    @NotNull
+    public static ConfigFile get(@NotNull String name, boolean copyMissingDefaults) {
+        // Get the file
+        File file = new File(getFolder(), name + ".yml");
 
         // Create the file if it does not exist
-        if (!configFile.exists()) {
+        if (!file.exists()) {
             try {
                 CommandSchedulerPlugin.getInstance().saveResource(name + ".yml", false);
             } 
             catch (Exception e) {
                 CommandSchedulerPlugin.logWarning("Failed to create configuration file for " + name + ".yml.");
                 e.printStackTrace();
-                return new YamlConfiguration();
+                return new ConfigFile(name, new YamlConfiguration());
             }
         }
 
         // Load the configuration
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         // Copy missing default values
         if (copyMissingDefaults) {
@@ -45,7 +101,7 @@ public class ConfigFile {
             } 
             catch (Exception e) {
                 CommandSchedulerPlugin.logSevere("Failed to get default configuration for " + name + ".yml.");
-                return config;
+                return new ConfigFile(name, config);
             }
 
             // Copy missing keys
@@ -58,62 +114,14 @@ public class ConfigFile {
             }
 
             if (changed) {
+                ConfigFile configFile = new ConfigFile(name, config);
+                configFile.save();
                 CommandSchedulerPlugin.logInfo("Added missing default values to " + name + ".yml.");
-                save(name, config);
+                return configFile;
             }
         }
 
-        return config;
-    }
-
-    public static boolean save(@NotNull String name, @NotNull YamlConfiguration config) {
-        // Get the file
-        File configFile = new File(getFolder(), name + ".yml");
-
-        // Save the configuration
-        try {
-            config.save(configFile);
-            return true;
-        } 
-        catch (Exception e) {
-            CommandSchedulerPlugin.logSevere("Failed to save configuration file for " + name + ".yml.");
-            return false;
-        }
-    }
-
-    public static boolean delete(@NotNull String name) {
-        // Get the player data folder
-        File playerDataFolder = getFolder();
-        
-        // Get the file
-        File configFile = new File(playerDataFolder, name + ".yml");
-
-        // Check if the file exists
-        if (!configFile.exists()) {
-            return true;
-        }
-
-        // Attempt to delete the file
-        try {
-            return configFile.delete();
-        }
-        catch (Exception e) {
-            CommandSchedulerPlugin.logSevere("Failed to delete configuration file for " + name + ".yml.");
-            return false;
-        }
-    }
-
-    @NotNull
-    public static File getFolder() {
-        // Get plugin folder
-        File pluginFolder = CommandSchedulerPlugin.getInstance().getDataFolder();
-
-        // Create folder if it does not exist
-        if (!pluginFolder.exists()) {
-            pluginFolder.mkdirs();
-        }
-
-        return pluginFolder;
+        return new ConfigFile(name, config);
     }
 
     @NotNull
@@ -141,5 +149,18 @@ public class ConfigFile {
         }
 
         return names;
+    }
+
+    @NotNull
+    protected static File getFolder() {
+        // Get plugin folder
+        File pluginFolder = CommandSchedulerPlugin.getInstance().getDataFolder();
+
+        // Create folder if it does not exist
+        if (!pluginFolder.exists()) {
+            pluginFolder.mkdirs();
+        }
+
+        return pluginFolder;
     }
 }

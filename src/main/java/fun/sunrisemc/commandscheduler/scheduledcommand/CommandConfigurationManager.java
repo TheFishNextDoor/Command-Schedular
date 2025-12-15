@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
@@ -37,8 +35,8 @@ public class CommandConfigurationManager {
 
         scheduledCommandsMap.clear();
 
-        YamlConfiguration config = ConfigFile.get("commands", false);
-        for (String id : config.getKeys(false)) {
+        ConfigFile config = ConfigFile.get("commands", false);
+        for (String id : config.getKeys()) {
             CommandConfiguration scheduledCommand = new CommandConfiguration(config, id);
             scheduledCommandsMap.put(id, scheduledCommand);
         }
