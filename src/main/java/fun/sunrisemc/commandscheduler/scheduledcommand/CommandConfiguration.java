@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.cron.MCCron;
 import fun.sunrisemc.commandscheduler.file.ConfigFile;
+import fun.sunrisemc.commandscheduler.player.PlayerProfile;
+import fun.sunrisemc.commandscheduler.player.PlayerProfileManager;
 import fun.sunrisemc.commandscheduler.utils.Names;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
@@ -344,6 +346,38 @@ public class CommandConfiguration {
             return;
         }
 
+        ArrayList<Player> playersToExecuteOn = new ArrayList<>();
+        if (playerConditionsEnabled) {
+            for (Player player : onlinePlayers) {
+                if (player == null) {
+                    continue;
+                }
+
+                PlayerProfile playerProfile = PlayerProfileManager.get(player);
+
+                boolean currentConditionCheckValue = playersWhoMeetConditions.contains(player);
+                boolean lastConditionCheckValue = playerProfile.getLastConditionCheckValue(this);
+
+                if (this.executeOn == ExecuteOn.PASS && currentConditionCheckValue) {
+                    playersToExecuteOn.add(player);
+                }
+                else if (this.executeOn == ExecuteOn.FAIL && !currentConditionCheckValue) {
+                    playersToExecuteOn.add(player);
+                }
+                else if (this.executeOn == ExecuteOn.RISING_EDGE && currentConditionCheckValue && !lastConditionCheckValue) {
+                    playersToExecuteOn.add(player);
+                }
+                else if (this.executeOn == ExecuteOn.FALLING_EDGE && !currentConditionCheckValue && lastConditionCheckValue) {
+                    playersToExecuteOn.add(player);
+                }
+                else if (this.executeOn == ExecuteOn.CHANGE && currentConditionCheckValue != lastConditionCheckValue) {
+                    playersToExecuteOn.add(player);
+                }
+
+                playerProfile.setLastConditionCheckValue(this, currentConditionCheckValue);
+            }
+        }
+
         // Execute Commands
         if (onlyRunOneRandomCommand) {
             if (commands.isEmpty()) {
@@ -351,11 +385,11 @@ public class CommandConfiguration {
             }
 
             int randomIndex = (int) (Math.random() * commands.size());
-            commands.get(randomIndex).execute(playersWhoMeetConditions);
+            commands.get(randomIndex).execute(playerConditionsEnabled ? playersToExecuteOn : onlinePlayers);
         }
         else {
             for (CommandExecutable command : commands) {
-                command.execute(playersWhoMeetConditions);
+                command.execute(playerConditionsEnabled ? playersToExecuteOn : onlinePlayers);
             }
         }
     }
