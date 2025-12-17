@@ -104,10 +104,11 @@ public class CommandConfiguration {
 
     // Execute Conditions
 
-    private int minPlayersOnlineToExecute = 0;
+    private int minPlayersOnlineToExecute;
+    private int maxPlayersOnlineToExecute;
 
-    private int minPlayersWhoMeetConditionsToExecute = 0;
-    private int maxPlayersWhoMeetConditionsToExecute = Integer.MAX_VALUE;
+    private int minPlayersWhoMeetConditionsToExecute;
+    private int maxPlayersWhoMeetConditionsToExecute;
 
     private boolean onlyExecuteIfAllPlayersMeetConditions = false;
 
@@ -251,11 +252,11 @@ public class CommandConfiguration {
 
         // Load Execute Conditions
 
-        this.minPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(minPlayersOnlineToExecute);
+        this.minPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(0);
+        this.maxPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.max-players-online", 0, Integer.MAX_VALUE).orElse(Integer.MAX_VALUE);
 
-        this.minPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(minPlayersWhoMeetConditionsToExecute);
-
-        this.maxPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(maxPlayersWhoMeetConditionsToExecute);
+        this.minPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(0);
+        this.maxPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(Integer.MAX_VALUE);
 
         this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
 
@@ -362,6 +363,9 @@ public class CommandConfiguration {
         if (minPlayersOnlineToExecute > onlinePlayers.size()) {
             return;
         }
+        if (maxPlayersOnlineToExecute < onlinePlayers.size()) {
+            return;
+        }
 
         Collection<? extends Player> playersWhoMeetConditions = playerConditionsEnabled ? getPlayersWhoMeetConditions() : onlinePlayers;
         if (minPlayersWhoMeetConditionsToExecute > playersWhoMeetConditions.size()) {
@@ -426,6 +430,10 @@ public class CommandConfiguration {
 
     public int getMinPlayersOnlineToExecute() {
         return minPlayersOnlineToExecute;
+    }
+
+    public int getMaxPlayersOnlineToExecute() {
+        return maxPlayersOnlineToExecute;
     }
 
     public int getMinPlayersWhoMeetConditionsToExecute() {
