@@ -25,6 +25,7 @@ import fun.sunrisemc.commandscheduler.permission.Permissions;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandExecutable;
+import fun.sunrisemc.commandscheduler.scheduledcommand.ExecuteOn;
 import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
@@ -99,6 +100,19 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             // Command Id
             
             sender.sendMessage(ChatColor.YELLOW + "Command Id: " + ChatColor.WHITE + commandConfig.getId());
+
+            // Behavior
+
+            boolean onlyRunRandom = commandConfig.isOnlyRunOneRandomCommand();
+            if (onlyRunRandom) {
+                sender.sendMessage(ChatColor.YELLOW + "Execute: " + ChatColor.WHITE + "One Random Command");
+            } 
+            else {
+                sender.sendMessage(ChatColor.YELLOW + "Execute: " + ChatColor.WHITE + "All Commands");
+            }
+
+            ExecuteOn executeOn = commandConfig.getExecuteOn();
+            sender.sendMessage(ChatColor.YELLOW + "Execute On: " + ChatColor.WHITE + StringUtils.titleCase(executeOn.name()));
 
             // Commands
 

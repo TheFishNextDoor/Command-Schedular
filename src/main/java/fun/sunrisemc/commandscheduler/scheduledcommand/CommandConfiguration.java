@@ -415,6 +415,16 @@ public class CommandConfiguration {
         }
     }
 
+    // Behavior Data
+
+    public boolean isOnlyRunOneRandomCommand() {
+        return onlyRunOneRandomCommand;
+    }
+
+    public @NotNull ExecuteOn getExecuteOn() {
+        return executeOn;
+    }
+
     // Tick Check
 
     public boolean shouldRunFromTick(int tickCount) {
