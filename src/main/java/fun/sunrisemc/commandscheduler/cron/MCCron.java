@@ -7,6 +7,8 @@ import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
 public class MCCron {
 
+    private final @NotNull String expression;
+
     private @Nullable CronField second = null;
     private @Nullable CronField minute = null;
     private @Nullable CronField hour = null;
@@ -16,6 +18,8 @@ public class MCCron {
     private @Nullable CronField year = null;
 
     public MCCron(@NotNull String expression) {
+        this.expression = expression;
+
         String[] parts = expression.split(" ");
         if (parts.length != 7) {
             CommandSchedulerPlugin.logWarning("Invalid cron expression: " + expression);
@@ -30,6 +34,15 @@ public class MCCron {
         month = new CronField(parts[4], 1, 12);
         dayOfWeek = new CronField(parts[5], 0, 6);
         year = new CronField(parts[6], 1970, 2106);
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return getExpression();
+    }
+
+    public @NotNull String getExpression() {
+        return expression;
     }
 
     public boolean matches(int secondValue, int minuteValue, int hourValue, int dayOfMonthValue, int monthValue, int dayOfWeekValue, int yearValue) {

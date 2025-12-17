@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
+import fun.sunrisemc.commandscheduler.cron.MCCron;
 import fun.sunrisemc.commandscheduler.permission.Permissions;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
@@ -132,8 +133,9 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
             Optional<Integer> intervalTicks = commandConfig.getIntervalTicks();
             HashSet<Integer> ticksFromServerStart = commandConfig.getTicksFromServerStart();
+            Optional<MCCron> cron = commandConfig.getCron();
 
-            if (intervalTicks.isPresent() || !ticksFromServerStart.isEmpty()) {
+            if (intervalTicks.isPresent() || !ticksFromServerStart.isEmpty() || cron.isPresent()) {
                 sender.sendMessage(ChatColor.YELLOW + "Triggers:");
             }
 
@@ -144,6 +146,10 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             if (!ticksFromServerStart.isEmpty()) {
                 String ticksFromServerStartString = String.join(", ", ticksFromServerStart.stream().map(String::valueOf).toArray(String[]::new));
                 sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Ticks From Server Start: " + ChatColor.WHITE + ticksFromServerStartString);
+            }
+
+            if (cron.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Cron: " + ChatColor.WHITE + cron.get().toString());
             }
 
             // Player Conditions

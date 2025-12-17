@@ -480,6 +480,12 @@ public class CommandConfiguration {
         return cron.get().matches(second, minute, hour, dayOfMonth, month, dayOfWeek, year);
     }
 
+    // Cron Check Data
+    
+    public Optional<MCCron> getCron() {
+        return cron;
+    }
+
     // Player Condition Checks
 
     @NotNull
