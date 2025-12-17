@@ -92,7 +92,7 @@ public class CommandConfiguration {
 
     private boolean onlyRunOneRandomCommand = false;
 
-    private ExecuteOn executeOn = ExecuteOn.PASS;
+    private ExecuteOn executeOn = ExecuteOn.CONDITIONS_PASS;
 
     // Triggers
 
@@ -379,19 +379,19 @@ public class CommandConfiguration {
                 boolean currentConditionCheckValue = playersWhoMeetConditions.contains(player);
                 boolean lastConditionCheckValue = playerProfile.getLastConditionCheckValue(this);
 
-                if (this.executeOn == ExecuteOn.PASS && currentConditionCheckValue) {
+                if (this.executeOn == ExecuteOn.CONDITIONS_PASS && currentConditionCheckValue) {
                     playersToExecuteOn.add(player);
                 }
-                else if (this.executeOn == ExecuteOn.FAIL && !currentConditionCheckValue) {
+                else if (this.executeOn == ExecuteOn.CONDITIONS_FAIL && !currentConditionCheckValue) {
                     playersToExecuteOn.add(player);
                 }
-                else if (this.executeOn == ExecuteOn.RISING_EDGE && currentConditionCheckValue && !lastConditionCheckValue) {
+                else if (this.executeOn == ExecuteOn.CONDITIONS_CHANGE_RISING_EDGE && currentConditionCheckValue && !lastConditionCheckValue) {
                     playersToExecuteOn.add(player);
                 }
-                else if (this.executeOn == ExecuteOn.FALLING_EDGE && !currentConditionCheckValue && lastConditionCheckValue) {
+                else if (this.executeOn == ExecuteOn.CONDITIONS_CHANGE_FALLING_EDGE && !currentConditionCheckValue && lastConditionCheckValue) {
                     playersToExecuteOn.add(player);
                 }
-                else if (this.executeOn == ExecuteOn.CHANGE && currentConditionCheckValue != lastConditionCheckValue) {
+                else if (this.executeOn == ExecuteOn.CONDITIONS_CHANGE && currentConditionCheckValue != lastConditionCheckValue) {
                     playersToExecuteOn.add(player);
                 }
 
