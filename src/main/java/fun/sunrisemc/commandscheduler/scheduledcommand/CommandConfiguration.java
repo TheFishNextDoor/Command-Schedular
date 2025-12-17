@@ -422,6 +422,24 @@ public class CommandConfiguration {
         }
     }
 
+    // Execution Conditions Data
+
+    public int getMinPlayersOnlineToExecute() {
+        return minPlayersOnlineToExecute;
+    }
+
+    public int getMinPlayersWhoMeetConditionsToExecute() {
+        return minPlayersWhoMeetConditionsToExecute;
+    }
+
+    public int getMaxPlayersWhoMeetConditionsToExecute() {
+        return maxPlayersWhoMeetConditionsToExecute;
+    }
+
+    public boolean isOnlyExecuteIfAllPlayersMeetConditions() {
+        return onlyExecuteIfAllPlayersMeetConditions;
+    }
+
     // Behavior Data
 
     public boolean isOnlyRunOneRandomCommand() {
