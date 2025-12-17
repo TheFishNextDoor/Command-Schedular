@@ -265,7 +265,7 @@ public class CommandConfiguration {
             this.worlds.add(StringUtils.normalize(worldName));
         }
 
-        for (String environmentName : config.getStringList(id + ".conditions.environments").orElse(new ArrayList<>())) {
+        for (String environmentName : config.getStringList(id + ".player-conditions.environments").orElse(new ArrayList<>())) {
             Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
             if (environment.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
@@ -275,7 +275,7 @@ public class CommandConfiguration {
             this.environments.add(environment.get());
         }
 
-        for (String biomeName : config.getStringList(id + ".conditions.biomes").orElse(new ArrayList<>())) {
+        for (String biomeName : config.getStringList(id + ".player-conditions.biomes").orElse(new ArrayList<>())) {
             Optional<Biome> biome = StringUtils.parseBiome(biomeName);
             if (biome.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
@@ -285,7 +285,7 @@ public class CommandConfiguration {
             this.biomes.add(biome.get());
         }
 
-        for (String gamemode : config.getStringList(id + ".conditions.gamemodes").orElse(new ArrayList<>())) {
+        for (String gamemode : config.getStringList(id + ".player-conditions.gamemodes").orElse(new ArrayList<>())) {
             Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
             if (gameMode.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
@@ -312,27 +312,27 @@ public class CommandConfiguration {
 
         this.inWater = config.getBoolean(id + ".player-conditions.in-water");
 
-        this.sneaking = config.getBoolean(id + ".conditions.sneaking");
+        this.sneaking = config.getBoolean(id + ".player-conditions.sneaking");
         
-        this.blocking = config.getBoolean(id + ".conditions.blocking");
+        this.blocking = config.getBoolean(id + ".player-conditions.blocking");
 
-        this.climbing = config.getBoolean(id + ".conditions.climbing");
+        this.climbing = config.getBoolean(id + ".player-conditions.climbing");
 
-        this.gliding = config.getBoolean(id + ".conditions.gliding");
+        this.gliding = config.getBoolean(id + ".player-conditions.gliding");
 
-        this.glowing = config.getBoolean(id + ".conditions.glowing");
+        this.glowing = config.getBoolean(id + ".player-conditions.glowing");
 
-        this.riptiding = config.getBoolean(id + ".conditions.riptiding");
+        this.riptiding = config.getBoolean(id + ".player-conditions.riptiding");
 
-        this.inVehicle = config.getBoolean(id + ".conditions.in-vehicle");
+        this.inVehicle = config.getBoolean(id + ".player-conditions.in-vehicle");
 
-        this.sprinting = config.getBoolean(id + ".conditions.sprinting");
+        this.sprinting = config.getBoolean(id + ".player-conditions.sprinting");
 
-        this.flying = config.getBoolean(id + ".conditions.flying");
+        this.flying = config.getBoolean(id + ".player-conditions.flying");
 
-        this.onFire = config.getBoolean(id + ".conditions.on-fire");
+        this.onFire = config.getBoolean(id + ".player-conditions.on-fire");
 
-        this.frozen = config.getBoolean(id + ".conditions.frozen");
+        this.frozen = config.getBoolean(id + ".player-conditions.frozen");
         this.playerConditionsEnabled = !worlds.isEmpty() || !environments.isEmpty() || !biomes.isEmpty()
             || minX.isPresent() || maxX.isPresent() || minY.isPresent() || maxY.isPresent() || minZ.isPresent() || maxZ.isPresent()
             || inWater.isPresent() || sneaking.isPresent() || blocking.isPresent() || climbing.isPresent() || gliding.isPresent()
