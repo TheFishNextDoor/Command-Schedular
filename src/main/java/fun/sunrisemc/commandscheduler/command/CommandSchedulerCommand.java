@@ -340,6 +340,9 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
     private void sendHelpMessage(@NotNull CommandSender sender) {
         sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Command Scheduler Help");
         sender.sendMessage(ChatColor.YELLOW + "/commandscheduler help " + ChatColor.WHITE + "Show this help message");
+        if (sender.hasPermission(Permissions.VIEW_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler view <commandId> " + ChatColor.WHITE + "View details of a scheduled command");
+        }
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION)) {
             sender.sendMessage(ChatColor.YELLOW + "/commandscheduler reload " + ChatColor.WHITE + "Reload the plugin");
         }
