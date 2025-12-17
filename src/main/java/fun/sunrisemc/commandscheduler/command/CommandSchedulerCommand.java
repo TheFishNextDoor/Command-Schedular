@@ -115,7 +115,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             Optional<Integer> intervalTicks = commandConfig.getIntervalTicks();
             HashSet<Integer> ticksFromServerStart = commandConfig.getTicksFromServerStart();
 
-            if (!intervalTicks.isPresent() && !ticksFromServerStart.isEmpty()) {
+            if (intervalTicks.isPresent() || !ticksFromServerStart.isEmpty()) {
                 sender.sendMessage(ChatColor.YELLOW + "Triggers:");
             }
 
