@@ -3,6 +3,7 @@ package fun.sunrisemc.commandscheduler.scheduledcommand;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -331,6 +332,11 @@ public class CommandConfiguration {
     @NotNull
     public String getId() {
         return id;
+    }
+
+    @NotNull
+    public List<@NotNull CommandExecutable> getCommands() {
+        return Collections.unmodifiableList(commands);
     }
 
     public void execute() {

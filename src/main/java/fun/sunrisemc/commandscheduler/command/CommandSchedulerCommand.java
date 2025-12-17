@@ -20,7 +20,9 @@ import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.permission.Permissions;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfiguration;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
+import fun.sunrisemc.commandscheduler.scheduledcommand.CommandExecutable;
 import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
+import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
 public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
@@ -32,6 +34,9 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             ArrayList<String> completions = new ArrayList<>();
             if (sender.hasPermission(Permissions.RELOAD_PERMISSION)) {
                 completions.add("reload");
+            }
+            if (sender.hasPermission(Permissions.VIEW_PERMISSION)) {
+                completions.add("view");
             }
             if (sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
                 completions.add("execute");
@@ -66,6 +71,32 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             CommandSchedulerPlugin.reload();
             sender.sendMessage(ChatColor.YELLOW + "Configuration reloaded.");
             return true;
+        }
+        // View
+        else if (sender.hasPermission(Permissions.VIEW_PERMISSION) && subCommand.equals("view")) {
+            if (args.length < 2) {
+                sender.sendMessage(ChatColor.RED + "Please specify a command ID to execute.");
+                return true;
+            }
+
+            String commandId = args[1];
+            Optional<CommandConfiguration> commandConfigOptional = CommandConfigurationManager.get(commandId);
+            if (commandConfigOptional.isEmpty()) {
+                sender.sendMessage(ChatColor.RED + "No scheduled command found with ID: " + commandId);
+                return true;
+            }
+
+            CommandConfiguration commandConfig = commandConfigOptional.get();
+
+            sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Scheduled Command Details");
+            sender.sendMessage(ChatColor.YELLOW + "Command Id: " + ChatColor.WHITE + commandConfig.getId());
+
+            for (CommandExecutable commandExecutable : commandConfig.getCommands()) {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + StringUtils.titleCase(commandExecutable.getType().name()) + " -> " + ChatColor.WHITE + commandExecutable.getCommand());
+            }
+
+            return true;
+            
         }
         // Execute
         else if (sender.hasPermission(Permissions.EXECUTE_PERMISSION) && subCommand.equals("execute")) {
@@ -104,6 +135,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "Ticks from Server Start: " + ChatColor.WHITE + ticksFromServerStart);
             return true;
         }
+        // Help
         else {
             sendHelpMessage(sender);
             return true;

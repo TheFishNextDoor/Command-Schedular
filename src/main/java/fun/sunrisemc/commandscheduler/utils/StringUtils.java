@@ -99,6 +99,19 @@ public class StringUtils {
         }
         return Optional.empty();
     }
+    
+    // Casing
+
+    @NotNull
+    public static String titleCase(@NotNull String str) {
+        str = str.replace("_", " ");
+        String[] words = str.split(" ");
+        String titleCase = "";
+        for (String word : words) {
+            titleCase += word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase() + " ";
+        }
+        return titleCase.trim();
+    }
 
     // Formatting
 
