@@ -2,6 +2,7 @@ package fun.sunrisemc.commandscheduler.command;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +98,17 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             }
             for (CommandExecutable commandExecutable : commands) {
                 sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + StringUtils.titleCase(commandExecutable.getType().name()) + " -> " + ChatColor.WHITE + commandExecutable.getCommand());
+            }
+
+            Optional<Integer> intervalTicks = commandConfig.getIntervalTicks();
+            if (intervalTicks.isPresent()) {
+                sender.sendMessage(ChatColor.YELLOW + "Interval Ticks: " + ChatColor.WHITE + intervalTicks.get());
+            }
+
+            HashSet<Integer> ticksFromServerStart = commandConfig.getTicksFromServerStart();
+            if (!ticksFromServerStart.isEmpty()) {
+                String ticksFromServerStartString = String.join(", ", ticksFromServerStart.stream().map(String::valueOf).toArray(String[]::new));
+                sender.sendMessage(ChatColor.YELLOW + "Ticks From Server Start: " + ChatColor.WHITE + ticksFromServerStartString);
             }
 
             return true;

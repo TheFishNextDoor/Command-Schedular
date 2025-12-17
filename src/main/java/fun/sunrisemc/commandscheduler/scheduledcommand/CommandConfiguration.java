@@ -29,6 +29,8 @@ import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
 public class CommandConfiguration {
 
+    // Settings Lists
+
     private final @NotNull List<String> SETTINGS = List.of(
         "commands",
         "triggers",
@@ -77,6 +79,8 @@ public class CommandConfiguration {
         "on-fire",
         "frozen"
     );
+
+    // Identification
 
     private final @NotNull String id;
 
@@ -329,15 +333,21 @@ public class CommandConfiguration {
             || onFire.isPresent() || frozen.isPresent();
     }
 
+    // Identification
+
     @NotNull
     public String getId() {
         return id;
     }
 
+    // Commands
+
     @NotNull
     public List<@NotNull CommandExecutable> getCommands() {
         return Collections.unmodifiableList(commands);
     }
+
+    // Execution
 
     public void execute() {
         // Execute Conditions Check
@@ -423,6 +433,16 @@ public class CommandConfiguration {
             return false;
         }
         return ticksFromServerStart.contains(tickCount);
+    }
+
+    // Tick Check Data
+
+    public Optional<Integer> getIntervalTicks() {
+        return intervalTicks;
+    }
+
+    public @NotNull HashSet<Integer> getTicksFromServerStart() {
+        return ticksFromServerStart;
     }
 
     // Cron Check
