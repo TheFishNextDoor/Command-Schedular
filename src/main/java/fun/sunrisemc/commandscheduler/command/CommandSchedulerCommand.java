@@ -54,8 +54,12 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
         else if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
 
+            // /commandscheduler view <commandId>
+            if (sender.hasPermission(Permissions.VIEW_PERMISSION) && subcommand.equals("view")) {
+                return CommandConfigurationManager.getIds();
+            }
             // /commandscheduler execute <commandId>
-            if (subcommand.equals("execute") && sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
+            else if (subcommand.equals("execute") && sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
                 return CommandConfigurationManager.getIds();
             }
         }
