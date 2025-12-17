@@ -199,7 +199,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             Optional<Integer> minY = commandConfig.getMinY();
             Optional<Integer> maxY = commandConfig.getMaxY();
             if (minY.isPresent() && maxY.isEmpty()) {
-                sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "great than " + ChatColor.WHITE + minY.get().toString());
+                sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "greater than " + ChatColor.WHITE + minY.get().toString());
             }
             else if (minY.isEmpty() && maxY.isPresent()) {
                 sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "less than " + ChatColor.WHITE + maxY.get().toString());
@@ -211,7 +211,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             Optional<Integer> minZ = commandConfig.getMinZ();
             Optional<Integer> maxZ = commandConfig.getMaxZ();
             if (minZ.isPresent() && maxZ.isEmpty()) {
-                sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "great than " + ChatColor.WHITE + minZ.get().toString());
+                sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "greater than " + ChatColor.WHITE + minZ.get().toString());
             }
             else if (minZ.isEmpty() && maxZ.isPresent()) {
                 sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "less than " + ChatColor.WHITE + maxZ.get().toString());
