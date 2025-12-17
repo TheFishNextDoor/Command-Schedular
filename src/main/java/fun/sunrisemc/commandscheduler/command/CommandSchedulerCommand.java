@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.World.Environment;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -89,8 +92,15 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
             CommandConfiguration commandConfig = commandConfigOptional.get();
 
+            // Header
+
             sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Scheduled Command Details");
+
+            // Command Id
+            
             sender.sendMessage(ChatColor.YELLOW + "Command Id: " + ChatColor.WHITE + commandConfig.getId());
+
+            // Commands
 
             List<CommandExecutable> commands = commandConfig.getCommands();
             if (!commands.isEmpty()) {
@@ -100,15 +110,160 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + StringUtils.titleCase(commandExecutable.getType().name()) + " -> " + ChatColor.WHITE + commandExecutable.getCommand());
             }
 
+            // Triggers
+
             Optional<Integer> intervalTicks = commandConfig.getIntervalTicks();
-            if (intervalTicks.isPresent()) {
-                sender.sendMessage(ChatColor.YELLOW + "Interval Ticks: " + ChatColor.WHITE + intervalTicks.get());
+            HashSet<Integer> ticksFromServerStart = commandConfig.getTicksFromServerStart();
+
+            if (!intervalTicks.isPresent() && !ticksFromServerStart.isEmpty()) {
+                sender.sendMessage(ChatColor.YELLOW + "Triggers:");
             }
 
-            HashSet<Integer> ticksFromServerStart = commandConfig.getTicksFromServerStart();
+            if (intervalTicks.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Tick Interval: " + ChatColor.WHITE + intervalTicks.get());
+            }
+
             if (!ticksFromServerStart.isEmpty()) {
                 String ticksFromServerStartString = String.join(", ", ticksFromServerStart.stream().map(String::valueOf).toArray(String[]::new));
-                sender.sendMessage(ChatColor.YELLOW + "Ticks From Server Start: " + ChatColor.WHITE + ticksFromServerStartString);
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Ticks From Server Start: " + ChatColor.WHITE + ticksFromServerStartString);
+            }
+
+            // Player Conditions
+
+            if (commandConfig.isPlayerConditionsEnabled()) {
+                sender.sendMessage(ChatColor.YELLOW + "Player Conditions:");
+            }
+
+            HashSet<String> worlds = commandConfig.getWorlds();
+            if (!worlds.isEmpty()) {
+                String worldsString = String.join(" or ", worlds);
+                sender.sendMessage(ChatColor.WHITE + "World " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + worldsString);
+            }
+
+            HashSet<Environment> environments = commandConfig.getEnvironments();
+            if (!environments.isEmpty()) {
+                String environmentsString = String.join(" or ", environments.stream().map(Enum::name).toArray(String[]::new));
+                sender.sendMessage(ChatColor.WHITE + "- Environment " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + environmentsString);
+            }
+
+            HashSet<Biome> biomes = commandConfig.getBiomes();
+            if (!biomes.isEmpty()) {
+                String biomesString = String.join(" or ", biomes.stream().map(Enum::name).toArray(String[]::new));
+                sender.sendMessage(ChatColor.WHITE + "- Biome " + ChatColor.YELLOW + " equals " + ChatColor.WHITE + biomesString);
+            }
+
+            HashSet<GameMode> gameModes = commandConfig.getGamemodes();
+            if (!gameModes.isEmpty()) {
+                String gameModesString = String.join(" or ", gameModes.stream().map(Enum::name).toArray(String[]::new));
+                sender.sendMessage(ChatColor.WHITE + "- Game Mode " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + gameModesString);
+            }
+
+            ArrayList<String> hasPermissions = commandConfig.getHasPermissions();
+            if (!hasPermissions.isEmpty()) {
+                String hasPermissionsString = String.join(", ", hasPermissions);
+                sender.sendMessage(ChatColor.WHITE + "- Has Permissions: " + hasPermissionsString);
+            }
+
+            ArrayList<String> missingPermissions = commandConfig.getMissingPermissions();
+            if (!missingPermissions.isEmpty()) {
+                String missingPermissionsString = String.join(", ", missingPermissions);
+                sender.sendMessage(ChatColor.WHITE + "- Does Not Have Permissions: " + missingPermissionsString);
+            }
+
+            Optional<Integer> minX = commandConfig.getMinX();
+            Optional<Integer> maxX = commandConfig.getMaxX();
+            if (minX.isPresent() && maxX.isEmpty()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position X " + ChatColor.YELLOW+ "greater than " + ChatColor.WHITE + minX.get().toString());
+            }
+            else if (minX.isEmpty() && maxX.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position X " + ChatColor.YELLOW+ "less than " + ChatColor.WHITE + maxX.get().toString());
+            }
+            else if (minX.isPresent() && maxX.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position X " + ChatColor.YELLOW+ "between " + ChatColor.WHITE + minX.get().toString() + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxX.get().toString());
+            }
+
+            Optional<Integer> minY = commandConfig.getMinY();
+            Optional<Integer> maxY = commandConfig.getMaxY();
+            if (minY.isPresent() && maxY.isEmpty()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "great than " + ChatColor.WHITE + minY.get().toString());
+            }
+            else if (minY.isEmpty() && maxY.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "less than " + ChatColor.WHITE + maxY.get().toString());
+            }
+            else if (minY.isPresent() && maxY.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Y " + ChatColor.YELLOW+ "between " + ChatColor.WHITE + minY.get().toString() + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxY.get().toString());
+            }
+
+            Optional<Integer> minZ = commandConfig.getMinZ();
+            Optional<Integer> maxZ = commandConfig.getMaxZ();
+            if (minZ.isPresent() && maxZ.isEmpty()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "great than " + ChatColor.WHITE + minZ.get().toString());
+            }
+            else if (minZ.isEmpty() && maxZ.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "less than " + ChatColor.WHITE + maxZ.get().toString());
+            }
+            else if (minZ.isPresent() && maxZ.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Position Z " + ChatColor.YELLOW+ "between " + ChatColor.WHITE + minZ.get().toString() + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxZ.get().toString());
+            }
+
+            Optional<Boolean> inWater = commandConfig.getInWater();
+            if (inWater.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- In Water " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(inWater.get().toString()));
+            }
+
+            Optional<Boolean> sneaking = commandConfig.getSneaking();
+            if (sneaking.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Sneaking " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(sneaking.get().toString()));
+            }
+
+            Optional<Boolean> blocking = commandConfig.getBlocking();
+            if (blocking.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Blocking " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(blocking.get().toString()));
+            }
+
+            Optional<Boolean> climbing = commandConfig.getClimbing();
+            if (climbing.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Climbing " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(climbing.get().toString()));
+            }
+
+            Optional<Boolean> gliding = commandConfig.getGliding();
+            if (gliding.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Gliding " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(gliding.get().toString()));
+            }
+
+            Optional<Boolean> glowing = commandConfig.getGlowing();
+            if (glowing.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Glowing " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(glowing.get().toString()));
+            }
+
+            Optional<Boolean> riptiding = commandConfig.getRiptiding();
+            if (riptiding.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Riptiding " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(riptiding.get().toString()));
+            }
+
+            Optional<Boolean> inVehicle = commandConfig.getInVehicle();
+            if (inVehicle.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- In Vehicle " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(inVehicle.get().toString()));
+            }
+
+            Optional<Boolean> sprinting = commandConfig.getSprinting();
+            if (sprinting.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Sprinting " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(sprinting.get().toString()));
+            }
+
+            Optional<Boolean> flying = commandConfig.getFlying();
+            if (flying.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Flying " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(flying.get().toString()));
+            }
+
+            Optional<Boolean> onFire = commandConfig.getOnFire();
+            if (onFire.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- On Fire " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(onFire.get().toString()));
+            }
+
+            Optional<Boolean> frozen = commandConfig.getFrozen();
+            if (frozen.isPresent()) {
+                sender.sendMessage(ChatColor.WHITE + "- Frozen " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + StringUtils.titleCase(frozen.get().toString()));
             }
 
             return true;

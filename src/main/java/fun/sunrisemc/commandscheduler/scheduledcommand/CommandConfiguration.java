@@ -647,4 +647,106 @@ public class CommandConfiguration {
 
         return true;
     }
+
+    // Condition Check Data
+
+    public boolean isPlayerConditionsEnabled() {
+        return playerConditionsEnabled;
+    }
+
+    public @NotNull HashSet<String> getWorlds() {
+        return worlds;
+    }
+
+    public @NotNull HashSet<Environment> getEnvironments() {
+        return environments;
+    }
+
+    public @NotNull HashSet<Biome> getBiomes() {
+        return biomes;
+    }
+
+    public @NotNull HashSet<GameMode> getGamemodes() {
+        return gamemodes;
+    }
+
+    public @NotNull ArrayList<String> getHasPermissions() {
+        return hasPermissions;
+    }
+
+    public @NotNull ArrayList<String> getMissingPermissions() {
+        return missingPermissions;
+    }
+
+    public Optional<Integer> getMinX() {
+        return minX;
+    }
+
+    public Optional<Integer> getMaxX() {
+        return maxX;
+    }
+
+    public Optional<Integer> getMinY() {
+        return minY;
+    }
+
+    public Optional<Integer> getMaxY() {
+        return maxY;
+    }
+
+    public Optional<Integer> getMinZ() {
+        return minZ;
+    }
+
+    public Optional<Integer> getMaxZ() {
+        return maxZ;
+    }
+
+    public Optional<Boolean> getInWater() {
+        return inWater;
+    }
+
+    public Optional<Boolean> getSneaking() {
+        return sneaking;
+    }
+
+    public Optional<Boolean> getBlocking() {
+        return blocking;
+    }
+
+    public Optional<Boolean> getClimbing() {
+        return climbing;
+    }
+
+    public Optional<Boolean> getGliding() {
+        return gliding;
+    }
+
+    public Optional<Boolean> getGlowing() {
+        return glowing;
+    }
+
+    public Optional<Boolean> getRiptiding() {
+        return riptiding;
+    }
+
+    public Optional<Boolean> getInVehicle() {
+        return inVehicle;
+    }
+
+    public Optional<Boolean> getSprinting() {
+        return sprinting;
+    }
+
+    public Optional<Boolean> getFlying() {
+        return flying;
+    }
+
+    public Optional<Boolean> getOnFire() {
+        return onFire;
+    }
+
+    public Optional<Boolean> getFrozen() {
+        return frozen;
+    }
 }
