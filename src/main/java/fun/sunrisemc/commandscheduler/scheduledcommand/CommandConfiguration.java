@@ -216,7 +216,14 @@ public class CommandConfiguration {
 
         Optional<String> executeOnString = config.getString(id + ".execute-on");
         if (executeOnString.isPresent()) {
-            this.executeOn = StringUtils.parseExecuteOn(executeOnString.get()).orElse(executeOn);
+            Optional<ExecuteOn> executeOnInput = StringUtils.parseExecuteOn(executeOnString.get());
+            if (executeOnInput.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
+                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", Names.getExecuteOnNames()) + ".");
+            }
+            else {
+                this.executeOn = executeOnInput.get();
+            }
         }
 
         // Load Triggers
