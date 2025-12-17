@@ -91,7 +91,11 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Scheduled Command Details");
             sender.sendMessage(ChatColor.YELLOW + "Command Id: " + ChatColor.WHITE + commandConfig.getId());
 
-            for (CommandExecutable commandExecutable : commandConfig.getCommands()) {
+            List<CommandExecutable> commands = commandConfig.getCommands();
+            if (!commands.isEmpty()) {
+                sender.sendMessage(ChatColor.YELLOW + "Commands:");
+            }
+            for (CommandExecutable commandExecutable : commands) {
                 sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + StringUtils.titleCase(commandExecutable.getType().name()) + " -> " + ChatColor.WHITE + commandExecutable.getCommand());
             }
 
