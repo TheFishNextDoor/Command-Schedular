@@ -154,7 +154,7 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(ChatColor.YELLOW + "Execute Conditions:");
 
             ExecuteOn executeOn = commandConfig.getExecuteOn();
-            sender.sendMessage(ChatColor.YELLOW + "Execute On: " + ChatColor.WHITE + StringUtils.titleCase(executeOn.name()));
+            sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute On: " + ChatColor.WHITE + StringUtils.titleCase(executeOn.name()));
 
             boolean onlyExecuteIfAllPlayersMeetConditions = commandConfig.isOnlyExecuteIfAllPlayersMeetConditions();
             if (onlyExecuteIfAllPlayersMeetConditions) {
