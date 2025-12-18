@@ -381,15 +381,19 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
     private void sendHelpMessage(@NotNull CommandSender sender) {
         sender.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "Command Scheduler Help");
-        sender.sendMessage(ChatColor.YELLOW + "/commandscheduler help " + ChatColor.WHITE + "Show this help message");
+        sender.sendMessage(ChatColor.YELLOW + "/commandscheduler help " + ChatColor.WHITE + "Show this help message.");
         if (sender.hasPermission(Permissions.VIEW_PERMISSION)) {
-            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler view <commandId> " + ChatColor.WHITE + "View details of a scheduled command");
+            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler view <commandId> " + ChatColor.WHITE + "View details of a scheduled command.");
         }
         if (sender.hasPermission(Permissions.RELOAD_PERMISSION)) {
-            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler reload " + ChatColor.WHITE + "Reload the plugin");
+            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler reload " + ChatColor.WHITE + "Reload the plugin.");
         }
         if (sender.hasPermission(Permissions.EXECUTE_PERMISSION)) {
-            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler execute <commandId> " + ChatColor.WHITE + "Execute a scheduled command immediately");
+            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler execute <commandId> " + ChatColor.WHITE + "Execute a scheduled command immediately.");
         }
+        if (sender.hasPermission(Permissions.TIME_PERMISSION)) {
+            sender.sendMessage(ChatColor.YELLOW + "/commandscheduler time " + ChatColor.WHITE + "Check the current server time. Useful for configuring a cron.");
+        }
+        sender.sendMessage(ChatColor.YELLOW + "Note: Commands you do not have permission for will not be shown.");
     }
 }
