@@ -196,37 +196,43 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
             HashSet<String> worlds = commandConfig.getWorlds();
             if (!worlds.isEmpty()) {
-                String worldsString = String.join(" or ", worlds);
-                sender.sendMessage(ChatColor.WHITE + "World " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + worldsString);
+                String orString = ChatColor.YELLOW + " or " + ChatColor.WHITE;
+                String worldsString = String.join(orString, worlds);
+                sender.sendMessage(ChatColor.WHITE + "- World " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + worldsString);
             }
 
             HashSet<Environment> environments = commandConfig.getEnvironments();
             if (!environments.isEmpty()) {
-                String environmentsString = String.join(" or ", environments.stream().map(Enum::name).toArray(String[]::new));
+                String orString = ChatColor.YELLOW + " or " + ChatColor.WHITE;
+                String environmentsString = String.join(orString, environments.stream().map(Enum::name).toArray(String[]::new));
                 sender.sendMessage(ChatColor.WHITE + "- Environment " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + environmentsString);
             }
 
             HashSet<Biome> biomes = commandConfig.getBiomes();
             if (!biomes.isEmpty()) {
-                String biomesString = String.join(" or ", biomes.stream().map(Enum::name).toArray(String[]::new));
+                String orString = ChatColor.YELLOW + " or " + ChatColor.WHITE;
+                String biomesString = String.join(orString, biomes.stream().map(Enum::name).toArray(String[]::new));
                 sender.sendMessage(ChatColor.WHITE + "- Biome " + ChatColor.YELLOW + " equals " + ChatColor.WHITE + biomesString);
             }
 
             HashSet<GameMode> gameModes = commandConfig.getGamemodes();
             if (!gameModes.isEmpty()) {
-                String gameModesString = String.join(" or ", gameModes.stream().map(Enum::name).toArray(String[]::new));
+                String orString = ChatColor.YELLOW + " or " + ChatColor.WHITE;
+                String gameModesString = String.join(orString, gameModes.stream().map(Enum::name).toArray(String[]::new));
                 sender.sendMessage(ChatColor.WHITE + "- Game Mode " + ChatColor.YELLOW + "equals " + ChatColor.WHITE + gameModesString);
             }
 
             ArrayList<String> hasPermissions = commandConfig.getHasPermissions();
             if (!hasPermissions.isEmpty()) {
-                String hasPermissionsString = String.join(", ", hasPermissions);
+                String andString = ChatColor.YELLOW + " and " + ChatColor.WHITE;
+                String hasPermissionsString = String.join(andString, hasPermissions);
                 sender.sendMessage(ChatColor.WHITE + "- Has Permissions: " + hasPermissionsString);
             }
 
             ArrayList<String> missingPermissions = commandConfig.getMissingPermissions();
             if (!missingPermissions.isEmpty()) {
-                String missingPermissionsString = String.join(", ", missingPermissions);
+                String orString = ChatColor.YELLOW + " or " + ChatColor.WHITE;
+                String missingPermissionsString = String.join(orString, missingPermissions);
                 sender.sendMessage(ChatColor.WHITE + "- Does Not Have Permissions: " + missingPermissionsString);
             }
 
