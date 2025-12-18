@@ -51,7 +51,7 @@
 # This example will run the command "worlds" for any player who walks into the area (-213x, 163y, 363z) to (-227x, 174y, 371z).
 #spawn-portal:
 #  commands:
-#  - 'for-each-player: spawn'
+#  - 'op-for-each-player: spawn'
 #  triggers:
 #    interval-ticks: 1
 #  execute-conditions:
