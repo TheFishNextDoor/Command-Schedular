@@ -1,44 +1,67 @@
-# This example will say hello to all players every 30 seconds.
-#hello-players:
-#  commands:
-#    - 'message: Hello, {player}!'
-#  triggers:
-#    interval-ticks: 600
+##########
+## Tips ##
+##########
 
-# This example will broadcast random help messages every 10 minutes.
-#random-help-message:
-#  commands:
-#    - 'broadcast: Remember to read the rules!'
-#    - 'broadcast: Need help? Ask a staff member!'
-#    - 'broadcast: Check out our website for more info!'
+# This example will send random tip messages every 5 minutes.
+#tips:
 #  only-run-one-random-command: true
-#  triggers:
-#    interval-ticks: 12000
-
-# This example will give all players $100 every 5 minutes.
-#five-minute-cash:
 #  commands:
-#    - 'console-for-each-player: eco give {player} 100'
+#  - 'broadcast: &bType /spawn to get to spawn!'
+#  - 'broadcast: &6Type /bal to check  your balance!'
+#  - 'broadcast: &eType /shop to get to the shop!'
 #  triggers:
-#    cron: '0 */5 * * * * *' # second, minute, hour, day of month, month, day of week, year
+#    interval-ticks: 6000
 
-# This example will broadcast a message one minute after the server starts.
-#one-minute-message:
-#  commands:
-#    - 'broadcast: The server has been running for one minute!'
-#  triggers:
-#    ticks-from-server-start: 1200
+###################
+## Daily Restart ##
+###################
 
-# This example will make all players run /spawn every hour on the hour.
-#hourly-spawn:
+# This example will send a warning message 5 minutes before 5 AM.
+#daily-restart-warning-5m:
 #  commands:
-#    - 'for-each-player: spawn'
+#  - 'broadcast: &e&lDaily server restart in 5 minutes!'
 #  triggers:
-#    cron: '0 0 * * * * *' # second, minute, hour, day of month, month, day of week, year
+#    cron: '0 55 4 * * * *'
 
-# This example will stop the server at midnight every day.
-#midnight-shutdown:
+# This example will send a warning message 1 minute before 5 AM.
+#daily-restart-warning-1m:
 #  commands:
-#    - 'console: stop'
+#  - 'broadcast: &6&lDaily server restart in 1 minute!'
 #  triggers:
-#    cron: '0 0 0 * * * *' # second, minute, hour, day of month, month, day of week, year
+#    cron: '0 59 4 * * * *'
+
+# This example will send a warning message 10 seconds before 5 AM.
+#daily-restart-warning-10s:
+#  commands:
+#  - 'broadcast: &c&lDaily server restart in 10 seconds!'
+#  triggers:
+#    cron: '50 59 4 * * * *'
+
+# This example will restart the server at 5 AM.
+#daily-restart:
+#  commands:
+#  - 'console: stop'
+#  triggers:
+#    cron: '0 0 5 * * * *'
+
+#############
+## Portals ##
+#############
+
+# This example will run the command "worlds" for any player who walks into the area (-213x, 163y, 363z) to (-227x, 174y, 371z).
+#spawn-portal:
+#  commands:
+#  - 'for-each-player: spawn'
+#  triggers:
+#    interval-ticks: 1
+#  execute-conditions:
+#    execute-on: conditions-change-rising-edge
+#  player-conditions:
+#    min-x: -234
+#    min-y: 163
+#    min-z: 363
+#    max-x: -227
+#    max-y: 174
+#    max-z: 371
+#    worlds:
+#    - 'world'
