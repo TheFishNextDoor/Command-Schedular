@@ -45,6 +45,28 @@ public class CommandExecutable {
                 server.dispatchCommand(Bukkit.getConsoleSender(), parsedCommand);
             }
         }
+        else if (type == CommandType.OP_FOR_EACH_PLAYER) {
+            for (Player player : playersWhoMeetConditions) {
+                if (player == null) {
+                    continue;
+                }
+
+                String parsedCommand = command.replace("{player}", player.getName());
+
+                boolean wasOp = player.isOp();
+                try {
+                    if (!wasOp) {
+                        player.setOp(true);
+                    }
+                    player.performCommand(parsedCommand);
+                } 
+                finally {
+                    if (!wasOp) {
+                        player.setOp(false);
+                    }
+                }
+            }
+        }
         else if (type == CommandType.FOR_EACH_PLAYER) {
             for (Player player : playersWhoMeetConditions) {
                 if (player == null) {
