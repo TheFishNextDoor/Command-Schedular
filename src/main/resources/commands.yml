@@ -37,7 +37,7 @@
 #  triggers:
 #    cron: '50 59 4 * * * *'
 
-# This example will restart the server at 5 AM.
+# This example will stop the server at 5 AM.
 #daily-restart:
 #  commands:
 #  - 'console: stop'
