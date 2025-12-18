@@ -36,8 +36,7 @@ public class CommandConfiguration {
         "triggers",
         "execute-conditions",
         "player-conditions",
-        "only-run-one-random-command",
-        "execute-on"
+        "only-run-one-random-command"
     );
 
     private final @NotNull List<String> TRIGGERS = List.of(
@@ -47,10 +46,11 @@ public class CommandConfiguration {
     );
 
     private final @NotNull List<String> EXECUTE_CONDITIONS = List.of(
+        "execute-on",
+        "all-players-meet-conditions",
         "min-players-online",
         "min-players-who-meet-conditions",
-        "max-players-who-meet-conditions",
-        "all-players-meet-conditions"
+        "max-players-who-meet-conditions"
     );
 
     private final @NotNull List<String> PLAYER_CONDITIONS = List.of(
@@ -92,8 +92,6 @@ public class CommandConfiguration {
 
     private boolean onlyRunOneRandomCommand = false;
 
-    private ExecuteOn executeOn = ExecuteOn.CONDITIONS_PASS;
-
     // Triggers
 
     private Optional<Integer> intervalTicks = Optional.empty();
@@ -104,13 +102,15 @@ public class CommandConfiguration {
 
     // Execute Conditions
 
+    private ExecuteOn executeOn = ExecuteOn.CONDITIONS_PASS;
+
+    private boolean onlyExecuteIfAllPlayersMeetConditions = false;
+
     private int minPlayersOnlineToExecute;
     private int maxPlayersOnlineToExecute;
 
     private int minPlayersWhoMeetConditionsToExecute;
     private int maxPlayersWhoMeetConditionsToExecute;
-
-    private boolean onlyExecuteIfAllPlayersMeetConditions = false;
 
     // Player Conditions
 
@@ -215,18 +215,6 @@ public class CommandConfiguration {
 
         this.onlyRunOneRandomCommand = config.getBoolean(id + ".only-run-one-random-command").orElse(this.onlyRunOneRandomCommand);
 
-        Optional<String> executeOnString = config.getString(id + ".execute-on");
-        if (executeOnString.isPresent()) {
-            Optional<ExecuteOn> executeOnInput = StringUtils.parseExecuteOn(executeOnString.get());
-            if (executeOnInput.isEmpty()) {
-                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
-                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", Names.getExecuteOnNames()) + ".");
-            }
-            else {
-                this.executeOn = executeOnInput.get();
-            }
-        }
-
         // Load Triggers
 
         this.intervalTicks = config.getIntClamped(id + ".triggers.interval-ticks", 1, Integer.MAX_VALUE);
@@ -252,13 +240,25 @@ public class CommandConfiguration {
 
         // Load Execute Conditions
 
+        Optional<String> executeOnString = config.getString(id + ".execute-conditions.execute-on");
+        if (executeOnString.isPresent()) {
+            Optional<ExecuteOn> executeOnInput = StringUtils.parseExecuteOn(executeOnString.get());
+            if (executeOnInput.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
+                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", Names.getExecuteOnNames()) + ".");
+            }
+            else {
+                this.executeOn = executeOnInput.get();
+            }
+        }
+
+        this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
+
         this.minPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.min-players-online", 0, Integer.MAX_VALUE).orElse(0);
         this.maxPlayersOnlineToExecute = config.getIntClamped(id + ".execute-conditions.max-players-online", 0, Integer.MAX_VALUE).orElse(Integer.MAX_VALUE);
 
         this.minPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.min-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(0);
         this.maxPlayersWhoMeetConditionsToExecute = config.getIntClamped(id + ".execute-conditions.max-players-who-meet-conditions", 0, Integer.MAX_VALUE).orElse(Integer.MAX_VALUE);
-
-        this.onlyExecuteIfAllPlayersMeetConditions = config.getBoolean(id + ".execute-conditions.all-players-meet-conditions").orElse(this.onlyExecuteIfAllPlayersMeetConditions);
 
         // Load Player Conditions
 
