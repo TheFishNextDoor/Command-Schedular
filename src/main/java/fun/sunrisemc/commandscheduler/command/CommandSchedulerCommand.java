@@ -152,6 +152,43 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Cron: " + ChatColor.WHITE + cron.get().toString());
             }
 
+            // Execute Conditions
+
+            sender.sendMessage(ChatColor.YELLOW + "Execute Conditions:");
+
+            int minPlayersOnlineToExecute = commandConfig.getMinPlayersOnlineToExecute();
+            int maxPlayersOnlineToExecute = commandConfig.getMaxPlayersOnlineToExecute();
+            if (minPlayersOnlineToExecute > 0 && maxPlayersOnlineToExecute == Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Online " + ChatColor.YELLOW + " at least " + ChatColor.WHITE + minPlayersOnlineToExecute);
+            }
+            else if (minPlayersOnlineToExecute == 0 && maxPlayersOnlineToExecute < Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Online " + ChatColor.YELLOW + " at most " + ChatColor.WHITE + maxPlayersOnlineToExecute);
+            }
+            else if (minPlayersOnlineToExecute > 0 && maxPlayersOnlineToExecute < Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Online " + ChatColor.YELLOW + " between " + ChatColor.WHITE + minPlayersOnlineToExecute + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxPlayersOnlineToExecute);
+            }
+
+            int minPlayersWhoMeetConditionsToExecute = commandConfig.getMinPlayersWhoMeetConditionsToExecute();
+            int maxPlayersWhoMeetConditionsToExecute = commandConfig.getMaxPlayersWhoMeetConditionsToExecute();
+            if (minPlayersWhoMeetConditionsToExecute > 0 && maxPlayersWhoMeetConditionsToExecute == Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Who Meet Conditions " + ChatColor.YELLOW + " at least " + ChatColor.WHITE + minPlayersWhoMeetConditionsToExecute);
+            }
+            else if (minPlayersWhoMeetConditionsToExecute == 0 && maxPlayersWhoMeetConditionsToExecute < Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Who Meet Conditions " + ChatColor.YELLOW + " at most " + ChatColor.WHITE + maxPlayersWhoMeetConditionsToExecute);
+            }
+            else if (minPlayersWhoMeetConditionsToExecute > 0 && maxPlayersWhoMeetConditionsToExecute < Integer.MAX_VALUE) {
+                sender.sendMessage(ChatColor.WHITE + "- Players Who Meet Conditions " + ChatColor.YELLOW + " between " + ChatColor.WHITE + minPlayersWhoMeetConditionsToExecute + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxPlayersWhoMeetConditionsToExecute);
+            }
+
+            boolean onlyExecuteIfAllPlayersMeetConditions = commandConfig.isOnlyExecuteIfAllPlayersMeetConditions();
+            if (onlyExecuteIfAllPlayersMeetConditions) {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "All Players Meet Conditions");
+            }
+            else {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "Any Player Meets Conditions");
+            }
+
+
             // Player Conditions
 
             if (commandConfig.isPlayerConditionsEnabled()) {
