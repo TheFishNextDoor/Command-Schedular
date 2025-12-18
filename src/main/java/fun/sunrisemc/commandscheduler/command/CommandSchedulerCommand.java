@@ -116,9 +116,6 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.YELLOW + "Execute: " + ChatColor.WHITE + "All Commands");
             }
 
-            ExecuteOn executeOn = commandConfig.getExecuteOn();
-            sender.sendMessage(ChatColor.YELLOW + "Execute On: " + ChatColor.WHITE + StringUtils.titleCase(executeOn.name()));
-
             // Commands
 
             List<CommandExecutable> commands = commandConfig.getCommands();
@@ -156,6 +153,17 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
 
             sender.sendMessage(ChatColor.YELLOW + "Execute Conditions:");
 
+            ExecuteOn executeOn = commandConfig.getExecuteOn();
+            sender.sendMessage(ChatColor.YELLOW + "Execute On: " + ChatColor.WHITE + StringUtils.titleCase(executeOn.name()));
+
+            boolean onlyExecuteIfAllPlayersMeetConditions = commandConfig.isOnlyExecuteIfAllPlayersMeetConditions();
+            if (onlyExecuteIfAllPlayersMeetConditions) {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "All Players Meet Conditions");
+            }
+            else {
+                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "Any Player Meets Conditions");
+            }
+
             int minPlayersOnlineToExecute = commandConfig.getMinPlayersOnlineToExecute();
             int maxPlayersOnlineToExecute = commandConfig.getMaxPlayersOnlineToExecute();
             if (minPlayersOnlineToExecute > 0 && maxPlayersOnlineToExecute == Integer.MAX_VALUE) {
@@ -179,15 +187,6 @@ public class CommandSchedulerCommand implements CommandExecutor, TabCompleter {
             else if (minPlayersWhoMeetConditionsToExecute > 0 && maxPlayersWhoMeetConditionsToExecute < Integer.MAX_VALUE) {
                 sender.sendMessage(ChatColor.WHITE + "- Players Who Meet Conditions " + ChatColor.YELLOW + " between " + ChatColor.WHITE + minPlayersWhoMeetConditionsToExecute + ChatColor.YELLOW + " and " + ChatColor.WHITE + maxPlayersWhoMeetConditionsToExecute);
             }
-
-            boolean onlyExecuteIfAllPlayersMeetConditions = commandConfig.isOnlyExecuteIfAllPlayersMeetConditions();
-            if (onlyExecuteIfAllPlayersMeetConditions) {
-                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "All Players Meet Conditions");
-            }
-            else {
-                sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + "Execute If: " + ChatColor.WHITE + "Any Player Meets Conditions");
-            }
-
 
             // Player Conditions
 
