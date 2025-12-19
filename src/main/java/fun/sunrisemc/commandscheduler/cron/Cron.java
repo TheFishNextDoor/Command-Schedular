@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 
-public class MCCron {
+public class Cron {
 
     private final @NotNull String expression;
 
@@ -17,7 +17,7 @@ public class MCCron {
     private @Nullable CronField dayOfWeek = null;
     private @Nullable CronField year = null;
 
-    public MCCron(@NotNull String expression) {
+    public Cron(@NotNull String expression) {
         this.expression = expression;
 
         String[] parts = expression.split(" ");

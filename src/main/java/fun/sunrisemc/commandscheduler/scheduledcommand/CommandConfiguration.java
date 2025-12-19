@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
-import fun.sunrisemc.commandscheduler.cron.MCCron;
+import fun.sunrisemc.commandscheduler.cron.Cron;
 import fun.sunrisemc.commandscheduler.file.ConfigFile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfileManager;
@@ -97,7 +97,7 @@ public class CommandConfiguration {
 
     private @NotNull HashSet<Integer> ticksFromServerStart = new HashSet<>();
 
-    private Optional<MCCron> cron = Optional.empty();
+    private Optional<Cron> cron = Optional.empty();
 
     // Execute Conditions
 
@@ -234,7 +234,7 @@ public class CommandConfiguration {
 
         Optional<String> cronExpression = config.getString(id + ".triggers.cron");
         if (cronExpression.isPresent()) {
-            this.cron = Optional.of(new MCCron(cronExpression.get()));
+            this.cron = Optional.of(new Cron(cronExpression.get()));
         }
 
         // Load Execute Conditions
@@ -507,7 +507,7 @@ public class CommandConfiguration {
 
     // Cron Check Data
     
-    public Optional<MCCron> getCron() {
+    public Optional<Cron> getCron() {
         return cron;
     }
 
