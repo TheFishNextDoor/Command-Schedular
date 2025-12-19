@@ -24,7 +24,6 @@ import fun.sunrisemc.commandscheduler.cron.MCCron;
 import fun.sunrisemc.commandscheduler.file.ConfigFile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfileManager;
-import fun.sunrisemc.commandscheduler.utils.Names;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
 public class CommandConfiguration {
@@ -203,7 +202,7 @@ public class CommandConfiguration {
                 Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
                 if (commandType.isEmpty()) {
                     CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", Names.getCommandTypeNames()));
+                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", StringUtils.getCommandTypeNames()));
                     continue;
                 }
 
@@ -245,7 +244,7 @@ public class CommandConfiguration {
             Optional<ExecuteOn> executeOnInput = StringUtils.parseExecuteOn(executeOnString.get());
             if (executeOnInput.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
-                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", Names.getExecuteOnNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", StringUtils.getExecuteOnNames()) + ".");
             }
             else {
                 this.executeOn = executeOnInput.get();
@@ -270,7 +269,7 @@ public class CommandConfiguration {
             Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
             if (environment.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", Names.getEnvironmentNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", StringUtils.getEnvironmentNames()) + ".");
                 continue;
             }
             this.environments.add(environment.get());
@@ -280,7 +279,7 @@ public class CommandConfiguration {
             Optional<Biome> biome = StringUtils.parseBiome(biomeName);
             if (biome.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", Names.getBiomeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", StringUtils.getBiomeNames()) + ".");
                 continue;
             }
             this.biomes.add(biome.get());
@@ -290,7 +289,7 @@ public class CommandConfiguration {
             Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
             if (gameMode.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", Names.getGameModeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", StringUtils.getGameModeNames()) + ".");
                 continue;
             }
             this.gamemodes.add(gameMode.get());

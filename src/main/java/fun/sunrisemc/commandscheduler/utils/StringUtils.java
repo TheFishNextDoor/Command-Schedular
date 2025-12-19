@@ -1,5 +1,6 @@
 package fun.sunrisemc.commandscheduler.utils;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.bukkit.GameMode;
@@ -13,7 +14,7 @@ import fun.sunrisemc.commandscheduler.scheduledcommand.ExecuteOn;
 
 public class StringUtils {
 
-    // Parsing
+    // Number Parsing
 
     public static Optional<Integer> parseInteger(@NotNull String str) {
         try {
@@ -45,6 +46,8 @@ public class StringUtils {
         }
     }
 
+    // Command Type
+
     public static Optional<CommandType> parseCommandType(@NotNull String commandTypeName) {
         String normalizedNameA = normalize(commandTypeName);
         for (CommandType commandType : CommandType.values()) {
@@ -55,6 +58,18 @@ public class StringUtils {
         }
         return Optional.empty();
     }
+
+    @NotNull
+    public static ArrayList<String> getCommandTypeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (CommandType commandType : CommandType.values()) {
+            String formattedName = kebabCase(commandType.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    // Execute On
 
     public static Optional<ExecuteOn> parseExecuteOn(@NotNull String executeOnName) {
         String normalizedNameA = normalize(executeOnName);
@@ -67,6 +82,18 @@ public class StringUtils {
         return Optional.empty();
     }
 
+    @NotNull
+    public static ArrayList<String> getExecuteOnNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (ExecuteOn executeOn : ExecuteOn.values()) {
+            String formattedName = kebabCase(executeOn.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    // Environment
+
     public static Optional<Environment> parseEnvironment(@NotNull String environmentName) {
         String normalizedNameA = normalize(stripMinecraftTag(environmentName));
         for (Environment environment : Environment.values()) {
@@ -77,6 +104,18 @@ public class StringUtils {
         }
         return Optional.empty();
     }
+
+    @NotNull
+    public static ArrayList<String> getEnvironmentNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (Environment environment : Environment.values()) {
+            String formattedName = kebabCase(environment.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    // Biome
 
     public static Optional<Biome> parseBiome(@NotNull String biomeName) {
         String normalizedNameA = normalize(stripMinecraftTag(biomeName));
@@ -89,6 +128,18 @@ public class StringUtils {
         return Optional.empty();
     }
 
+    @NotNull
+    public static ArrayList<String> getBiomeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (Biome biome : Biome.values()) {
+            String formattedName = kebabCase(biome.name());
+            names.add(formattedName);
+        }
+        return names;
+    }
+
+    // Game Mode
+
     public static Optional<GameMode> parseGameMode(@NotNull String gameModeName) {
         String normalizedNameA = normalize(stripMinecraftTag(gameModeName));
         for (GameMode gameMode : GameMode.values()) {
@@ -98,6 +149,16 @@ public class StringUtils {
             }
         }
         return Optional.empty();
+    }
+
+    @NotNull
+    public static ArrayList<String> getGameModeNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (GameMode gameMode : GameMode.values()) {
+            String formattedName = kebabCase(gameMode.name());
+            names.add(formattedName);
+        }
+        return names;
     }
     
     // Casing
@@ -113,16 +174,15 @@ public class StringUtils {
         return titleCase.trim();
     }
 
-    // Formatting
-
     @NotNull
-    public static String formatName(@NotNull String name) {
-        return name.toLowerCase()
-                   .replace("minecraft:", "")
-                   .replace(" ", "-")
-                   .replace("_", "-")
-                   .replace(":", "-")
-                   .trim();
+    public static String kebabCase(@NotNull String str) {
+        str = str.replace("_", " ").replace("-", " ").replace(":", " ").replace(".", " ");
+        String[] words = str.split(" ");
+        String kebabCase = "";
+        for (String word : words) {
+            kebabCase += word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase() + "-";
+        }
+        return kebabCase.trim();
     }
 
     // Normalization
