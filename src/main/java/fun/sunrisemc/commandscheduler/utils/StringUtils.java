@@ -17,7 +17,7 @@ public class StringUtils {
 
     public static Optional<Integer> parseInteger(@NotNull String str) {
         try {
-            int value = Integer.parseInt(str);
+            int value = Integer.parseInt(str.trim());
             return Optional.of(value);
         } 
         catch (NumberFormatException e) {
@@ -27,7 +27,7 @@ public class StringUtils {
 
     public static Optional<Double> parseDouble(@NotNull String str) {
         try {
-            double value = Double.parseDouble(str);
+            double value = Double.parseDouble(str.trim());
             return Optional.of(value);
         } 
         catch (NumberFormatException e) {
@@ -37,7 +37,7 @@ public class StringUtils {
 
     public static Optional<Long> parseLong(@NotNull String str) {
         try {
-            long value = Long.parseLong(str);
+            long value = Long.parseLong(str.trim());
             return Optional.of(value);
         } 
         catch (NumberFormatException e) {
@@ -68,9 +68,9 @@ public class StringUtils {
     }
 
     public static Optional<Environment> parseEnvironment(@NotNull String environmentName) {
-        String normalizedNameA = normalize(environmentName);
+        String normalizedNameA = normalize(stripMinecraftTag(environmentName));
         for (Environment environment : Environment.values()) {
-            String normalizedNameB = normalize(environment.name());
+            String normalizedNameB = normalize(stripMinecraftTag(environment.name()));
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(environment);
             }
@@ -79,9 +79,9 @@ public class StringUtils {
     }
 
     public static Optional<Biome> parseBiome(@NotNull String biomeName) {
-        String normalizedNameA = normalize(biomeName);
+        String normalizedNameA = normalize(stripMinecraftTag(biomeName));
         for (Biome biome : Biome.values()) {
-            String normalizedNameB = normalize(biome.name());
+            String normalizedNameB = normalize(stripMinecraftTag(biome.name()));
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(biome);
             }
@@ -90,9 +90,9 @@ public class StringUtils {
     }
 
     public static Optional<GameMode> parseGameMode(@NotNull String gameModeName) {
-        String normalizedNameA = normalize(gameModeName);
+        String normalizedNameA = normalize(stripMinecraftTag(gameModeName));
         for (GameMode gameMode : GameMode.values()) {
-            String normalizedNameB = normalize(gameMode.name());
+            String normalizedNameB = normalize(stripMinecraftTag(gameMode.name()));
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(gameMode);
             }
@@ -104,7 +104,7 @@ public class StringUtils {
 
     @NotNull
     public static String titleCase(@NotNull String str) {
-        str = str.replace("_", " ");
+        str = str.replace("_", " ").replace("-", " ").replace(":", " ").replace(".", " ");
         String[] words = str.split(" ");
         String titleCase = "";
         for (String word : words) {
@@ -128,13 +128,18 @@ public class StringUtils {
     // Normalization
 
     @NotNull
+    public static String stripMinecraftTag(@NotNull String str) {
+        return str.replace("minecraft:", "");
+    }
+
+    @NotNull
     public static String normalize(@NotNull String str) {
         return str.toLowerCase()
-                  .replace("minecraft:", "")
                   .replace(" ", "")
                   .replace("_", "")
                   .replace("-", "")
+                  .replace(".", "")
                   .replace(":", "")
                   .trim();
-    }   
+    }
 }
