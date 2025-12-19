@@ -176,13 +176,13 @@ public class StringUtils {
 
     @NotNull
     public static String kebabCase(@NotNull String str) {
-        str = str.replace("_", " ").replace("-", " ").replace(":", " ").replace(".", " ");
+        str = str.toLowerCase().replace("_", " ").replace("-", " ").replace(":", " ").replace(".", " ").trim();
         String[] words = str.split(" ");
         String kebabCase = "";
         for (String word : words) {
-            kebabCase += word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase() + "-";
+            kebabCase += word + "-";
         }
-        return kebabCase.trim();
+        return kebabCase.substring(0, kebabCase.length() - 1);
     }
 
     // Normalization
