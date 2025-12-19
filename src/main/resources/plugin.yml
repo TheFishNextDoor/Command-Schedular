@@ -13,6 +13,8 @@ commands:
 permissions:
   commandscheduler.reload:
     description: Allows use of /commandscheduler reload.
+  commandscheduler.view:
+    description: Allows use of /commandscheduler view.
   commandscheduler.execute:
     description: Allows use of /commandscheduler execute.
   commandscheduler.time:
