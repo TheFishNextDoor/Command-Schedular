@@ -109,7 +109,7 @@ public class StringUtils {
     public static ArrayList<String> getEnvironmentNames() {
         ArrayList<String> names = new ArrayList<>();
         for (Environment environment : Environment.values()) {
-            String formattedName = kebabCase(environment.name());
+            String formattedName = kebabCase(stripMinecraftTag(environment.name()));
             names.add(formattedName);
         }
         return names;
@@ -132,7 +132,7 @@ public class StringUtils {
     public static ArrayList<String> getBiomeNames() {
         ArrayList<String> names = new ArrayList<>();
         for (Biome biome : Biome.values()) {
-            String formattedName = kebabCase(biome.name());
+            String formattedName = kebabCase(stripMinecraftTag(biome.name()));
             names.add(formattedName);
         }
         return names;
@@ -155,7 +155,7 @@ public class StringUtils {
     public static ArrayList<String> getGameModeNames() {
         ArrayList<String> names = new ArrayList<>();
         for (GameMode gameMode : GameMode.values()) {
-            String formattedName = kebabCase(gameMode.name());
+            String formattedName = kebabCase(stripMinecraftTag(gameMode.name()));
             names.add(formattedName);
         }
         return names;
@@ -189,7 +189,10 @@ public class StringUtils {
 
     @NotNull
     public static String stripMinecraftTag(@NotNull String str) {
-        return str.replace("minecraft:", "");
+        if (str.toLowerCase().startsWith("minecraft:")) {
+            return str.substring(10);
+        }
+        return str;
     }
 
     @NotNull
