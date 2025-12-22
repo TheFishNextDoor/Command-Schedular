@@ -27,6 +27,7 @@ import fun.sunrisemc.commandscheduler.cron.Cron;
 import fun.sunrisemc.commandscheduler.file.ConfigFile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfile;
 import fun.sunrisemc.commandscheduler.player.PlayerProfileManager;
+import fun.sunrisemc.commandscheduler.utils.MCTypes;
 import fun.sunrisemc.commandscheduler.utils.StringUtils;
 
 public class CommandConfiguration {
@@ -204,10 +205,10 @@ public class CommandConfiguration {
                     continue;
                 }
 
-                Optional<CommandType> commandType = StringUtils.parseCommandType(commandStringSplit[0]);
+                Optional<CommandType> commandType = CommandType.parseCommandType(commandStringSplit[0]);
                 if (commandType.isEmpty()) {
                     CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", StringUtils.getCommandTypeNames()));
+                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getCommandTypeNames()));
                     continue;
                 }
 
@@ -246,10 +247,10 @@ public class CommandConfiguration {
 
         Optional<String> executeOnString = config.getString(id + ".execute-conditions.execute-on");
         if (executeOnString.isPresent()) {
-            Optional<ExecuteOn> executeOnInput = StringUtils.parseExecuteOn(executeOnString.get());
+            Optional<ExecuteOn> executeOnInput = ExecuteOn.parseExecuteOn(executeOnString.get());
             if (executeOnInput.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
-                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", StringUtils.getExecuteOnNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", ExecuteOn.getExecuteOnNames()) + ".");
             }
             else {
                 this.executeOn = executeOnInput.get();
@@ -271,30 +272,30 @@ public class CommandConfiguration {
         }
 
         for (String environmentName : config.getStringList(id + ".player-conditions.environments").orElse(new ArrayList<>())) {
-            Optional<Environment> environment = StringUtils.parseEnvironment(environmentName);
+            Optional<Environment> environment = MCTypes.parseEnvironment(environmentName);
             if (environment.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid environment " + environmentName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", StringUtils.getEnvironmentNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid environments are: " + String.join(", ", MCTypes.getEnvironmentNames()) + ".");
                 continue;
             }
             this.environments.add(environment.get());
         }
 
         for (String biomeName : config.getStringList(id + ".player-conditions.biomes").orElse(new ArrayList<>())) {
-            Optional<Biome> biome = StringUtils.parseBiome(biomeName);
+            Optional<Biome> biome = MCTypes.parseBiome(biomeName);
             if (biome.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid biome " + biomeName + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", StringUtils.getBiomeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid biomes are: " + String.join(", ", MCTypes.getBiomeNames()) + ".");
                 continue;
             }
             this.biomes.add(biome.get());
         }
 
         for (String gamemode : config.getStringList(id + ".player-conditions.gamemodes").orElse(new ArrayList<>())) {
-            Optional<GameMode> gameMode = StringUtils.parseGameMode(gamemode);
+            Optional<GameMode> gameMode = MCTypes.parseGameMode(gamemode);
             if (gameMode.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Invalid gamemode " + gamemode + " in conditional effect " + id + ".");
-                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", StringUtils.getGameModeNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid gamemodes are: " + String.join(", ", MCTypes.getGameModeNames()) + ".");
                 continue;
             }
             this.gamemodes.add(gameMode.get());
