@@ -205,10 +205,10 @@ public class CommandConfiguration {
                     continue;
                 }
 
-                Optional<CommandType> commandType = CommandType.parseCommandType(commandStringSplit[0]);
+                Optional<CommandType> commandType = CommandType.parse(commandStringSplit[0]);
                 if (commandType.isEmpty()) {
                     CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid command type for command: " + commandString);
-                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getCommandTypeNames()));
+                    CommandSchedulerPlugin.logWarning("Valid command types are: " + String.join(", ", CommandType.getNames()));
                     continue;
                 }
 
@@ -247,10 +247,10 @@ public class CommandConfiguration {
 
         Optional<String> executeOnString = config.getString(id + ".execute-conditions.execute-on");
         if (executeOnString.isPresent()) {
-            Optional<ExecuteOn> executeOnInput = ExecuteOn.parseExecuteOn(executeOnString.get());
+            Optional<ExecuteOn> executeOnInput = ExecuteOn.parse(executeOnString.get());
             if (executeOnInput.isEmpty()) {
                 CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid execute-on value: " + executeOnString.get());
-                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", ExecuteOn.getExecuteOnNames()) + ".");
+                CommandSchedulerPlugin.logWarning("Valid execute-on values are: " + String.join(", ", ExecuteOn.getNames()) + ".");
             }
             else {
                 this.executeOn = executeOnInput.get();

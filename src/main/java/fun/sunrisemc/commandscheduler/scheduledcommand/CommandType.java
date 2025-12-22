@@ -16,9 +16,9 @@ public enum CommandType {
     BROADCAST, // Broadcasts a message to all online players
     MESSAGE; // Sends a message to all online players, replacing {player} with the player's name
 
-    public static Optional<CommandType> parseCommandType(@NotNull String commandTypeName) {
+    public static Optional<CommandType> parse(@NotNull String commandTypeName) {
         String normalizedNameA = StringUtils.normalize(commandTypeName);
-        for (CommandType commandType : CommandType.values()) {
+        for (CommandType commandType : values()) {
             String normalizedNameB = StringUtils.normalize(commandType.name());
             if (normalizedNameA.equals(normalizedNameB)) {
                 return Optional.of(commandType);
@@ -28,13 +28,12 @@ public enum CommandType {
     }
 
     @NotNull
-    public static ArrayList<String> getCommandTypeNames() {
+    public static ArrayList<String> getNames() {
         ArrayList<String> names = new ArrayList<>();
-        for (CommandType commandType : CommandType.values()) {
+        for (CommandType commandType : values()) {
             String formattedName = StringUtils.kebabCase(commandType.name());
             names.add(formattedName);
         }
         return names;
     }
-
 }
