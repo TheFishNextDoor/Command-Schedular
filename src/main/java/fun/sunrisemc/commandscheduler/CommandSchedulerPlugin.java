@@ -3,12 +3,14 @@ package fun.sunrisemc.commandscheduler;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import fun.sunrisemc.commandscheduler.command.CommandSchedulerCommand;
+import fun.sunrisemc.commandscheduler.event.BlockPlace;
 import fun.sunrisemc.commandscheduler.scheduledcommand.CommandConfigurationManager;
 import fun.sunrisemc.commandscheduler.scheduler.CronCommandExecutionTask;
 import fun.sunrisemc.commandscheduler.scheduler.TickCommandExecutionTask;
@@ -31,6 +33,9 @@ public class CommandSchedulerPlugin extends JavaPlugin {
 
         TickCommandExecutionTask.start();
         CronCommandExecutionTask.start();
+
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new BlockPlace(), this);
 
         logInfo("Plugin enabled.");
     }

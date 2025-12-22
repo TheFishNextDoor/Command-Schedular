@@ -15,9 +15,12 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import fun.sunrisemc.commandscheduler.CommandSchedulerPlugin;
 import fun.sunrisemc.commandscheduler.cron.Cron;
@@ -98,6 +101,8 @@ public class CommandConfiguration {
     private @NotNull HashSet<Integer> ticksFromServerStart = new HashSet<>();
 
     private Optional<Cron> cron = Optional.empty();
+
+    private @NotNull HashSet<EventType> events = new HashSet<>();
 
     // Execute Conditions
 
@@ -425,38 +430,6 @@ public class CommandConfiguration {
         }
     }
 
-    // Execution Conditions Data
-
-    public int getMinPlayersOnlineToExecute() {
-        return minPlayersOnlineToExecute;
-    }
-
-    public int getMaxPlayersOnlineToExecute() {
-        return maxPlayersOnlineToExecute;
-    }
-
-    public int getMinPlayersWhoMeetConditionsToExecute() {
-        return minPlayersWhoMeetConditionsToExecute;
-    }
-
-    public int getMaxPlayersWhoMeetConditionsToExecute() {
-        return maxPlayersWhoMeetConditionsToExecute;
-    }
-
-    public boolean isOnlyExecuteIfAllPlayersMeetConditions() {
-        return onlyExecuteIfAllPlayersMeetConditions;
-    }
-
-    // Behavior Data
-
-    public boolean isOnlyRunOneRandomCommand() {
-        return onlyRunOneRandomCommand;
-    }
-
-    public @NotNull ExecuteOn getExecuteOn() {
-        return executeOn;
-    }
-
     // Tick Check
 
     public boolean shouldRunFromTick(int tickCount) {
@@ -477,16 +450,6 @@ public class CommandConfiguration {
         return ticksFromServerStart.contains(tickCount);
     }
 
-    // Tick Check Data
-
-    public Optional<Integer> getIntervalTicks() {
-        return intervalTicks;
-    }
-
-    public @NotNull HashSet<Integer> getTicksFromServerStart() {
-        return ticksFromServerStart;
-    }
-
     // Cron Check
 
     public boolean shouldRunFromCron(@NotNull LocalDateTime dateTime) {
@@ -505,10 +468,14 @@ public class CommandConfiguration {
         return cron.get().matches(second, minute, hour, dayOfMonth, month, dayOfWeek, year);
     }
 
-    // Cron Check Data
-    
-    public Optional<Cron> getCron() {
-        return cron;
+    // Event Check
+
+    public void onEvent(@NotNull EventType eventType, @NotNull Location location, @Nullable Entity entity, @Nullable ItemStack item, @Nullable Block block, int amount) {
+        if (!events.contains(eventType)) {
+            return;
+        }
+
+        execute();
     }
 
     // Player Condition Checks
@@ -694,6 +661,58 @@ public class CommandConfiguration {
         }
 
         return true;
+    }
+
+    // ------------ //
+    // Data Getters //
+    // ------------ //
+
+    // Behavior Data
+
+    public boolean isOnlyRunOneRandomCommand() {
+        return onlyRunOneRandomCommand;
+    }
+
+    public @NotNull ExecuteOn getExecuteOn() {
+        return executeOn;
+    }
+
+    // Execution Conditions Data
+
+    public int getMinPlayersOnlineToExecute() {
+        return minPlayersOnlineToExecute;
+    }
+
+    public int getMaxPlayersOnlineToExecute() {
+        return maxPlayersOnlineToExecute;
+    }
+
+    public int getMinPlayersWhoMeetConditionsToExecute() {
+        return minPlayersWhoMeetConditionsToExecute;
+    }
+
+    public int getMaxPlayersWhoMeetConditionsToExecute() {
+        return maxPlayersWhoMeetConditionsToExecute;
+    }
+
+    public boolean isOnlyExecuteIfAllPlayersMeetConditions() {
+        return onlyExecuteIfAllPlayersMeetConditions;
+    }
+
+    // Tick Check Data
+
+    public Optional<Integer> getIntervalTicks() {
+        return intervalTicks;
+    }
+
+    public @NotNull HashSet<Integer> getTicksFromServerStart() {
+        return ticksFromServerStart;
+    }
+
+    // Cron Check Data
+    
+    public Optional<Cron> getCron() {
+        return cron;
     }
 
     // Condition Check Data
