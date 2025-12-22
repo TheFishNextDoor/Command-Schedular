@@ -45,7 +45,8 @@ public class CommandConfiguration {
     private final @NotNull List<String> TRIGGERS = List.of(
         "interval-ticks",
         "cron",
-        "ticks-from-server-start"
+        "ticks-from-server-start",
+        "events"
     );
 
     private final @NotNull List<String> EXECUTE_CONDITIONS = List.of(
@@ -241,6 +242,17 @@ public class CommandConfiguration {
         Optional<String> cronExpression = config.getString(id + ".triggers.cron");
         if (cronExpression.isPresent()) {
             this.cron = Optional.of(new Cron(cronExpression.get()));
+        }
+
+        List<String> eventNames = config.getStringList(id + ".triggers.events").orElse(new ArrayList<>());
+        for (String eventName : eventNames) {
+            Optional<EventType> eventType = EventType.parse(eventName);
+            if (eventType.isEmpty()) {
+                CommandSchedulerPlugin.logWarning("Command configuration " + id + " has an invalid event type: " + eventName);
+                CommandSchedulerPlugin.logWarning("Valid event types are: " + String.join(", ", EventType.getNames()) + ".");
+                continue;
+            }
+            this.events.add(eventType.get());
         }
 
         // Load Execute Conditions
